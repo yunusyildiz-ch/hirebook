@@ -56,6 +56,33 @@ Created as a personal project within the Powercoders program, HiReBOOK reflects 
 
 ---
 
+## 📂 Sample Project Structure
+
+```bash
+hirebook/
+├── public/
+│   └── index.html                          # Root HTML file
+├── src/
+│   ├── assets/                             # Images, icons, logos
+│   ├── components/                         # Reusable UI components
+│   │   ├── Navbar.jsx
+│   │   ├── Sidebar.jsx
+│   │   ├── NoteCard.jsx
+│   │   ├── CandidateCard.jsx
+│   │   ├── TaskItem.jsx
+│   │   └── ThemeToggle.jsx
+│   ├── .
+.
+.
+.
+
+contexts/                                 
+├── tailwind.config.js                      # Tailwind configuration
+├── vite.config.js                          # Vite build configuration
+└── README.md                               # Project documentation
+
+```
+
 ## 📅 Timeline
 
 | Week | Dates              | Milestone                                 |
@@ -120,5 +147,3 @@ See the [LICENSE](./LICENSE) file for more details.
     <img src="https://img.shields.io/badge/Website-000000?style=flat&logo=google-chrome&logoColor=white" alt="Website Badge"/>
   </a>
 </p>
-
----
