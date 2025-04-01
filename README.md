@@ -129,7 +129,7 @@ See the [LICENSE](./LICENSE) file for more details.
 ---
 
 <p align="center">
-  <img src="https://github.com/yunusyildiz-ch.png" width="80" height="80" style="border-radius: 50%;" alt="Yunus YILDIZ" />
+  <img src="assets/github-yunus.png" width="80" height="80" style="border-radius: 50%;" alt="Yunus YILDIZ" />
 </p>
 
 <p align="center">
