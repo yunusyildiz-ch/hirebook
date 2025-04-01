@@ -1,5 +1,9 @@
 # 💻 HiReBOOK – Smart Hiring & Productivity Toolkit
 
+<p align="center">
+  <img src="assets/hirebook.png" width="250" height="250" style="border-radius: 50%;" alt="Yunus YILDIZ" />
+</p>
+
 ## 📘 Introduction
 
 **HiReBOOK** is a modern, web-based productivity tool crafted for **Human Resources professionals** and small recruitment teams. It brings together **categorized note-taking**, **applicant tracking**, and **task management** into a single, seamless interface.
