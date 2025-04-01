@@ -56,6 +56,19 @@ Created as a personal project within the Powercoders program, HiReBOOK reflects 
 
 ---
 
+## 📅 Timeline
+
+| Week | Dates              | Milestone                                 |
+|------|--------------------|--------------------------------------------|
+| 1    | Apr 1 – Apr 6      | Project setup, UI layout, notes module     |
+| 2    | Apr 7 – Apr 13     | Candidate tracking module, routing         |
+| 3    | Apr 14 – Apr 20    | Task management module                     |
+| 4    | Apr 21 – Apr 27    | Finalize UI, responsive adjustments        |
+| 5    | Apr 28 – May 4     | Firebase integration, auto-sync setup      |
+| 6    | May 5 – May 11     | Testing, final polish, documentation       |
+
+🗓️ **Final delivery date:** **May 11, 2025**
+
 ## 💡 Purpose
 
 HiReBOOK was built as a **Powercoders personal project**, aiming to showcase practical web development skills and solve real-world HR needs.
