@@ -163,12 +163,9 @@ See the [LICENSE](./LICENSE) file for more details.
 <h3 align="center">Yunus YILDIZ</h3>
 
 <p align="center">
-
-  <code>
-    <b>Always learning. Always building.<br/>
+    <i>Always learning. Always building.<br/>
     Transforming ideas into digital experiences.<br/>
-    Passionate about solving real-world challenges through technology.</b>
-  </code>
+    Passionate about solving real-world challenges through technology.</i>
 </p>
 
 <p align="center">
