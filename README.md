@@ -4,7 +4,6 @@
   <img src="assets/hirebook.png" width="250" height="250" alt="HiReBOOK Logo" />
 </p>
 
----
 
 ## 📘 Introduction & Project Overview
 
@@ -15,7 +14,6 @@ Built as a personal project during the Powercoders Bootcamp, HiReBOOK showcases 
 
 The platform empowers users to document candidate interactions, manage to-do lists, and stay organized throughout the hiring process — all in one place.
 
----
 
 ## ✨ Highlights
 
@@ -26,7 +24,6 @@ The platform empowers users to document candidate interactions, manage to-do lis
 - 🌒 Light/Dark mode  
 - 📱 Fully responsive design  
 
----
 
 ## 🚀 Feature Breakdown
 
@@ -61,7 +58,6 @@ The platform empowers users to document candidate interactions, manage to-do lis
 - Light and dark mode support  
 - Built with modern component architecture
 
----
 
 ## 🌐 Target Audience
 
@@ -70,7 +66,6 @@ The platform empowers users to document candidate interactions, manage to-do lis
 - Recruiters managing multiple candidates and notes  
 - Anyone looking for a centralized, distraction-free productivity app
 
----
 
 ## 🛠️ Built With
 
@@ -81,7 +76,6 @@ The platform empowers users to document candidate interactions, manage to-do lis
 - 🌐 **Netlify** – Hosting and deployment  
 - 🧑‍💻 **GitHub** – Version control and collaboration
 
----
 
 ## 📂 Sample Project Structure
 
@@ -153,7 +147,19 @@ The app will be deployed and available live on **Netlify** in the final week of 
 This project is licensed under the **MIT License**.  
 See the [LICENSE](./LICENSE) file for more details.
 
----
+
+## ☕ Support & Motivation
+
+This project is the result of consistent learning, curiosity, and a passion for sharing knowledge.  
+If you find it helpful:
+
+- ⭐ Give the repository a star
+- 🗣 Share it with friends or fellow learners
+- 💬 Open an issue or suggest improvements
+
+Your feedback and encouragement help keep this project alive and growing. Thank you! 🙏
+
+
 ## 👤 Author
 
 <p align="center">
