@@ -140,6 +140,9 @@ Screenshots and interface previews will be added after the UI is finalized.
 🔗 *Coming soon...*  
 The app will be deployed and available live on **Netlify** in the final week of development.
 
+## 🔧 Future Step
+Convert HiReBOOK to a PWA for installable experience (Sprint 6 or Post-Bootcamp)
+
 ## 📖 License
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
