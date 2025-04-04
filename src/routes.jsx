@@ -1,3 +1,4 @@
+import { createBrowserRouter } from "react-router-dom";
 import Layout from "./components/Layout";
 import Notes from "./pages/Notes";
 import Candidates from "./pages/Candidates";
