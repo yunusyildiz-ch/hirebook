@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function Notes() {
-  return (
-    <div>Notes</div>
-  )
+  return <div className="text-green-600 text-xl">📝 Notes Page</div>;
 }
 
-export default Notes
+export default Notes;
