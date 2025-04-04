@@ -1,19 +1,18 @@
-import { createBrowserRouter } from 'react-router-dom'
-import App from './App'
-import Notes from './pages/Notes'
-import Candidates from './pages/Candidates'
-import Tasks from './pages/Tasks'
+import Layout from "./components/Layout";
+import Notes from "./pages/Notes";
+import Candidates from "./pages/Candidates";
+import Tasks from "./pages/Tasks";
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <App />,
+    path: "/",
+    element: <Layout />,
     children: [
-      { path: 'notes', element: <Notes /> },
-      { path: 'candidates', element: <Candidates /> },
-      { path: 'tasks', element: <Tasks /> },
+      { path: "/", element: <Notes /> },
+      { path: "/candidates", element: <Candidates /> },
+      { path: "/tasks", element: <Tasks /> },
     ],
   },
-])
+]);
 
-export default router
+export default router;
