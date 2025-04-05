@@ -3,6 +3,7 @@ import { Mail, Lock } from "lucide-react";
 import { useLogin } from "../auth/useLogin";
 import { validateLoginForm } from "../auth/validators";
 import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");

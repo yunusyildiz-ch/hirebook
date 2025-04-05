@@ -3,22 +3,21 @@ import { Mail, Lock } from "lucide-react";
 import { useRegister } from "../auth/useRegister";
 import { validateRegisterForm } from "../auth/validators";
 import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { handleRegister, authLoading } = useRegister(); // ✅ Add authLoading
+  const { handleRegister, authLoading } = useRegister();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
     const validationError = validateRegisterForm(email, password);
     if (validationError) {
       toast.error(validationError);
       return;
     }
-  
     await handleRegister(email, password, setError);
   };
 
