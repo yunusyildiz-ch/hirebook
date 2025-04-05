@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Mail, Lock } from "lucide-react";
 import { useRegister } from "../auth/useRegister";
 import { validateRegisterForm } from "../auth/validators";
+import { Link } from "react-router-dom";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { handleRegister } = useRegister();
+  const { handleRegister, authLoading } = useRegister(); // ✅ Add authLoading
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,6 +42,7 @@ export default function RegisterPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={authLoading}
           />
         </div>
 
@@ -54,21 +56,27 @@ export default function RegisterPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            disabled={authLoading}
           />
         </div>
 
         <button
           type="submit"
-          className="w-full bg-green-600 hover:bg-green-700 text-white p-2 rounded-lg transition"
+          disabled={authLoading}
+          className={`w-full text-white p-2 rounded-lg transition ${
+            authLoading
+              ? "bg-green-400 cursor-not-allowed"
+              : "bg-green-600 hover:bg-green-700"
+          }`}
         >
-          Register
+          {authLoading ? "Creating account..." : "Register"}
         </button>
 
         <p className="text-sm text-center mt-4 dark:text-gray-300">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-600 hover:underline">
+          <Link to="/login" className="text-blue-600 hover:underline">
             Login
-          </a>
+          </Link>
         </p>
       </form>
     </div>

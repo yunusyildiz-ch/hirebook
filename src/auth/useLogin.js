@@ -8,9 +8,9 @@ export const useLogin = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const [authLoading, setAuthLoading] = useState(false);
 
   const handleLogin = async (email, password) => {
-    // Client-side validation
     const validationError = validateLoginForm(email, password);
     if (validationError) {
       setError(validationError);
@@ -18,16 +18,18 @@ export const useLogin = () => {
       return;
     }
 
+    setAuthLoading(true);
     try {
       await login(email, password);
       toast.success("Login successful!");
       navigate("/");
     } catch (err) {
-      const errMsg = err.message || "Login failed. Please try again.";
-      setError(errMsg);
-      toast.error(errMsg);
+      setError(err.message);
+      toast.error(err.message);
+    } finally {
+      setAuthLoading(false);
     }
   };
 
-  return { handleLogin, error };
+  return { handleLogin, error, authLoading };
 };
