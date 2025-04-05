@@ -5,12 +5,15 @@ import PageTransition from "./PageTransition";
 
 export default function Layout() {
   return (
-    <div className="min-h-screen flex">
-      <Sidebar />
-      <div className="flex-1 flex flex-col">
-        <Header />
+    <div className="min-h-screen flex flex-col">
+      {/* Top Header */}
+      <Header />
+
+      {/* Main layout below header */}
+      <div className="flex flex-1">
+        <Sidebar />
         <PageTransition>
-          <main className="flex-1 p-6 bg-gray-100 dark:bg-gray-900">
+          <main className="flex-1 p-6 bg-gray-100 dark:bg-gray-900 overflow-y-auto">
             <Outlet />
           </main>
         </PageTransition>
