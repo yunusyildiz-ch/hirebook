@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { Mail, Lock } from "lucide-react";
+import { toast } from "react-hot-toast";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -35,27 +36,12 @@ export default function RegisterPage() {
     setError("");
 
     if (!validateForm()) return;
-
     try {
       await register(email, password);
       toast.success("Account created successfully!");
       navigate("/");
     } catch (err) {
-      const errorCode = err.code;
-
-      switch (errorCode) {
-        case "auth/email-already-in-use":
-          setError("This email is already registered.");
-          break;
-        case "auth/invalid-email":
-          setError("Invalid email format.");
-          break;
-        case "auth/weak-password":
-          setError("Password should be at least 6 characters.");
-          break;
-        default:
-          setError("Something went wrong. Please try again.");
-      }
+      setError(err.message);
     }
   };
 
