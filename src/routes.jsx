@@ -1,16 +1,59 @@
+import { createBrowserRouter } from "react-router-dom";
 import Layout from "./components/Layout";
 import Notes from "./pages/Notes";
 import Candidates from "./pages/Candidates";
 import Tasks from "./pages/Tasks";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import ProtectedRoute from "./components/ProtectedRoute";
+import GuestRoute from "./routes/GuestRoute";
+import HomePage from "./pages/HomePage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      <GuestRoute>
+        <HomePage />
+      </GuestRoute>
+    ),
+  },
+  {
+    path: "/login",
+    element: (
+      <GuestRoute>
+        <LoginPage />
+      </GuestRoute>
+    ),
+  },
+  {
+    path: "/register",
+    element: (
+      <GuestRoute>
+        <RegisterPage />
+      </GuestRoute>
+    ),
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
     children: [
-      { path: "/", element: <Notes /> },
-      { path: "/candidates", element: <Candidates /> },
-      { path: "/tasks", element: <Tasks /> },
+      {
+        path: "", // -> /dashboard
+        element: <Notes />,
+      },
+      {
+        path: "candidates", // -> /dashboard/candidates
+        element: <Candidates />,
+      },
+      {
+        path: "tasks", // -> /dashboard/tasks
+        element: <Tasks />,
+      },
     ],
   },
 ]);
