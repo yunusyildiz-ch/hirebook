@@ -9,6 +9,7 @@ import { auth } from "../firebase/config";
 import { createUserProfile } from "../services/userService";
 import { getFirebaseErrorMessage } from "../utils/firebaseErrors";
 import Loader from "../components/Loader";
+import { toast } from "react-hot-toast";
 
 const AuthContext = createContext();
 
@@ -50,7 +51,16 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => signOut(auth);
+  const logout = async () => {
+    try {
+      await signOut(auth);
+      toast.success("Logged out successfully.");
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Logout Error:", error);
+      toast.error("Logout failed.");
+    }
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
