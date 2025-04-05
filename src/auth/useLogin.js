@@ -8,7 +8,7 @@ import { getFirebaseErrorMessage } from "../utils/firebaseErrors";
 export const useLogin = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation(); // ✅
+  const location = useLocation();
   const [error, setError] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
 
@@ -25,7 +25,7 @@ export const useLogin = () => {
       await login(email, password);
       toast.success("Login successful!");
       const redirectPath = location.state?.from?.pathname || "/";
-      navigate(redirectPath); //go to where user came from
+      navigate(redirectPath);
     } catch (err) {
       const friendlyMessage = getFirebaseErrorMessage(err.code);
       setError(friendlyMessage);

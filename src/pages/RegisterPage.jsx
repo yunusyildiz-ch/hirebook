@@ -13,11 +13,13 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const validationError = validateRegisterForm(email, password);
     if (validationError) {
       toast.error(validationError);
       return;
     }
+
     await handleRegister(email, password, setError);
   };
 
