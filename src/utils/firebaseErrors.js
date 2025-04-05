@@ -8,3 +8,8 @@ export const FIREBASE_ERRORS = {
   "auth/too-many-requests": "Too many attempts. Try again later.",
   "auth/network-request-failed": "Network error. Check your connection.",
 };
+
+// 🔥 Global error handler to safely retrieve readable message
+export const getFirebaseErrorMessage = (code) => {
+  return FIREBASE_ERRORS[code] || "An unexpected error occurred. Please try again.";
+};
