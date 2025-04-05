@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { toast } from "react-hot-toast";
 import { validateLoginForm } from "./validators";
@@ -7,6 +7,7 @@ import { validateLoginForm } from "./validators";
 export const useLogin = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation(); // ✅
   const [error, setError] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
 
@@ -22,7 +23,8 @@ export const useLogin = () => {
     try {
       await login(email, password);
       toast.success("Login successful!");
-      navigate("/");
+      const redirectPath = location.state?.from?.pathname || "/";
+      navigate(redirectPath); // ✅ go to where user came from
     } catch (err) {
       setError(err.message);
       toast.error(err.message);
