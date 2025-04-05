@@ -1,48 +1,22 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
 import { Mail, Lock } from "lucide-react";
-import { toast } from "react-hot-toast";
+import { useRegister } from "../auth/useRegister";
+import { validateRegisterForm } from "../auth/validators";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { register } = useAuth();
-  const navigate = useNavigate();
   const [error, setError] = useState("");
-
-  const validateForm = () => {
-    if (!email || !password) {
-      setError("Please fill in all fields.");
-      return false;
-    }
-
-    const emailRegex = /^\S+@\S+\.\S+$/;
-    if (!emailRegex.test(email)) {
-      setError("Please enter a valid email address.");
-      return false;
-    }
-
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
-      return false;
-    }
-
-    return true;
-  };
+  const { handleRegister } = useRegister();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    if (!validateForm()) return;
-    try {
-      await register(email, password);
-      toast.success("Account created successfully!");
-      navigate("/");
-    } catch (err) {
-      setError(err.message);
-    }
+    const validationError = validateRegisterForm(email, password);
+    if (validationError) return setError(validationError);
+
+    await handleRegister(email, password, setError);
   };
 
   return (
@@ -52,7 +26,7 @@ export default function RegisterPage() {
         className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl w-full max-w-md"
       >
         <h2 className="text-2xl font-bold text-center mb-6 dark:text-white">
-          Create an Account 📝
+          Create an Account 📋
         </h2>
 
         {error && <div className="text-red-500 text-sm mb-4">{error}</div>}

@@ -51,8 +51,37 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = (email, password) =>
-    signInWithEmailAndPassword(auth, email, password);
+  const login = async (email, password) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      return userCredential;
+    } catch (error) {
+      let errorMessage = "Login failed. Please try again.";
+  
+      if (error.code) {
+        switch (error.code) {
+          case "auth/user-not-found":
+            errorMessage = "No user found with this email.";
+            break;
+          case "auth/wrong-password":
+            errorMessage = "Incorrect password.";
+            break;
+          case "auth/invalid-email":
+            errorMessage = "Invalid email format.";
+            break;
+          case "auth/too-many-requests":
+            errorMessage = "Too many attempts. Try again later.";
+            break;
+          case "auth/network-request-failed":
+            errorMessage = "Network error. Check your connection.";
+            break;
+        }
+      }
+  
+      console.error("Login Error:", error);
+      throw new Error(errorMessage);
+    }
+  };
 
   const logout = () => signOut(auth);
 
