@@ -6,18 +6,36 @@ import Tasks from "./pages/Tasks";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import GuestRoute from "./routes/GuestRoute";
+import HomePage from "./pages/HomePage";
 
 const router = createBrowserRouter([
   {
+    path: "/",
+    element: (
+      <GuestRoute>
+        <HomePage />
+      </GuestRoute>
+    ),
+  },
+  {
     path: "/login",
-    element: <LoginPage />,
+    element: (
+      <GuestRoute>
+        <LoginPage />
+      </GuestRoute>
+    ),
   },
   {
     path: "/register",
-    element: <RegisterPage />,
+    element: (
+      <GuestRoute>
+        <RegisterPage />
+      </GuestRoute>
+    ),
   },
   {
-    path: "/",
+    path: "/dashboard",
     element: (
       <ProtectedRoute>
         <Layout />
@@ -25,15 +43,15 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "/",
+        path: "", // -> /dashboard
         element: <Notes />,
       },
       {
-        path: "/candidates",
+        path: "candidates", // -> /dashboard/candidates
         element: <Candidates />,
       },
       {
-        path: "/tasks",
+        path: "tasks", // -> /dashboard/tasks
         element: <Tasks />,
       },
     ],
