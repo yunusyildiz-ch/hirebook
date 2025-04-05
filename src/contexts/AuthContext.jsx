@@ -16,20 +16,31 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true); // Initial app-level loading state
+  const [authLoading, setAuthLoading] = useState(false); // Spinner for login/register actions
 
   const register = async (email, password) => {
-    if (password.length < 6) {
-      throw new Error("Password must be at least 6 characters.");
-    }
+    setAuthLoading(true);
+    try {
+      if (password.length < 6) {
+        throw new Error("Password must be at least 6 characters.");
+      }
 
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    await createUserProfile(userCredential.user);
-    return userCredential;
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await createUserProfile(userCredential.user);
+      return userCredential;
+    } finally {
+      setAuthLoading(false);
+    }
   };
 
   const login = async (email, password) => {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return userCredential;
+    setAuthLoading(true);
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      return userCredential;
+    } finally {
+      setAuthLoading(false);
+    }
   };
 
   const logout = () => signOut(auth);
@@ -49,11 +60,13 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     loading,
+    authLoading,
   };
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading ? children : <Loader message="Authenticating..." />}
+      {authLoading && <Loader message="Authenticating..." />}
+      {!loading ? children : <Loader message="Loading App..." />}
     </AuthContext.Provider>
   );
 };
