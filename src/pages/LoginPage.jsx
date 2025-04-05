@@ -11,10 +11,11 @@ export default function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const validationError = validateLoginForm(email, password);
-    if (validationError) return alert(validationError);
-
+    if (validationError) {
+      toast.error(validationError);
+      return;
+    }
     handleLogin(email, password);
   };
 
