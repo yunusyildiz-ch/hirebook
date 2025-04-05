@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { toast } from "react-hot-toast";
 import { validateLoginForm } from "./validators";
+import { getFirebaseErrorMessage } from "../utils/firebaseErrors";
 
 export const useLogin = () => {
   const { login } = useAuth();
@@ -24,10 +25,11 @@ export const useLogin = () => {
       await login(email, password);
       toast.success("Login successful!");
       const redirectPath = location.state?.from?.pathname || "/";
-      navigate(redirectPath); // ✅ go to where user came from
+      navigate(redirectPath); //go to where user came from
     } catch (err) {
-      setError(err.message);
-      toast.error(err.message);
+      const friendlyMessage = getFirebaseErrorMessage(err.code);
+      setError(friendlyMessage);
+      toast.error(friendlyMessage);
     } finally {
       setAuthLoading(false);
     }

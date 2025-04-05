@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { toast } from "react-hot-toast";
 import { validateRegisterForm } from "./validators";
+import { getFirebaseErrorMessage } from "../utils/firebaseErrors";
 
 export const useRegister = () => {
   const { register } = useAuth();
@@ -24,8 +25,9 @@ export const useRegister = () => {
       toast.success("Account created successfully!");
       navigate("/");
     } catch (err) {
-      setFormError(err.message);
-      toast.error(err.message);
+      const friendlyMessage = getFirebaseErrorMessage(err.code);
+      setError(friendlyMessage);
+      toast.error(friendlyMessage);
     } finally {
       setAuthLoading(false);
     }
