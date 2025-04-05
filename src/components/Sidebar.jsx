@@ -1,11 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import {
-  StickyNote,
-  Users,
-  CheckSquare,
-  LogOut,
-} from "lucide-react";
+import { StickyNote, Users, CheckSquare, LogOut } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
+import { toast } from "react-hot-toast";
 
 export default function Sidebar() {
   const { logout } = useAuth();
@@ -13,6 +9,8 @@ export default function Sidebar() {
 
   const handleLogout = async () => {
     await logout();
+    toast.success("Logged out successfully.");
+    setTimeout(() => navigate("/"), 500);
   };
 
   return (
@@ -31,7 +29,6 @@ export default function Sidebar() {
         >
           <StickyNote size={18} /> Notes
         </NavLink>
-
         <NavLink
           to="/dashboard/candidates"
           className={({ isActive }) =>
@@ -42,7 +39,6 @@ export default function Sidebar() {
         >
           <Users size={18} /> Candidates
         </NavLink>
-
         <NavLink
           to="/dashboard/tasks"
           className={({ isActive }) =>
@@ -53,7 +49,6 @@ export default function Sidebar() {
         >
           <CheckSquare size={18} /> Tasks
         </NavLink>
-
         <button
           onClick={handleLogout}
           className="mt-8 flex items-center gap-2 px-4 py-2 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"

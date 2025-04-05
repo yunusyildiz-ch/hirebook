@@ -9,10 +9,8 @@ import { auth } from "../firebase/config";
 import { createUserProfile } from "../services/userService";
 import { getFirebaseErrorMessage } from "../utils/firebaseErrors";
 import Loader from "../components/Loader";
-import { toast } from "react-hot-toast";
 
 const AuthContext = createContext();
-
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
@@ -20,7 +18,6 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [authLoading, setAuthLoading] = useState(false);
 
-  // ✅ REGISTER
   const register = async (email, password) => {
     setAuthLoading(true);
     try {
@@ -28,14 +25,11 @@ export const AuthProvider = ({ children }) => {
       await createUserProfile(userCredential.user);
       return userCredential;
     } catch (error) {
-      const errorMessage = getFirebaseErrorMessage(error.code);
-      console.error("Register Error:", error.code);
-      throw new Error(errorMessage); 
+      throw new Error(getFirebaseErrorMessage(error.code));
     } finally {
       setAuthLoading(false);
     }
   };
-
 
   const login = async (email, password) => {
     setAuthLoading(true);
@@ -43,9 +37,7 @@ export const AuthProvider = ({ children }) => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       return userCredential;
     } catch (error) {
-      const errorMessage = getFirebaseErrorMessage(error.code);
-      console.error("Login Error:", error.code);
-      throw new Error(errorMessage); 
+      throw new Error(getFirebaseErrorMessage(error.code));
     } finally {
       setAuthLoading(false);
     }
@@ -54,10 +46,8 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await signOut(auth);
-      toast.success("Logged out successfully."); 
     } catch (error) {
       console.error("Logout Error:", error);
-      toast.error("Logout failed.");
     }
   };
 
@@ -66,21 +56,13 @@ export const AuthProvider = ({ children }) => {
       setUser(currentUser);
       setLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
 
-  const value = {
-    user,
-    login,
-    register,
-    logout,
-    loading,
-    authLoading,
-  };
-
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider
+      value={{ user, login, register, logout, loading, authLoading }}
+    >
       {loading ? <Loader message="Authenticating..." /> : children}
     </AuthContext.Provider>
   );
