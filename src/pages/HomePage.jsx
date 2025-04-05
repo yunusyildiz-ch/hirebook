@@ -1,11 +1,16 @@
-import { Link } from "react-router-dom";
-import { ArrowRight, Apple, MonitorDown, Facebook, Twitter, Linkedin, Github } from "lucide-react";
+import { useState } from "react";
+import { Apple, MonitorDown, Facebook, Twitter, Linkedin, Github, ArrowRight } from "lucide-react";
+import LoginModal from "../components/LoginModal";
+import RegisterModal from "../components/RegisterModal";
 
 export default function HomePage() {
+  const [showLogin, setShowLogin] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
+
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 bg-white dark:bg-gray-900 text-gray-800 dark:text-white">
       {/* Left: Static Info Section */}
-      <div className="px-8 py-12 space-y-10">
+      <div className="px-8 py-12 space-y-10 overflow-y-auto">
         <h1 className="text-4xl font-bold mb-6 text-blue-600 dark:text-blue-400">HiReBOOK</h1>
         <p className="text-lg">
           Welcome to HiReBOOK — your all-in-one hiring assistant!
@@ -26,7 +31,6 @@ export default function HomePage() {
         </ul>
 
         <div className="space-y-4 mt-6">
-          {/* Mac Download */}
           <a
             href="#"
             className="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg hover:opacity-90 transition"
@@ -34,7 +38,6 @@ export default function HomePage() {
             <Apple size={18} /> Download for Mac
           </a>
 
-          {/* Windows Download */}
           <a
             href="#"
             className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
@@ -45,16 +48,16 @@ export default function HomePage() {
 
         <footer className="pt-12 text-sm text-gray-500 dark:text-gray-400">
           <div className="flex gap-4 items-center mb-2">
-            <a href="#" target="_blank" className="hover:text-blue-500">
+            <a href="#" className="hover:text-blue-500">
               <Facebook size={18} />
             </a>
-            <a href="#" target="_blank" className="hover:text-sky-400">
+            <a href="#" className="hover:text-sky-400">
               <Twitter size={18} />
             </a>
-            <a href="#" target="_blank" className="hover:text-blue-700">
+            <a href="#" className="hover:text-blue-700">
               <Linkedin size={18} />
             </a>
-            <a href="#" target="_blank" className="hover:text-gray-900 dark:hover:text-white">
+            <a href="#" className="hover:text-gray-900 dark:hover:text-white">
               <Github size={18} />
             </a>
           </div>
@@ -62,22 +65,51 @@ export default function HomePage() {
         </footer>
       </div>
 
-      {/* Right: Fixed Auth Box (same as before) */}
+      {/* Right: Auth Panel */}
       <div className="flex flex-col justify-center items-center p-8 bg-gray-100 dark:bg-gray-800">
-        <h2 className="text-2xl font-semibold mb-6 text-center">Ready to get started?</h2>
         <div className="space-y-4 w-full max-w-xs">
-          <Link to="/login">
-            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg flex items-center justify-center gap-2 transition">
-              Login <ArrowRight size={16} />
+          <button className="w-full flex items-center justify-center gap-2 bg-gray-900 text-white py-2 rounded-lg hover:opacity-90 transition">
+            <Apple size={18} /> Sign up with Apple
+          </button>
+          <button className="w-full flex items-center justify-center gap-2 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition">
+            <ArrowRight size={18} /> Sign up with Google
+          </button>
+
+          <div className="flex items-center my-4">
+            <hr className="flex-grow border-gray-300 dark:border-gray-600" />
+            <span className="mx-2 text-gray-500 dark:text-gray-400 text-sm">or</span>
+            <hr className="flex-grow border-gray-300 dark:border-gray-600" />
+          </div>
+
+          <button
+            onClick={() => setShowRegister(true)}
+            className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition"
+          >
+            Create Account
+          </button>
+
+          <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+            By signing up, you agree to the Terms of Service and Privacy Policy,
+            including Cookie Use.
+          </p>
+
+          <div className="text-center mt-4">
+            <p className="text-l dark:text-gray-300">
+              Already have an account?
+            </p>
+            <button
+              onClick={() => setShowLogin(true)}
+              className="mt-1 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+            >
+              Sign In
             </button>
-          </Link>
-          <Link to="/register">
-            <button className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg flex items-center justify-center gap-2 transition">
-              Register <ArrowRight size={16} />
-            </button>
-          </Link>
+          </div>
         </div>
       </div>
+
+      {/* Modals */}
+      {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
+      {showRegister && <RegisterModal isOpen={showRegister} onClose={() => setShowRegister(false)} />}
     </div>
   );
 }
