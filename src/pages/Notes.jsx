@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
-import { addNote, subscribeToNotes } from "../services/noteService";
+import { addNote, updateNote, deleteNote, subscribeToNotes } from "../services/noteService";
 import { useAuth } from "../contexts/AuthContext";
+import NoteCard from "../components/NoteCard";
+import { toast } from "react-hot-toast";
 
 export default function Notes() {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState("");
+  const [editingNote, setEditingNote] = useState(null);
   const { user } = useAuth();
 
   useEffect(() => {
-    if (!user) return;
-    const unsubscribe = subscribeToNotes(setNotes);
+    if (!user?.uid) return;
+    const unsubscribe = subscribeToNotes(user.uid, setNotes);
     return () => unsubscribe?.();
   }, [user]);
 
@@ -18,11 +21,31 @@ export default function Notes() {
     if (!newNote.trim()) return;
 
     try {
-      await addNote(newNote.trim());
+      if (editingNote) {
+        await updateNote(editingNote.id, newNote.trim());
+        toast.success("Note updated 📝");
+      } else {
+        await addNote(newNote.trim());
+        toast.success("Note added ✨");
+      }
       setNewNote("");
+      setEditingNote(null);
     } catch (error) {
-      console.error("Note save error:", error);
-      toast.error("Failed to save note.");
+      toast.error(error.message || "Something went wrong.");
+    }
+  };
+
+  const handleEdit = (note) => {
+    setNewNote(note.text);
+    setEditingNote(note);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteNote(id);
+      toast.success("Note deleted 🗑️");
+    } catch (error) {
+      toast.error("Delete failed.");
     }
   };
 
@@ -38,8 +61,13 @@ export default function Notes() {
           onChange={(e) => setNewNote(e.target.value)}
           className="flex-1 p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
         />
-        <button className="bg-blue-600 text-white px-4 rounded hover:bg-blue-700">
-          Save
+        <button
+          type="submit"
+          className={`px-4 rounded text-white transition ${
+            editingNote ? "bg-yellow-600 hover:bg-yellow-700" : "bg-blue-600 hover:bg-blue-700"
+          }`}
+        >
+          {editingNote ? "Update" : "Save"}
         </button>
       </form>
 
@@ -48,16 +76,8 @@ export default function Notes() {
       ) : (
         <ul className="space-y-2">
           {notes.map((note) => (
-            <li
-              key={note.id}
-              className="p-3 bg-gray-100 rounded dark:bg-gray-800 dark:text-white"
-            >
-              <p className="mb-1">{note.text}</p>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                {note.createdAt
-                  ? note.createdAt.toDate().toLocaleString()
-                  : "Just now"}
-              </div>
+            <li key={note.id}>
+              <NoteCard note={note} onEdit={handleEdit} onDelete={handleDelete} />
             </li>
           ))}
         </ul>
