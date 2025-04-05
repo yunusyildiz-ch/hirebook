@@ -16,8 +16,14 @@ export default function Notes() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!newNote.trim()) return;
-    await addNote(newNote.trim());
-    setNewNote("");
+
+    try {
+      await addNote(newNote.trim());
+      setNewNote("");
+    } catch (error) {
+      console.error("Note save error:", error);
+      toast.error("Failed to save note.");
+    }
   };
 
   return (
@@ -30,7 +36,7 @@ export default function Notes() {
           placeholder="Write a note..."
           value={newNote}
           onChange={(e) => setNewNote(e.target.value)}
-          className="flex-1 p-2 border rounded"
+          className="flex-1 p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
         />
         <button className="bg-blue-600 text-white px-4 rounded hover:bg-blue-700">
           Save
@@ -42,10 +48,15 @@ export default function Notes() {
       ) : (
         <ul className="space-y-2">
           {notes.map((note) => (
-            <li key={note.id} className="p-3 bg-gray-100 rounded dark:bg-gray-800 dark:text-white">
-              {note.text}
+            <li
+              key={note.id}
+              className="p-3 bg-gray-100 rounded dark:bg-gray-800 dark:text-white"
+            >
+              <p className="mb-1">{note.text}</p>
               <div className="text-sm text-gray-500 dark:text-gray-400">
-                {note.createdAt?.toDate().toLocaleString()}
+                {note.createdAt
+                  ? note.createdAt.toDate().toLocaleString()
+                  : "Just now"}
               </div>
             </li>
           ))}
