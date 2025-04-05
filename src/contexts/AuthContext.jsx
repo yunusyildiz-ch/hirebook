@@ -30,13 +30,13 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       const errorMessage = getFirebaseErrorMessage(error.code);
       console.error("Register Error:", error.code);
-      throw new Error(errorMessage); // ✅ Hatalı kodu kullanıcıya uygun mesajla yolluyoruz
+      throw new Error(errorMessage); 
     } finally {
       setAuthLoading(false);
     }
   };
 
-  // ✅ LOGIN
+
   const login = async (email, password) => {
     setAuthLoading(true);
     try {
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       const errorMessage = getFirebaseErrorMessage(error.code);
       console.error("Login Error:", error.code);
-      throw new Error(errorMessage); // ✅ Aynı mantık burada da
+      throw new Error(errorMessage); 
     } finally {
       setAuthLoading(false);
     }
@@ -54,8 +54,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await signOut(auth);
-      toast.success("Logged out successfully.");
-      window.location.href = "/";
+      toast.success("Logged out successfully."); 
     } catch (error) {
       console.error("Logout Error:", error);
       toast.error("Logout failed.");
