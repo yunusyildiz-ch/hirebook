@@ -20,7 +20,7 @@ const Header = () => {
 
   return (
     <header className="bg-white dark:bg-gray-900 shadow p-4 flex justify-between items-center">
-      <h1 className="text-xl font-semibold">HiReBOOK</h1>
+      <h1 className="text-xl font-semibold">HiRebook</h1>
 
       <div className="flex items-center gap-4">
         <ThemeToggle />

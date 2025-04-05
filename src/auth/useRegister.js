@@ -25,7 +25,7 @@ export const useRegister = () => {
       toast.success("Account created successfully!");
       navigate("/");
     } catch (err) {
-      const friendlyMessage = getFirebaseErrorMessage(err.code);
+      const friendlyMessage = getFirebaseErrorMessage(err.code || err.message);
       setError(friendlyMessage);
       toast.error(friendlyMessage);
     } finally {

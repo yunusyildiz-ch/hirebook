@@ -27,7 +27,7 @@ export const useLogin = () => {
       const redirectPath = location.state?.from?.pathname || "/";
       navigate(redirectPath);
     } catch (err) {
-      const friendlyMessage = getFirebaseErrorMessage(err.code);
+      const friendlyMessage = getFirebaseErrorMessage(err.code || err.message);
       setError(friendlyMessage);
       toast.error(friendlyMessage);
     } finally {

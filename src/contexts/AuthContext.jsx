@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase/config";
 import { createUserProfile } from "../services/userService";
-import { FIREBASE_ERRORS } from "../utils/firebaseErrors";
+import { getFirebaseErrorMessage } from "../utils/firebaseErrors";
 import Loader from "../components/Loader";
 
 const AuthContext = createContext();
@@ -15,51 +15,43 @@ const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);              // Current authenticated user
-  const [loading, setLoading] = useState(true);        // Global app loading
-  const [authLoading, setAuthLoading] = useState(false); // Login/Register spinner
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(false);
 
-  // REGISTER FUNCTION
+  // ✅ REGISTER
   const register = async (email, password) => {
     setAuthLoading(true);
     try {
-      if (password.length < 6) {
-        throw new Error("Password must be at least 6 characters.");
-      }
-
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       await createUserProfile(userCredential.user);
       return userCredential;
     } catch (error) {
-      const errorMessage =
-        FIREBASE_ERRORS[error.code] || "Something went wrong. Please try again.";
-      console.error("Register Error:", error);
-      throw new Error(errorMessage);
+      const errorMessage = getFirebaseErrorMessage(error.code);
+      console.error("Register Error:", error.code);
+      throw new Error(errorMessage); // ✅ Hatalı kodu kullanıcıya uygun mesajla yolluyoruz
     } finally {
       setAuthLoading(false);
     }
   };
 
-  // LOGIN FUNCTION
+  // ✅ LOGIN
   const login = async (email, password) => {
     setAuthLoading(true);
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       return userCredential;
     } catch (error) {
-      const errorMessage =
-        FIREBASE_ERRORS[error.code] || "Login failed. Please try again.";
-      console.error("Login Error:", error);
-      throw new Error(errorMessage);
+      const errorMessage = getFirebaseErrorMessage(error.code);
+      console.error("Login Error:", error.code);
+      throw new Error(errorMessage); // ✅ Aynı mantık burada da
     } finally {
       setAuthLoading(false);
     }
   };
 
-  // LOGOUT FUNCTION
   const logout = () => signOut(auth);
 
-  // LISTEN TO AUTH STATE CHANGES
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
