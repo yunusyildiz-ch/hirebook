@@ -47,3 +47,6 @@ package-lock.json
 
 # === Mac system files ===
 ._*
+
+.bash
+*.bash
