@@ -54,10 +54,15 @@ export const subscribeToNotes = (userId, callback) => {
   return onSnapshot(
     q,
     (snapshot) => {
-      const notes = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      const notes = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt?.toDate?.().toISOString() || null,
+          updatedAt: data.updatedAt?.toDate?.().toISOString() || null,
+        };
+      });
       callback(notes);
     },
     (error) => {

@@ -1,4 +1,3 @@
-// src/features/notes/notesSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 import {
   loadNotes,
@@ -12,6 +11,7 @@ const initialState = {
   loading: false,
   error: null,
   selectedNote: null,
+  activeTab: "All",
 };
 
 const notesSlice = createSlice({
@@ -24,6 +24,9 @@ const notesSlice = createSlice({
     clearSelectedNote(state) {
       state.selectedNote = null;
     },
+    setActiveTab(state, action) {
+      state.activeTab = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -34,7 +37,7 @@ const notesSlice = createSlice({
       })
       .addCase(loadNotes.fulfilled, (state, action) => {
         state.loading = false;
-        state.notes = action.payload;
+        state.notes = action.payload; // timestamps already formatted in service
       })
       .addCase(loadNotes.rejected, (state, action) => {
         state.loading = false;
@@ -46,7 +49,7 @@ const notesSlice = createSlice({
         state.notes.unshift({
           id: action.payload.id,
           text: action.payload.text,
-          createdAt: new Date(),
+          createdAt: new Date().toISOString(), // ✅ serialized
         });
       })
 
@@ -57,7 +60,7 @@ const notesSlice = createSlice({
         );
         if (index !== -1) {
           state.notes[index].text = action.payload.text;
-          state.notes[index].updatedAt = new Date();
+          state.notes[index].updatedAt = new Date().toISOString(); // ✅ serialized
         }
       })
 
@@ -68,6 +71,10 @@ const notesSlice = createSlice({
   },
 });
 
-export const { setSelectedNote, clearSelectedNote } = notesSlice.actions;
+export const {
+  setSelectedNote,
+  clearSelectedNote,
+  setActiveTab,
+} = notesSlice.actions;
 
 export default notesSlice.reducer;

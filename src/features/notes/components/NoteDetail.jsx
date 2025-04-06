@@ -1,10 +1,8 @@
-// src/features/notes/components/NoteDetail.jsx
-
 import { useSelector } from "react-redux";
+import { formatDate } from "@/utils/formatDate";
 
 export default function NoteDetail() {
   const { notes, selectedNoteId } = useSelector((state) => state.notes);
-
   const note = notes.find((n) => n.id === selectedNoteId);
 
   if (!note) {
@@ -24,10 +22,8 @@ export default function NoteDetail() {
       </p>
 
       <div className="text-sm text-gray-500 space-y-1">
-        <p>Created: {note.createdAt?.toDate().toLocaleString() || "Unknown"}</p>
-        {note.updatedAt && (
-          <p>Updated: {note.updatedAt.toDate().toLocaleString()}</p>
-        )}
+        <p>Created: {formatDate(note.createdAt)}</p>
+        {note.updatedAt && <p>Updated: {formatDate(note.updatedAt)}</p>}
       </div>
     </div>
   );

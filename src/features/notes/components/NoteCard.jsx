@@ -1,5 +1,5 @@
-// src/features/notes/components/NoteCard.jsx
 import { Edit2, Trash2 } from "lucide-react";
+import { formatDate } from "@/utils/formatDate";
 
 export default function NoteCard({ note }) {
   return (
@@ -7,7 +7,7 @@ export default function NoteCard({ note }) {
       <div>
         <p className="text-sm dark:text-white">{note.text}</p>
         <span className="text-xs text-gray-400">
-          {note.createdAt?.toDate().toLocaleString() || "Just now"}
+          {formatDate(note.createdAt)}
         </span>
       </div>
       <div className="flex gap-2">

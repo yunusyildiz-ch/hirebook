@@ -1,4 +1,3 @@
-// src/features/notes/notesThunks.js
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   addNote,
@@ -6,6 +5,10 @@ import {
   deleteNote,
   subscribeToNotes,
 } from "@/services/notesService";
+import {
+  showSuccess,
+  showError,
+} from "@/utils/toastUtils";
 
 // ✅ Load notes from Firestore (real-time)
 export const loadNotes = createAsyncThunk(
@@ -16,9 +19,10 @@ export const loadNotes = createAsyncThunk(
         const unsubscribe = subscribeToNotes(userId, (notes) => {
           resolve(notes);
         });
-        // Not: unsubscribe referansını burada saklayabilirsin, ileri düzey temizlik için
+        // Note: unsubscribe reference can be stored for cleanup if needed
       });
     } catch (error) {
+      showError("Failed to load notes");
       return rejectWithValue(error.message);
     }
   }
@@ -30,8 +34,10 @@ export const addNoteThunk = createAsyncThunk(
   async (text, { rejectWithValue }) => {
     try {
       const docRef = await addNote(text);
-      return { id: docRef.id, text }; // Optionally return for optimistic update
+      showSuccess("Note added");
+      return { id: docRef.id, text };
     } catch (error) {
+      showError("Failed to add note");
       return rejectWithValue(error.message);
     }
   }
@@ -43,8 +49,10 @@ export const updateNoteThunk = createAsyncThunk(
   async ({ id, text }, { rejectWithValue }) => {
     try {
       await updateNote(id, text);
+      showSuccess("Note updated");
       return { id, text };
     } catch (error) {
+      showError("Failed to update note");
       return rejectWithValue(error.message);
     }
   }
@@ -56,8 +64,10 @@ export const deleteNoteThunk = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       await deleteNote(id);
+      showSuccess("Note deleted");
       return id;
     } catch (error) {
+      showError("Failed to delete note");
       return rejectWithValue(error.message);
     }
   }

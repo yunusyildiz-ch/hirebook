@@ -1,12 +1,11 @@
-// src/features/notes/components/NoteList.jsx
-
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loadNotes } from "../notesThunks"; // ✅ Doğru yerden import
+import { loadNotes } from "../notesThunks";
 import { setSelectedNote } from "../notesSlice";
-import { useAuth } from "../../../contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import NoteCard from "./NoteCard";
-import Loader from "../../../components/Loader";
+import Loader from "@/components/Loader";
+import { formatDate } from "@/utils/formatDate";
 
 export default function NoteList() {
   const dispatch = useDispatch();
@@ -40,7 +39,7 @@ export default function NoteList() {
               : "bg-white dark:bg-gray-900"
           }`}
         >
-          <NoteCard note={note} />
+          <NoteCard note={note} createdAt={formatDate(note.createdAt)} />
         </div>
       ))}
     </div>

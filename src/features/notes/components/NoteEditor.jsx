@@ -1,28 +1,17 @@
-// src/features/notes/components/NoteEditor.jsx
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addNoteThunk,
-  updateNoteThunk,
-} from "../notesThunks";
-import {
-  selectSelectedNote,
-} from "../notesSelectors";
-import {
-  clearSelectedNote,
-} from "../notesSlice";
+import { addNoteThunk, updateNoteThunk } from "../notesThunks";
+import { selectSelectedNote } from "../notesSelectors";
+import { clearSelectedNote } from "../notesSlice";
 
 export default function NoteEditor() {
   const dispatch = useDispatch();
   const selectedNote = useSelector(selectSelectedNote);
   const [text, setText] = useState("");
 
+  // Pre-fill text input when a note is selected
   useEffect(() => {
-    if (selectedNote) {
-      setText(selectedNote.text || "");
-    } else {
-      setText("");
-    }
+    setText(selectedNote?.text || "");
   }, [selectedNote]);
 
   const handleSubmit = (e) => {
@@ -36,8 +25,8 @@ export default function NoteEditor() {
       dispatch(addNoteThunk(trimmed));
     }
 
-    setText("");
     dispatch(clearSelectedNote());
+    setText("");
   };
 
   return (
