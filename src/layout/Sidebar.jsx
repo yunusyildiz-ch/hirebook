@@ -11,11 +11,14 @@ export default function Sidebar() {
 
   return (
     <aside className="w-64 flex flex-col bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-r border-gray-200 dark:border-gray-700 shadow-lg overflow-y-auto">
-      {/* 🔷 Logobar */}
-      <div className="h-14 px-4 flex items-center gap-2 text-dark-600 dark:text-light-400 text-xl font-bold border-b border-gray-200 dark:border-gray-700">
+      {/*Clickable Logobar */}
+      <NavLink
+        to="/dashboard"
+        className="h-14 px-4 flex items-center gap-2 text-dark-600 dark:text-light-400 text-xl font-bold border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+      >
         <img src="/new_logo.png" alt="HiReBOOK Logo" className="h-10 w-10 rounded" />
         HiRebook
-      </div>
+      </NavLink>
 
       {/* 🔗 Main Navigation Links */}
       <nav className="p-4 flex flex-col gap-2">
