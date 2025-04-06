@@ -1,15 +1,15 @@
+// src/features/notes/components/NoteEditor.jsx
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addNoteThunk, updateNoteThunk } from "../notesThunks";
 import { selectSelectedNote } from "../notesSelectors";
-import { clearSelectedNote } from "../notesSlice";
+import { clearSelectedNote, setViewMode } from "../notesSlice";
 
 export default function NoteEditor() {
   const dispatch = useDispatch();
   const selectedNote = useSelector(selectSelectedNote);
   const [text, setText] = useState("");
 
-  // Pre-fill text input when a note is selected
   useEffect(() => {
     setText(selectedNote?.text || "");
   }, [selectedNote]);
@@ -26,6 +26,7 @@ export default function NoteEditor() {
     }
 
     dispatch(clearSelectedNote());
+    dispatch(setViewMode("list")); // ✅ Liste görünümüne geç
     setText("");
   };
 

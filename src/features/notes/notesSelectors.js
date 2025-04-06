@@ -1,13 +1,33 @@
-// src/features/notes/notesSelectors.js
+import { createSelector } from "reselect";
 
-// 🔍 Seçili notu global state'ten al
-export const selectSelectedNote = (state) => state.notes.selectedNote;
+export const selectNotesState = (state) => state.notes;
 
-// 🔍 Tüm notları al
-export const selectAllNotes = (state) => state.notes.notes;
+export const selectAllNotes = createSelector(
+  [selectNotesState],
+  (notesState) => notesState.notes
+);
 
-// 🔍 Yüklenme durumunu al
-export const selectNotesLoading = (state) => state.notes.loading;
+export const selectSelectedNote = createSelector(
+  [selectNotesState],
+  (notesState) => notesState.selectedNote
+);
 
-// 🔍 Hata varsa al
-export const selectNotesError = (state) => state.notes.error;
+export const selectNotesLoading = createSelector(
+  [selectNotesState],
+  (notesState) => notesState.loading
+);
+
+export const selectNotesError = createSelector(
+  [selectNotesState],
+  (notesState) => notesState.error
+);
+
+export const selectNotesByFolder = (folderId) =>
+    createSelector([selectAllNotes], (notes) =>
+      notes.filter((note) => note.folderId === folderId)
+    );
+
+export const selectSelectedNoteId = createSelector(
+        [selectNotesState],
+        (notesState) => notesState.selectedNote?.id
+      );

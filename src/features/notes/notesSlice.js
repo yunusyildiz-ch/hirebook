@@ -12,6 +12,7 @@ const initialState = {
   error: null,
   selectedNote: null,
   activeTab: "All",
+  viewMode: "list",
 };
 
 const notesSlice = createSlice({
@@ -27,6 +28,9 @@ const notesSlice = createSlice({
     setActiveTab(state, action) {
       state.activeTab = action.payload;
     },
+    setViewMode(state, action) {
+      state.viewMode = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -74,6 +78,7 @@ const notesSlice = createSlice({
 export const {
   setSelectedNote,
   clearSelectedNote,
+  setViewMode,
   setActiveTab,
 } = notesSlice.actions;
 
