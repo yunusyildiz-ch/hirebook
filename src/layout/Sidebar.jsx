@@ -1,4 +1,3 @@
-// src/components/layout/Sidebar.jsx
 import { NavLink } from "react-router-dom";
 import { StickyNote, Users, CheckSquare } from "lucide-react";
 
@@ -13,8 +12,9 @@ export default function Sidebar() {
   return (
     <aside className="w-64 flex flex-col bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-r border-gray-200 dark:border-gray-700 shadow-lg overflow-y-auto">
       {/* 🔷 Logobar */}
-      <div className="h-14 px-4 flex items-center text-blue-600 dark:text-blue-400 text-xl font-bold border-b border-gray-200 dark:border-gray-700">
-        HiReBOOK
+      <div className="h-14 px-4 flex items-center gap-2 text-dark-600 dark:text-light-400 text-xl font-bold border-b border-gray-200 dark:border-gray-700">
+        <img src="/new_logo.png" alt="HiReBOOK Logo" className="h-10 w-10 rounded" />
+        HiRebook
       </div>
 
       {/* 🔗 Main Navigation Links */}

@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import UserPanel from "./user.panel/UserPanel";
-import PageTransition from "../PageTransition";
+import PageTransition from "../components/PageTransition";
 
 export default function Layout() {
   return (
