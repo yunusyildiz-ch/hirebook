@@ -30,9 +30,9 @@ export default function UserPanel() {
 
       {/* Middle - Actions */}
       <div className="flex flex-col gap-6 items-center mt-8">
-        <IconButton icon={<Bell size={20} />} />
-        <IconButton icon={<Settings size={20} />} />
-        <IconButton icon={<LogOut size={20} />} onClick={handleLogout} />
+        <IconButton  icon={<Bell className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition" size={20} />} />
+        <IconButton icon={<Settings className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition" size={20} />} />
+        <IconButton  icon={<LogOut className="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition" size={20} />} onClick={handleLogout} />
       </div>
 
       {/* Bottom - Theme */}
@@ -47,7 +47,6 @@ function IconButton({ icon, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition"
     >
       {icon}
     </button>

@@ -2,7 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Global custom styles */
 body {
   @apply bg-white text-gray-900 dark:bg-gray-900 dark:text-white font-sans;
+}
+.nav-text{
+  @apply font-bold text-sm;
+}
+.logo-text {
+  @apply text-2xl font-bold tracking-wide;
 }

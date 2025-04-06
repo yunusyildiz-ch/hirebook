@@ -3,7 +3,7 @@ import { StickyNote, Users, CheckSquare } from "lucide-react";
 
 export default function Sidebar() {
   const linkClass = ({ isActive }) =>
-    `flex items-center gap-3 px-4 py-2 rounded-md transition font-medium text-sm ${
+    `flex items-center gap-3 px-4 py-2 rounded-md transition font-medium text-sm nav-text ${
       isActive
         ? "bg-blue-100 dark:bg-gray-700 text-blue-600 dark:text-blue-300"
         : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -14,7 +14,7 @@ export default function Sidebar() {
       {/*Clickable Logobar */}
       <NavLink
         to="/dashboard"
-        className="h-14 px-4 flex items-center gap-2 text-dark-600 dark:text-light-400 text-xl font-bold border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+        className="h-14 px-4 flex items-center gap-2 text-dark-600 dark:text-light-400 text-xl font-bold font-poppins logo-text border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
       >
         <img src="/new_logo.png" alt="HiReBOOK Logo" className="h-10 w-10 rounded" />
         HiRebook

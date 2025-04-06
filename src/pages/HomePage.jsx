@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { Apple, MonitorDown, Facebook, Twitter, Linkedin, Github, ArrowRight } from "lucide-react";
 import LoginModal from "../components/LoginModal";
 import RegisterModal from "../components/RegisterModal";
@@ -8,9 +9,14 @@ export default function HomePage() {
   const [showRegister, setShowRegister] = useState(false);
 
   return (
-    <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 bg-white dark:bg-gray-900 text-gray-800 dark:text-white">
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1 }}
+      className="min-h-screen grid grid-cols-1 md:grid-cols-2 bg-white dark:bg-gray-900 text-gray-800 dark:text-white bg-[url('/home_logo.png')] bg-no-repeat bg-center bg-contain bg-[length:400px]"
+    >
       {/* Left: Static Info Section */}
-      <div className="px-8 py-12 space-y-10 overflow-y-auto">
+      <div className="px-8 py-12 space-y-10 overflow-y-auto bg-opacity-0">
         <h1 className="text-4xl font-bold mb-6 text-blue-600 dark:text-blue-400">HiReBOOK</h1>
         <p className="text-lg">
           Welcome to HiReBOOK — your all-in-one hiring assistant!
@@ -66,7 +72,7 @@ export default function HomePage() {
       </div>
 
       {/* Right: Auth Panel */}
-      <div className="flex flex-col justify-center items-center p-8 bg-gray-100 dark:bg-gray-800">
+      <div className="flex flex-col justify-center items-center p-8 bg-gray-100 dark:bg-gray-800 bg-opacity-0">
         <div className="space-y-4 w-full max-w-xs">
           <button className="w-full flex items-center justify-center gap-2 bg-gray-900 text-white py-2 rounded-lg hover:opacity-90 transition">
             <Apple size={18} /> Sign up with Apple
@@ -110,6 +116,6 @@ export default function HomePage() {
       {/* Modals */}
       {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
       {showRegister && <RegisterModal isOpen={showRegister} onClose={() => setShowRegister(false)} />}
-    </div>
+    </motion.div>
   );
 }
