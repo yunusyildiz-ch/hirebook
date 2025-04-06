@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { toast } from "react-hot-toast";
-import { validateLoginForm } from "./validators";
+import { validateLoginForm } from "../utils/validators";
 import { getFirebaseErrorMessage } from "../utils/firebaseErrors";
 
 export const useLogin = () => {

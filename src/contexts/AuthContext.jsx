@@ -5,7 +5,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { auth } from "../firebase/config";
+import { auth } from "../services/firebase/config";
 import { createUserProfile } from "../services/userService";
 import { getFirebaseErrorMessage } from "../utils/firebaseErrors";
 import Loader from "../components/Loader";
@@ -21,7 +21,11 @@ export const AuthProvider = ({ children }) => {
   const register = async (email, password) => {
     setAuthLoading(true);
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       await createUserProfile(userCredential.user);
       return userCredential;
     } catch (error) {
@@ -34,7 +38,11 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     setAuthLoading(true);
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       return userCredential;
     } catch (error) {
       throw new Error(getFirebaseErrorMessage(error.code));

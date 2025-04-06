@@ -2,7 +2,7 @@ import { useState } from "react";
 import ReactDOM from "react-dom";
 import { X, Mail, Lock } from "lucide-react";
 import { useRegister } from "../auth/useRegister";
-import { validateRegisterForm } from "../auth/validators";
+import { validateRegisterForm } from "../utils/validators";
 import { toast } from "react-hot-toast";
 
 export default function RegisterModal({ onClose }) {
@@ -73,7 +73,9 @@ export default function RegisterModal({ onClose }) {
             type="submit"
             disabled={authLoading}
             className={`w-full text-white p-2 rounded-lg transition ${
-              authLoading ? "bg-green-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"
+              authLoading
+                ? "bg-green-400 cursor-not-allowed"
+                : "bg-green-600 hover:bg-green-700"
             }`}
           >
             {authLoading ? "Creating account..." : "Register"}

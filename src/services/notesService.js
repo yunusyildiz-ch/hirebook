@@ -9,10 +9,10 @@ import {
   doc,
   updateDoc,
   deleteDoc,
-  where
+  where,
 } from "firebase/firestore";
-import { db } from "../firebase/config";
-import { auth } from "../firebase/config";
+import { db } from "./firebase/config";
+import { auth } from "./firebase/config";
 
 const notesCollection = collection(db, "notes");
 

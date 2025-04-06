@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { toast } from "react-hot-toast";
-import { validateRegisterForm } from "./validators";
+import { validateRegisterForm } from "../utils/validators";
 import { getFirebaseErrorMessage } from "../utils/firebaseErrors";
 
 export const useRegister = () => {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import ReactDOM from "react-dom";
 import { Mail, Lock, X } from "lucide-react";
 import { useLogin } from "../auth/useLogin";
-import { validateLoginForm } from "../auth/validators";
+import { validateLoginForm } from "../utils/validators";
 
 const modalRoot = document.getElementById("modal-root") || document.body;
 

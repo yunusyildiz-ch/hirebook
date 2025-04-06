@@ -1,11 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
-import Layout from "./components/Layout";
-import Notes from "./pages/Notes";
-import Candidates from "./pages/Candidates";
-import Tasks from "./pages/Tasks";
-import ProtectedRoute from "./components/ProtectedRoute";
-import GuestRoute from "./routes/GuestRoute";
-import HomePage from "./pages/HomePage";
+import Layout from "@/components/layout/Layout";
+import NotesPage from "@/pages/NotesPage";
+import Candidates from "@/pages/Candidates";
+import Tasks from "@/pages/Tasks";
+import ProtectedRoute from "@/routes/ProtectedRoute";
+import GuestRoute from "@/routes/GuestRoute";
+import HomePage from "@/pages/HomePage";
 
 const router = createBrowserRouter([
   {
@@ -25,15 +25,15 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "", // -> /dashboard
-        element: <Notes />,
+        path: "notes",
+        element: <NotesPage />,
       },
       {
-        path: "candidates", // -> /dashboard/candidates
+        path: "candidates",
         element: <Candidates />,
       },
       {
-        path: "tasks", // -> /dashboard/tasks
+        path: "tasks",
         element: <Tasks />,
       },
     ],
