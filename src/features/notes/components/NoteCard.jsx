@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { formatDistanceToNow } from "date-fns";
 import { setSelectedNote } from "../notesSlice";
-import { setViewMode } from "../notesUI.Slice";
+import { setViewMode } from "../notesUI.slice";
 
 export default function NoteCard({ note }) {
   const dispatch = useDispatch();

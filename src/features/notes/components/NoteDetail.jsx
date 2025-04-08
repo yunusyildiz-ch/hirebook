@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { Pencil, Trash2, ArrowLeft } from "lucide-react";
 import { deleteNoteThunk } from "../notesThunks";
 import { clearSelectedNote } from "../notesSlice";
-import { setViewMode } from "../notesUI.Slice";
+import { setViewMode } from "../notesUI.slice";
 import { selectSelectedNote } from "../notesSelectors";
 import ConfirmModal from "@/components/modals/ConfirmModal";
 
