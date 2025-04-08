@@ -16,7 +16,6 @@ export default function NoteDetail() {
   const handleDelete = () => {
     if (!note) return;
     dispatch(deleteNoteThunk(note.id));
-    toast.success("Note deleted");
     dispatch(setViewMode("list"));
     dispatch(clearSelectedNote());
   };
