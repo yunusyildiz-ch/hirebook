@@ -1,5 +1,5 @@
 {
-  "name": "hirebook",
+  "name": "qatip.app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,9 +10,24 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.6.1",
+    "@tiptap/extension-color": "^2.11.7",
+    "@tiptap/extension-highlight": "^2.11.7",
+    "@tiptap/extension-image": "^2.11.7",
+    "@tiptap/extension-link": "^2.11.7",
+    "@tiptap/extension-placeholder": "^2.11.7",
+    "@tiptap/extension-text-style": "^2.11.7",
+    "@tiptap/extension-underline": "^2.11.7",
+    "@tiptap/react": "^2.11.7",
+    "@tiptap/starter-kit": "^2.11.7",
+    "date-fns": "^4.1.0",
+    "firebase": "^11.6.0",
+    "framer-motion": "^12.6.3",
     "lucide-react": "^0.487.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.5.2",
+    "react-redux": "^9.2.0",
     "react-router-dom": "^7.4.1"
   },
   "devDependencies": {

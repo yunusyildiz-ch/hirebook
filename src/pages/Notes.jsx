@@ -1,34 +1,43 @@
-import NoteCard from "../components/NoteCard";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import NoteList from "../features/notes/components/NoteList";
+import { loadNotes } from "../features/notes/notesThunks";
+import { useAuth } from "@/contexts/AuthContext";
+import FolderView from "../features/notes/views/FolderView";
+import NoteEditor from "../features/notes/components/NoteEditor";
+import NoteDetail from "../features/notes/components/NoteDetail";
+import { selectAllNotes, selectSelectedNote } from "../features/notes/notesSelectors";
+import { selectActiveTab, selectViewMode } from "../features/notes/notesSelectors";
+import { clearSelectedNote } from "../features/notes/notesSlice";
 
-const Notes = () => {
-  const dummyNotes = [
-    {
-      title: "Meeting Notes",
-      content: "Discussed candidate pipeline and next week's interviews.",
-      date: "April 3, 2025",
-    },
-    {
-      title: "Reminder",
-      content: "Prepare test tasks for frontend applicants.",
-      date: "April 2, 2025",
-    },
-  ];
+export default function Notes() {
+  const dispatch = useDispatch();
+  const { user } = useAuth();
 
-  return (
-    <div className="max-w-3xl mx-auto p-4">
-      {/* Input area */}
-      <textarea
-        placeholder="Write a new note..."
-        className="w-full p-3 mb-6 border rounded resize-none dark:bg-gray-700 dark:text-white"
-        rows="4"
-      />
+  const activeTab = useSelector(selectActiveTab);
+  const viewMode = useSelector(selectViewMode);
+  const selectedNote = useSelector(selectSelectedNote);
+  const notes = useSelector(selectAllNotes);
 
-      {/* Static Note Cards */}
-      {dummyNotes.map((note, index) => (
-        <NoteCard key={index} {...note} />
-      ))}
-    </div>
-  );
-};
+  useEffect(() => {
+    if (user?.uid) {
+      dispatch(loadNotes(user.uid));
+    }
+  }, [dispatch, user?.uid]);
 
-export default Notes;
+useEffect(() => {
+  if (activeTab === "New" && selectedNote) {
+    dispatch(clearSelectedNote());
+  }
+}, [activeTab, selectedNote]);
+
+  if (activeTab === "New") {
+    dispatch(clearSelectedNote());
+    return <NoteEditor />;
+  }
+  if (activeTab === "Folders") return <FolderView />;
+  if (viewMode === "edit" && selectedNote) return <NoteEditor />;
+  if (viewMode === "view" && selectedNote) return <NoteDetail />;
+
+  return <NoteList notes={notes} />;
+}
