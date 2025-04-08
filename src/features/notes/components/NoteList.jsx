@@ -1,9 +1,11 @@
 import { useSelector } from "react-redux";
 import NoteCard from "./NoteCard";
 import Loader from "@/components/Loader";
+import { selectAllNotes, selectNotesLoading } from "../notesSelectors";
 
 export default function NoteList() {
-  const { notes, loading } = useSelector((state) => state.notes);
+  const notes = useSelector(selectAllNotes);
+  const loading = useSelector(selectNotesLoading);
 
   if (loading) {
     return (

@@ -3,14 +3,20 @@ import { useSelector, useDispatch } from "react-redux";
 import NoteList from "./components/NoteList";
 import { loadNotes } from "./notesThunks";
 import { useAuth } from "@/contexts/AuthContext";
-import FolderView from "./views/FolderView"
+import FolderView from "./views/FolderView";
 import NoteEditor from "./components/NoteEditor";
 import NoteDetail from "./components/NoteDetail";
+import { selectAllNotes, selectSelectedNote } from "./notesSelectors";
+import { selectActiveTab, selectViewMode } from "./notesSelectors";
 
 export default function Notes() {
   const dispatch = useDispatch();
-  const { activeTab, viewMode, selectedNote, notes } = useSelector((state) => state.notes);
-  const {user} = useAuth();
+  const { user } = useAuth();
+
+  const activeTab = useSelector(selectActiveTab);
+  const viewMode = useSelector(selectViewMode);
+  const selectedNote = useSelector(selectSelectedNote);
+  const notes = useSelector(selectAllNotes);
 
   useEffect(() => {
     if (user?.uid) {

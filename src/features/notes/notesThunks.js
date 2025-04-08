@@ -7,24 +7,30 @@ import {
 } from "@/services/notesService";
 import { showSuccess, showError } from "@/utils/toastUtils";
 
-// Load Notes
+// 📌 Utility for consistent error handling
+const handleThunkError = (error, rejectWithValue, fallbackMessage) => {
+  const message = error.message || fallbackMessage;
+  showError(message);
+  return rejectWithValue(message);
+};
+
+// 🔄 Load Notes (with real-time subscription)
 export const loadNotes = createAsyncThunk(
   "notes/loadNotes",
   async (userId, { rejectWithValue }) => {
     try {
       return await new Promise((resolve) => {
         const unsubscribe = subscribeToNotes(userId, (notes) => {
-          resolve(notes);
+          resolve(notes); // Note: we ignore unsubscribe for now
         });
       });
     } catch (error) {
-      showError("Failed to load notes");
-      return rejectWithValue(error.message);
+      return handleThunkError(error, rejectWithValue, "Failed to load notes");
     }
   }
 );
 
-// Add Note
+// ➕ Add Note
 export const addNoteThunk = createAsyncThunk(
   "notes/addNote",
   async ({ title, text }, { rejectWithValue }) => {
@@ -33,13 +39,12 @@ export const addNoteThunk = createAsyncThunk(
       showSuccess("Note added");
       return { id: docRef.id, title, text };
     } catch (error) {
-      showError("Failed to add note");
-      return rejectWithValue(error.message);
+      return handleThunkError(error, rejectWithValue, "Failed to add note");
     }
   }
 );
 
-// Update Note
+// ✏️ Update Note
 export const updateNoteThunk = createAsyncThunk(
   "notes/updateNote",
   async ({ id, title, text }, { rejectWithValue }) => {
@@ -48,13 +53,12 @@ export const updateNoteThunk = createAsyncThunk(
       showSuccess("Note updated");
       return { id, title, text };
     } catch (error) {
-      showError("Failed to update note");
-      return rejectWithValue(error.message);
+      return handleThunkError(error, rejectWithValue, "Failed to update note");
     }
   }
 );
 
-// Delete Note
+// 🗑️ Delete Note
 export const deleteNoteThunk = createAsyncThunk(
   "notes/deleteNote",
   async (id, { rejectWithValue }) => {
@@ -63,8 +67,7 @@ export const deleteNoteThunk = createAsyncThunk(
       showSuccess("Note deleted");
       return id;
     } catch (error) {
-      showError("Failed to delete note");
-      return rejectWithValue(error.message);
+      return handleThunkError(error, rejectWithValue, "Failed to delete note");
     }
   }
 );

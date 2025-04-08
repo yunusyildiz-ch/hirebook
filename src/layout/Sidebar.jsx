@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { StickyNote, Users, CheckSquare } from "lucide-react";
+import QatipLogo from '../assets/QatipLogo';
 
 export default function Sidebar() {
   const linkClass = ({ isActive }) =>
@@ -16,7 +17,7 @@ export default function Sidebar() {
         to="/dashboard"
         className="h-25 px-4 flex items-center gap-2 text-dark-600 dark:text-light-400 text-xl font-bold font-poppins logo-text border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
       >
-        <img src="/qatip_logo.svg" alt="Qatip Logo" className="h-13 "  />
+        <QatipLogo />
       </NavLink>
 
       {/* 🔗 Main Navigation Links */}

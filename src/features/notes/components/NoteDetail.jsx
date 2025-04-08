@@ -2,12 +2,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { format } from "date-fns";
 import { Pencil, Trash2, ArrowLeft } from "lucide-react";
 import { deleteNoteThunk } from "../notesThunks";
-import { setViewMode, clearSelectedNote } from "../notesSlice";
-import toast from "react-hot-toast";
+import { clearSelectedNote } from "../notesSlice";
+import { setViewMode } from "../notesUI.Slice";
+import { selectSelectedNote } from "../notesSelectors";
 
 export default function NoteDetail() {
   const dispatch = useDispatch();
-  const note = useSelector((state) => state.notes.selectedNote);
+  const note = useSelector(selectSelectedNote);
 
   const handleEdit = () => {
     dispatch(setViewMode("edit"));
@@ -16,13 +17,13 @@ export default function NoteDetail() {
   const handleDelete = () => {
     if (!note) return;
     dispatch(deleteNoteThunk(note.id));
-    dispatch(setViewMode("list"));
     dispatch(clearSelectedNote());
+    dispatch(setViewMode("list"));
   };
 
   const handleBack = () => {
-    dispatch(setViewMode("list"));
     dispatch(clearSelectedNote());
+    dispatch(setViewMode("list"));
   };
 
   if (!note) {
@@ -36,9 +37,9 @@ export default function NoteDetail() {
   return (
     <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md space-y-4">
       <div className="flex justify-between items-start">
-        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
-          Note Detail
-        </h2>
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
+          {note.title?.trim() || "Untitled"}
+        </h1>
         <div className="flex gap-2">
           <button
             onClick={handleEdit}
@@ -65,9 +66,7 @@ export default function NoteDetail() {
           {note.createdAt ? format(new Date(note.createdAt), "PPPp") : "N/A"}
         </span>
         {note.updatedAt && (
-          <span>
-            Updated: {format(new Date(note.updatedAt), "PPPp")}
-          </span>
+          <span>Updated: {format(new Date(note.updatedAt), "PPPp")}</span>
         )}
       </div>
 

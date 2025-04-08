@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setActiveTab } from "@/features/notes/notesSlice";
+import { setActiveTab } from "@/features/notes/notesUI.slice";
 
 const Header = () => {
   const location = useLocation();

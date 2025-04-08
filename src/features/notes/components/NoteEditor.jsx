@@ -10,12 +10,14 @@ import Highlight from "@tiptap/extension-highlight";
 import Placeholder from "@tiptap/extension-placeholder";
 import Toolbar from "./Toolbar";
 import { addNoteThunk, updateNoteThunk } from "../notesThunks";
-import { clearSelectedNote, setActiveTab, setViewMode } from "../notesSlice";
+import { clearSelectedNote } from "../notesSlice";
+import { setViewMode, setActiveTab } from "../notesUI.Slice";
+import { selectSelectedNote } from "../notesSelectors";
 import toast from "react-hot-toast";
 
 export default function NoteEditor() {
   const dispatch = useDispatch();
-  const selectedNote = useSelector((state) => state.notes.selectedNote);
+  const selectedNote = useSelector(selectSelectedNote);
   const [title, setTitle] = useState("");
 
   const editor = useEditor({
@@ -58,7 +60,9 @@ export default function NoteEditor() {
     }
 
     if (selectedNote) {
-      await dispatch(updateNoteThunk({ id: selectedNote.id, title: trimmedTitle, text }));
+      await dispatch(
+        updateNoteThunk({ id: selectedNote.id, title: trimmedTitle, text })
+      );
       dispatch(setViewMode("view"));
     } else {
       await dispatch(addNoteThunk({ title: trimmedTitle, text }));
