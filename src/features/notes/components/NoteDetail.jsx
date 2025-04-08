@@ -1,27 +1,35 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 import { format } from "date-fns";
 import { Pencil, Trash2, ArrowLeft } from "lucide-react";
 import { deleteNoteThunk } from "../notesThunks";
 import { clearSelectedNote } from "../notesSlice";
 import { setViewMode } from "../notesUI.Slice";
 import { selectSelectedNote } from "../notesSelectors";
+import ConfirmModal from "@/components/modals/ConfirmModal";
 
 export default function NoteDetail() {
   const dispatch = useDispatch();
   const note = useSelector(selectSelectedNote);
+  const [showConfirm, setShowConfirm] = useState(false); // 🔹 Modal kontrolü
 
   const handleEdit = () => {
     dispatch(setViewMode("edit"));
   };
 
   const handleDelete = () => {
-    if (!note) return;
-    const confirmed = window.confirm("Are you sure you want to delete this note?");
-    if (!confirmed) return;
-  
+    setShowConfirm(true); // 🔹 Modal'ı aç
+  };
+
+  const confirmDelete = () => {
     dispatch(deleteNoteThunk(note.id));
     dispatch(clearSelectedNote());
     dispatch(setViewMode("list"));
+    setShowConfirm(false); // 🔹 Modal'ı kapat
+  };
+
+  const cancelDelete = () => {
+    setShowConfirm(false); // 🔹 Modal'ı kapat
   };
 
   const handleBack = () => {
@@ -38,7 +46,7 @@ export default function NoteDetail() {
   }
 
   return (
-    <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md space-y-4">
+    <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md space-y-4 relative">
       <div className="flex justify-between items-start">
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
           {note.title?.trim() || "Untitled"}
@@ -46,13 +54,15 @@ export default function NoteDetail() {
         <div className="flex gap-2">
           <button
             onClick={handleEdit}
-            className="p-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white transition"
+            className="p-2 rounded-md hover:bg-gray-100 hover:text-blue-700 transition dark:hover:bg-gray-700"
+            title="Edit Note"
           >
             <Pencil size={18} />
           </button>
           <button
             onClick={handleDelete}
-            className="p-2 rounded-md bg-red-600 hover:bg-red-700 text-white transition"
+            className="p-2 rounded-md hover:bg-gray-100 hover:text-red-700 transition dark:hover:bg-gray-700"
+            title="Delete Note"
           >
             <Trash2 size={18} />
           </button>
@@ -79,6 +89,15 @@ export default function NoteDetail() {
       >
         <ArrowLeft size={16} /> Back to notes
       </button>
+
+      {/* ✅ Confirm Modal */}
+      <ConfirmModal
+        isOpen={showConfirm}
+        title="Delete Note"
+        message="Are you sure you want to permanently delete this note? This action cannot be undone."
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+      />
     </div>
   );
 }

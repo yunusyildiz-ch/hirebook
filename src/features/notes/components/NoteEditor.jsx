@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -19,6 +19,7 @@ export default function NoteEditor() {
   const dispatch = useDispatch();
   const selectedNote = useSelector(selectSelectedNote);
   const [title, setTitle] = useState("");
+  const titleInputRef = useRef(null);
 
   const editor = useEditor({
     extensions: [
@@ -47,6 +48,10 @@ export default function NoteEditor() {
         setTitle("");
       }
     }
+
+    if (!selectedNote && titleInputRef.current) {
+      titleInputRef.current.focus();
+    }
   }, [editor, selectedNote]);
 
   const handleSave = async () => {
@@ -60,14 +65,12 @@ export default function NoteEditor() {
     }
 
     if (selectedNote) {
-      await dispatch(
-        updateNoteThunk({ id: selectedNote.id, title: trimmedTitle, text })
-      );
+      await dispatch(updateNoteThunk({ id: selectedNote.id, title: trimmedTitle, text }));
       dispatch(setViewMode("view"));
     } else {
       await dispatch(addNoteThunk({ title: trimmedTitle, text }));
       dispatch(clearSelectedNote());
-      dispatch(setActiveTab("All")); 
+      dispatch(setActiveTab("All"));
       dispatch(setViewMode("list"));
     }
   };
@@ -85,19 +88,29 @@ export default function NoteEditor() {
   if (!editor) return null;
 
   return (
-    <div className="space-y-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+    <div className="max-w-4xl mx-auto space-y-4 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md">
+      {/* Title input */}
       <input
+        ref={titleInputRef}
         type="text"
-        className="w-full text-2xl font-semibold border-none bg-transparent outline-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+        className="w-full text-3xl font-semibold bg-transparent border-none outline-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
         placeholder="Untitled"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
+
+      {/* Modern Toolbar */}
       <Toolbar editor={editor} />
+
+      {/* Editor area */}
       <EditorContent
         editor={editor}
-        className="prose dark:prose-invert max-w-none min-h-[300px] border border-gray-300 dark:border-gray-600 rounded-lg p-4 bg-white dark:bg-gray-900"
+        tabIndex={0}
+        onClick={() => editor?.commands.focus()}
+        className="min-h-[60vh] w-full focus:outline-none px-6 py-4 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-lg shadow-inner cursor-text prose dark:prose-invert max-w-none"
       />
+
+      {/* Action buttons */}
       <div className="flex justify-end gap-2 mt-4">
         <button
           onClick={handleCancel}
