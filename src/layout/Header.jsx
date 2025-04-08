@@ -1,42 +1,37 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setActiveTab } from "@/features/notes/notesUI.slice";
+import { useDispatch, useSelector } from "react-redux";
+import { setActiveTab } from "@/features/notes/notesUI.Slice";
+import { selectActiveTab } from "@/features/notes/notesSelectors";
 
 const Header = () => {
   const location = useLocation();
   const dispatch = useDispatch();
+  const activeTab = useSelector(selectActiveTab);
 
-  // Determine the active section based on the current route
+  // Determine the current section
   let section = "";
   if (location.pathname.startsWith("/dashboard/notes")) section = "notes";
   if (location.pathname.startsWith("/dashboard/candidates")) section = "candidates";
   if (location.pathname.startsWith("/dashboard/tasks")) section = "tasks";
 
-  // Define tabs for each section
   const tabs = {
     notes: ["All", "Folders", "New"],
     candidates: ["All", "Shortlisted", "New"],
     tasks: ["All", "In Progress", "New"],
   };
 
-  const [activeTab, setActiveTabState] = useState("All");
-
-  // Load the last selected tab from localStorage (if any)
+  // On first load or section change: read from localStorage and set Redux
   useEffect(() => {
     const savedTab = localStorage.getItem(`lastTab_${section}`);
     if (savedTab && tabs[section]?.includes(savedTab)) {
-      setActiveTabState(savedTab);
       dispatch(setActiveTab(savedTab));
     } else {
-      setActiveTabState("All");
       dispatch(setActiveTab("All"));
     }
   }, [section, dispatch]);
 
-  // Handle tab selection and persist it in localStorage + update redux
   const handleTabClick = (tab) => {
-    setActiveTabState(tab);
     localStorage.setItem(`lastTab_${section}`, tab);
     dispatch(setActiveTab(tab));
   };

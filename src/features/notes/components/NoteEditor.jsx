@@ -66,8 +66,8 @@ export default function NoteEditor() {
       dispatch(setViewMode("view"));
     } else {
       await dispatch(addNoteThunk({ title: trimmedTitle, text }));
-      dispatch(setActiveTab("All"));
       dispatch(clearSelectedNote());
+      dispatch(setActiveTab("All")); 
       dispatch(setViewMode("list"));
     }
   };

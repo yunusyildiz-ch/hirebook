@@ -8,6 +8,7 @@ import NoteEditor from "./components/NoteEditor";
 import NoteDetail from "./components/NoteDetail";
 import { selectAllNotes, selectSelectedNote } from "./notesSelectors";
 import { selectActiveTab, selectViewMode } from "./notesSelectors";
+import { clearSelectedNote } from "./notesSlice";
 
 export default function Notes() {
   const dispatch = useDispatch();
@@ -24,7 +25,16 @@ export default function Notes() {
     }
   }, [dispatch, user?.uid]);
 
-  if (activeTab === "New") return <NoteEditor />;
+useEffect(() => {
+  if (activeTab === "New" && selectedNote) {
+    dispatch(clearSelectedNote());
+  }
+}, [activeTab, selectedNote]);
+
+  if (activeTab === "New") {
+    dispatch(clearSelectedNote());
+    return <NoteEditor />;
+  }
   if (activeTab === "Folders") return <FolderView />;
   if (viewMode === "edit" && selectedNote) return <NoteEditor />;
   if (viewMode === "view" && selectedNote) return <NoteDetail />;

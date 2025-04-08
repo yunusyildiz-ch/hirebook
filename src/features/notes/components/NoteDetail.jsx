@@ -16,6 +16,9 @@ export default function NoteDetail() {
 
   const handleDelete = () => {
     if (!note) return;
+    const confirmed = window.confirm("Are you sure you want to delete this note?");
+    if (!confirmed) return;
+  
     dispatch(deleteNoteThunk(note.id));
     dispatch(clearSelectedNote());
     dispatch(setViewMode("list"));
