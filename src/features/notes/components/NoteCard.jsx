@@ -1,7 +1,5 @@
-// NoteCard.jsx
-import { Edit2, Trash2 } from "lucide-react";
-import { formatDate } from "@/utils/formatDate";
 import { useDispatch } from "react-redux";
+import { formatDistanceToNow } from "date-fns";
 import { setSelectedNote, setViewMode } from "../notesSlice";
 
 export default function NoteCard({ note }) {
@@ -9,41 +7,20 @@ export default function NoteCard({ note }) {
 
   const handleClick = () => {
     dispatch(setSelectedNote(note));
-    dispatch(setViewMode("detail")); //NoteDetail 
+    dispatch(setViewMode("view"));
   };
 
   return (
     <div
       onClick={handleClick}
-      className="p-4 bg-white dark:bg-gray-800 rounded shadow flex justify-between items-start cursor-pointer"
+      className="cursor-pointer border border-gray-300 dark:border-gray-600 rounded-lg p-4 shadow-sm hover:shadow-md transition bg-white dark:bg-gray-800"
     >
-      <div>
-        <p className="text-sm dark:text-white">{note.text}</p>
-        <span className="text-xs text-gray-400">{formatDate(note.createdAt)}</span>
-      </div>
-      <div className="flex gap-2">
-        <button
-          className="text-yellow-600 hover:text-yellow-800"
-          onClick={(e) => {
-            e.stopPropagation(); // prevent click the card
-            dispatch(setSelectedNote(note));
-            dispatch(setViewMode("edit"));
-          }}
-        >
-          <Edit2 size={16} />
-        </button>
-        <button
-          className="text-red-600 hover:text-red-800"
-          onClick={(e) => {
-            e.stopPropagation(); // 👈 
-            if (window.confirm("Are you sure you want to delete this note?")) {
-              dispatch(deleteNote(note.id));
-            }
-          }}
-        >
-          <Trash2 size={16} />
-        </button>
-      </div>
+      <h3 className="font-bold text-lg text-gray-800 dark:text-white truncate mb-2">
+        {note.text?.replace(/<[^>]+>/g, "").slice(0, 30) || "Untitled"}
+      </h3>
+      <p className="text-sm text-gray-500 dark:text-gray-400">
+        {formatDistanceToNow(new Date(note.createdAt), { addSuffix: true })}
+      </p>
     </div>
   );
 }

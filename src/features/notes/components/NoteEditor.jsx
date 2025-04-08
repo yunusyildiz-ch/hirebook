@@ -1,54 +1,113 @@
-// src/features/notes/components/NoteEditor.jsx
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
+import Image from "@tiptap/extension-image";
+import TextStyle from "@tiptap/extension-text-style";
+import Color from "@tiptap/extension-color";
+import Highlight from "@tiptap/extension-highlight";
+import Placeholder from "@tiptap/extension-placeholder";
+import Toolbar from "./Toolbar";
 import { addNoteThunk, updateNoteThunk } from "../notesThunks";
-import { selectSelectedNote } from "../notesSelectors";
-import { clearSelectedNote, setViewMode } from "../notesSlice";
+import { clearSelectedNote, setActiveTab, setViewMode } from "../notesSlice";
+import toast from "react-hot-toast";
 
 export default function NoteEditor() {
   const dispatch = useDispatch();
-  const selectedNote = useSelector(selectSelectedNote);
-  const [text, setText] = useState("");
+  const selectedNote = useSelector((state) => state.notes.selectedNote);
+  const [title, setTitle] = useState("");
+
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Underline,
+      Image,
+      TextStyle,
+      Color,
+      Highlight,
+      Placeholder.configure({
+        placeholder: "Start writing your note...",
+      }),
+    ],
+    content: selectedNote?.text || "",
+    autofocus: true,
+    editable: true,
+  });
 
   useEffect(() => {
-    setText(selectedNote?.text || "");
-  }, [selectedNote]);
+    if (editor) {
+      if (selectedNote) {
+        editor.commands.setContent(selectedNote.text || "");
+        setTitle(selectedNote.title || "Untitled");
+      } else {
+        editor.commands.clearContent();
+        setTitle("");
+      }
+    }
+  }, [editor, selectedNote]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const trimmed = text.trim();
-    if (!trimmed) return;
+  const handleSave = async () => {
+    if (!editor) return;
+    const text = editor.getHTML().trim();
+    const trimmedTitle = title.trim() || "Untitled Note";
 
-    if (selectedNote) {
-      dispatch(updateNoteThunk({ id: selectedNote.id, text: trimmed }));
-    } else {
-      dispatch(addNoteThunk(trimmed));
+    if (!text || text === "<p></p>") {
+      toast.error("Note content is empty.");
+      return;
     }
 
-    dispatch(clearSelectedNote());
-    dispatch(setViewMode("list")); // ✅ Liste görünümüne geç
-    setText("");
+    if (selectedNote) {
+      await dispatch(updateNoteThunk({ id: selectedNote.id, title: trimmedTitle, text }));
+      dispatch(setViewMode("view"));
+    } else {
+      await dispatch(addNoteThunk({ title: trimmedTitle, text }));
+      dispatch(setActiveTab("All"));
+      dispatch(clearSelectedNote());
+      dispatch(setViewMode("list"));
+    }
   };
 
+  const handleCancel = () => {
+    if (selectedNote) {
+      dispatch(setViewMode("view"));
+    } else {
+      dispatch(setActiveTab("All"));
+      dispatch(clearSelectedNote());
+      dispatch(setViewMode("list"));
+    }
+  };
+
+  if (!editor) return null;
+
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 mb-4">
+    <div className="space-y-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
       <input
         type="text"
-        placeholder="Write a note..."
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        className="flex-1 p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
+        className="w-full text-2xl font-semibold border-none bg-transparent outline-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+        placeholder="Untitled"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
       />
-      <button
-        type="submit"
-        className={`px-4 rounded text-white transition ${
-          selectedNote
-            ? "bg-yellow-600 hover:bg-yellow-700"
-            : "bg-blue-600 hover:bg-blue-700"
-        }`}
-      >
-        {selectedNote ? "Update" : "Save"}
-      </button>
-    </form>
+      <Toolbar editor={editor} />
+      <EditorContent
+        editor={editor}
+        className="prose dark:prose-invert max-w-none min-h-[300px] border border-gray-300 dark:border-gray-600 rounded-lg p-4 bg-white dark:bg-gray-900"
+      />
+      <div className="flex justify-end gap-2 mt-4">
+        <button
+          onClick={handleCancel}
+          className="px-4 py-2 text-sm border border-gray-300 dark:border-gray-500 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={handleSave}
+          className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+        >
+          Save
+        </button>
+      </div>
+    </div>
   );
 }

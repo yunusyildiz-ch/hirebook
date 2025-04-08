@@ -14,10 +14,9 @@ export default function Sidebar() {
       {/*Clickable Logobar */}
       <NavLink
         to="/dashboard"
-        className="h-14 px-4 flex items-center gap-2 text-dark-600 dark:text-light-400 text-xl font-bold font-poppins logo-text border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+        className="h-25 px-4 flex items-center gap-2 text-dark-600 dark:text-light-400 text-xl font-bold font-poppins logo-text border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
       >
-        <img src="/new_logo.png" alt="HiReBOOK Logo" className="h-10 w-10 rounded" />
-        HiRebook
+        <img src="/qatip_logo.svg" alt="Qatip Logo" className="h-13 "  />
       </NavLink>
 
       {/* 🔗 Main Navigation Links */}

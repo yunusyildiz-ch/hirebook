@@ -1,15 +1,15 @@
-# 💻 HiReBOOK – Smart Hiring & Productivity Toolkit
+# 💻 Qatip App – Smart Note-Task Assistant & Productivity Toolkit
 
 <p align="center">
-  <img src="docs/media/hirebook.png" width="250" height="250" alt="HiReBOOK Logo" />
+  <img src="docs/media/qatip.png" width="250" height="250" alt="HiReBOOK Logo" />
 </p>
 
 ## 📘 Introduction & Project Overview
 
-**HiReBOOK** is a modern, web-based productivity tool tailored for **Human Resources professionals** and small recruitment teams.  
+**Qatip App** is a modern, web-based productivity tool tailored for **Human Resources professionals** and small recruitment teams.  
 It brings together **categorized note-taking**, **applicant tracking**, and **task management** into one seamless interface.
 
-Built as a personal project during the Powercoders Bootcamp, HiReBOOK showcases a full-stack development approach using **React**, **Firebase**, and **TailwindCSS**, with a strong focus on clean UI/UX and real-world HR needs.
+Built as a personal project during the Powercoders Bootcamp, Qatip showcases a full-stack development approach using **React**, **Firebase**, and **TailwindCSS**, with a strong focus on clean UI/UX and real-world HR needs.
 
 The platform empowers users to document candidate interactions, manage to-do lists, and stay organized throughout the hiring process — all in one place.
 
@@ -74,7 +74,8 @@ The platform empowers users to document candidate interactions, manage to-do lis
 ## 📂 Sample Project Structure
 
 ```bash
-hirebook/
+
+qatip/
 ├── public/
 │   └── index.html                      # Root HTML file
 ├── src/
@@ -93,6 +94,8 @@ hirebook/
 ├── vite.config.js                     # Vite build configuration
 └── README.md                          # Project documentation
 
+```
+
  ## 📅 Timeline
 
  | Week | Dates              | Milestone                                 |
@@ -108,7 +111,7 @@ hirebook/
 
  ## 💡 Purpose
 
- HiReBOOK was built as a **Powercoders personal project**, aiming to showcase practical web development skills and solve real-world HR needs.
+ Qatip was built as a **Powercoders personal project**, aiming to showcase practical web development skills and solve real-world HR needs.
 
  The goal is to create a fully functional, modern, and scalable web application that demonstrates proficiency in:
 
@@ -130,7 +133,7 @@ hirebook/
  The app will be deployed and available live on **Netlify** in the final week of development.
 
  ## 🔧 Future Step
- Convert HiReBOOK to a PWA for installable experience (Sprint 6 or Post-Bootcamp)
+ Convert Qatip to a PWA for installable experience (Sprint 6 or Post-Bootcamp)
 
  ## 📖 License
 

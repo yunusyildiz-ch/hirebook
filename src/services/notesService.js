@@ -1,14 +1,13 @@
 import {
   collection,
   addDoc,
-  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
   onSnapshot,
   serverTimestamp,
   query,
   orderBy,
-  doc,
-  updateDoc,
-  deleteDoc,
   where,
 } from "firebase/firestore";
 import { db } from "./firebase/config";
@@ -16,23 +15,25 @@ import { auth } from "./firebase/config";
 
 const notesCollection = collection(db, "notes");
 
-export const addNote = async (text) => {
+export const addNote = async ({ title, text }) => {
   const user = auth.currentUser;
   if (!user) throw new Error("You must be logged in to add a note.");
 
   const docRef = await addDoc(notesCollection, {
-    text,
     userId: user.uid,
+    title,
+    text,
     createdAt: serverTimestamp(),
   });
 
   return docRef;
 };
 
-export const updateNote = async (id, newText) => {
+export const updateNote = async (id, { title, text }) => {
   const noteRef = doc(db, "notes", id);
   await updateDoc(noteRef, {
-    text: newText,
+    title,
+    text,
     updatedAt: serverTimestamp(),
   });
 };

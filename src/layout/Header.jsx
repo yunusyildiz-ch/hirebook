@@ -48,7 +48,7 @@ const Header = () => {
           <button
             key={tab}
             onClick={() => handleTabClick(tab)}
-            className={`text-sm pb-1 transition font-medium ${
+            className={`text-sm pb-1 transition font-medium  ${
               activeTab === tab
                 ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400"
                 : "text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
