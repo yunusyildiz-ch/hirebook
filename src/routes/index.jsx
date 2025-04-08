@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "@/layout/Layout";
-import Notes from "@/features/notes/Notes";
+import Notes from "@pages/Notes";
 import Candidates from "@/pages/Candidates";
 import Tasks from "@/pages/Tasks";
 import ProtectedRoute from "@/routes/ProtectedRoute";

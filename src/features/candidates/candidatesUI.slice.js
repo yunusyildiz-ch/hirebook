@@ -1,41 +1,40 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  activeTab: "All",            // All | Shortlisted | New
-  viewMode: "list",
+  activeTab: "All",
+  searchTerm: "",
   selectedCandidate: null,
+  viewMode: "list", // list | view | edit
 };
 
 const candidatesUISlice = createSlice({
   name: "candidatesUI",
   initialState,
   reducers: {
-    setActiveTab(state, action) {
+    setActiveTab: (state, action) => {
       state.activeTab = action.payload;
     },
-    setViewMode(state, action) {
-      state.viewMode = action.payload;
+    setSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
     },
-    setSelectedCandidate(state, action) {
+    setSelectedCandidate: (state, action) => {
       state.selectedCandidate = action.payload;
     },
-    clearSelectedCandidate(state) {
+    clearSelectedCandidate: (state) => {
       state.selectedCandidate = null;
     },
-    resetCandidateUI(state) {
-      state.activeTab = "All";
-      state.viewMode = "list";
-      state.selectedCandidate = null;
+    setViewMode: (state, action) => {
+      state.viewMode = action.payload;
     },
   },
 });
 
 export const {
   setActiveTab,
-  setViewMode,
+  setSearchTerm,
   setSelectedCandidate,
   clearSelectedCandidate,
-  resetCandidateUI,
+  setViewMode,
 } = candidatesUISlice.actions;
 
 export default candidatesUISlice.reducer;

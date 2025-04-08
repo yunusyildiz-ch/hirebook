@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import NoteList from "./components/NoteList";
-import { loadNotes } from "./notesThunks";
+import NoteList from "../features/notes/components/NoteList";
+import { loadNotes } from "../features/notes/notesThunks";
 import { useAuth } from "@/contexts/AuthContext";
-import FolderView from "./views/FolderView";
-import NoteEditor from "./components/NoteEditor";
-import NoteDetail from "./components/NoteDetail";
-import { selectAllNotes, selectSelectedNote } from "./notesSelectors";
-import { selectActiveTab, selectViewMode } from "./notesSelectors";
-import { clearSelectedNote } from "./notesSlice";
+import FolderView from "../features/notes/views/FolderView";
+import NoteEditor from "../features/notes/components/NoteEditor";
+import NoteDetail from "../features/notes/components/NoteDetail";
+import { selectAllNotes, selectSelectedNote } from "../features/notes/notesSelectors";
+import { selectActiveTab, selectViewMode } from "../features/notes/notesSelectors";
+import { clearSelectedNote } from "../features/notes/notesSlice";
 
 export default function Notes() {
   const dispatch = useDispatch();
