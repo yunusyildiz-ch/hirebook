@@ -87,7 +87,7 @@ export default function HomePage() {
       </div>
 
       {/* Right: Auth Panel */}
-      <div className="flex items-center justify-center p-8 bg-white/80 dark:bg-gray-800">
+      <div className="flex items-center justify-center p-8">
         <div className="space-y-4 w-full max-w-xs">
           <button className="w-full flex items-center justify-center gap-2 bg-gray-900 text-white py-2 rounded-lg hover:opacity-90 transition">
             <Apple size={18} /> Sign up with Apple
