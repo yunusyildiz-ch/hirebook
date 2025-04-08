@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import LoginModal from "../components/LoginModal";
 import RegisterModal from "../components/RegisterModal";
+import QatipLogo from "../assets/QatipLogo";
 
 export default function HomePage() {
   const [showLogin, setShowLogin] = useState(false);
@@ -25,25 +26,21 @@ export default function HomePage() {
     >
       {/* Left: Info Section */}
       <div className="flex items-center justify-center px-8 py-8">
-        <div className="space-y-8 max-w-lg w-full">
+        <div className="space-y-6 max-w-lg w-full">
           {/* Logo */}
-          <div className="flex justify-start">
-            <img
-              src="/qatip_logo.svg"
-              alt="Qatip Logo"
-              className="h-12 md:h-16 object-contain"
-            />
-          </div>
+          <QatipLogo />
 
           <h2 className="text-2xl font-bold">
             Welcome to your all-in-one hiring assistant!
           </h2>
 
           <p>
-            Track candidates, manage tasks, and organize HR notes in one sleek, intuitive app.
+            Track candidates, manage tasks, and organize HR notes in one sleek,
+            intuitive app.
           </p>
           <p>
-            Built for recruiters, startups, and HR pros who want clarity and control.
+            Built for recruiters, startups, and HR pros who want clarity and
+            control.
           </p>
 
           <ul className="space-y-2 list-disc list-inside">
@@ -101,7 +98,9 @@ export default function HomePage() {
 
           <div className="flex items-center my-4">
             <hr className="flex-grow border-gray-300 dark:border-gray-600" />
-            <span className="mx-2 text-gray-500 dark:text-gray-400 text-sm">or</span>
+            <span className="mx-2 text-gray-500 dark:text-gray-400 text-sm">
+              or
+            </span>
             <hr className="flex-grow border-gray-300 dark:border-gray-600" />
           </div>
 
@@ -118,7 +117,9 @@ export default function HomePage() {
           </p>
 
           <div className="text-center mt-4">
-            <p className="text-sm dark:text-gray-300">Already have an account?</p>
+            <p className="text-sm dark:text-gray-300">
+              Already have an account?
+            </p>
             <button
               onClick={() => setShowLogin(true)}
               className="mt-1 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
@@ -132,7 +133,10 @@ export default function HomePage() {
       {/* Modals */}
       {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
       {showRegister && (
-        <RegisterModal isOpen={showRegister} onClose={() => setShowRegister(false)} />
+        <RegisterModal
+          isOpen={showRegister}
+          onClose={() => setShowRegister(false)}
+        />
       )}
     </motion.div>
   );
