@@ -1,5 +1,3 @@
-// src/features/candidates/components/CandidateEditor.jsx
-
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
@@ -18,7 +16,7 @@ export default function CandidateEditor({ candidate = null, onSave }) {
   const [tags, setTags] = useState("");
   const [tagList, setTagList] = useState([]);
 
-  // Formu doldur (edit modunda)
+  // Fill form (edit mod)
   useEffect(() => {
     if (candidate) {
       setName(candidate.name || "");
@@ -94,7 +92,7 @@ export default function CandidateEditor({ candidate = null, onSave }) {
         </select>
       </div>
 
-      {/* Tagler */}
+      {/* Tags */}
       <div className="space-y-2">
         <div className="flex gap-2">
           <input

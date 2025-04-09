@@ -15,6 +15,7 @@ import {
   clearSelectedCandidate,
 } from "@/features/candidates/candidatesUI.slice";
 import ConfirmModal from "@/components/modals/ConfirmModal";
+import {showSuccess,showError,showInfo} from "@utils/toastUtils" 
 
 // Dummy data
 const initialCandidates = [
@@ -73,8 +74,10 @@ export default function Candidates() {
       setCandidates((prev) =>
         prev.map((c) => (c.id === candidate.id ? candidate : c))
       );
+      showSuccess("Candidate updated");
     } else {
       setCandidates((prev) => [candidate, ...prev]);
+      showSuccess("Candidate added");
     }
   };
 
@@ -90,6 +93,7 @@ export default function Candidates() {
     dispatch(clearSelectedCandidate());
     dispatch(setViewMode("list"));
     setShowConfirm(false);
+    showSuccess("Candidate deleted");
   };
 
   const cancelDelete = () => {
