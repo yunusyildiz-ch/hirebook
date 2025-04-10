@@ -1,4 +1,3 @@
-// src/constants/dummyCandidates.js
 export const dummyCandidates = [
   {
     id: "1",
@@ -31,5 +30,21 @@ export const dummyCandidates = [
     status: "Pending",
     tags: ["remote", "junior"],
     createdAt: "2024-10-10T12:00:00Z",
+  },
+  {
+    id: "5",
+    name: "John Doe",
+    position: "DevOps Engineer",
+    status: "To-do",
+    tags: ["remote", "mid", "linux"],
+    createdAt: "2024-10-13T09:45:00Z",
+  },
+  {
+    id: "6",
+    name: "Jane Dore",
+    position: "Product Manager",
+    status: "Pending",
+    tags: ["full-time", "agile", "english"],
+    createdAt: "2024-10-14T11:20:00Z",
   },
 ];

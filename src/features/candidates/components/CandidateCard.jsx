@@ -55,7 +55,7 @@ export default function CandidateCard({ candidate, onDelete }) {
             onClick={handleDelete}
             className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600"
           >
-            <Trash2 size={16} />
+            <Trash2 size={16} className="text-red-500" />
           </button>
         </div>
       </div>

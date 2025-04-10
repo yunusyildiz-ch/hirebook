@@ -44,7 +44,7 @@ export default function CandidateDetail({ candidate, onDelete }) {
             onClick={handleDelete}
             className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 transition"
           >
-            <Trash2 size={18} />
+            <Trash2 size={18} className="text-red-500" />
           </button>
         </div>
       </div>
