@@ -36,14 +36,24 @@ export default function CandidateCard({ candidate, onDelete }) {
       className="relative bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md hover:shadow-lg transition space-y-3 cursor-pointer group"
     >
       <div className="flex justify-between items-start">
-        <div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-            {candidate.name}
-          </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-300">
-            {candidate.position}
-          </p>
+        <div className="flex items-center gap-4">
+          {/* ✅ Avatar */}
+          <img
+            src={candidate.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(candidate.name)}&background=random`}
+            alt={candidate.name}
+            className="w-16 h-16 rounded-full object-cover border"
+          />
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              {candidate.name}
+            </h3>
+            <p className="text-sm text-gray-500 dark:text-gray-300">
+              {candidate.position}
+            </p>
+          </div>
         </div>
+
+        {/* Edit/Delete Buttons */}
         <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition">
           <button
             onClick={handleEdit}
@@ -60,12 +70,14 @@ export default function CandidateCard({ candidate, onDelete }) {
         </div>
       </div>
 
+      {/* Status */}
       <span
         className={`text-xs px-2 py-1 rounded ${statusColors[candidate.status]}`}
       >
         {candidate.status}
       </span>
 
+      {/* Tags */}
       <div className="flex flex-wrap gap-2">
         {candidate.tags?.map((tag, i) => (
           <span

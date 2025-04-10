@@ -8,8 +8,8 @@ export default {
   theme: {
     extend: {
       colors: {
-          trabzonBlue: '#38b6ff',
-          trabzonBordo: '#8A1538',
+        trabzonBlue: '#38b6ff',
+        trabzonBordo: '#8A1538',
       },
       fontFamily: {
         sans: [
@@ -25,8 +25,19 @@ export default {
         inter: ['Inter', 'sans-serif'],
         poppins: ['Poppins', 'sans-serif'],
       },
-     
     },
   },
+  safelist: [
+    "group-hover:opacity-100",
+    "opacity-0",
+    "opacity-100",
+    "z-10",
+    "z-50",
+    "z-[999]",
+    "left-full",
+    "ml-2",
+    "top-1/2",
+    "-translate-y-1/2",
+  ],
   plugins: [require('@tailwindcss/typography')],
 }

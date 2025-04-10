@@ -81,7 +81,7 @@ export default function HomePage() {
                 <Github size={18} />
               </a>
             </div>
-            © {new Date().getFullYear()} HiReBOOK — Built with ❤️
+            © {new Date().getFullYear()} Qatip App — Built with ❤️
           </footer>
         </div>
       </div>
