@@ -1,4 +1,3 @@
-// ✅ tasksSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 import {
   addTaskThunk,
