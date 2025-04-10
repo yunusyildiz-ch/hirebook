@@ -16,7 +16,6 @@ const tabs = [
   "In Review",
   "Done",
   "Archived",
-  "New",
 ];
 
 export default function TasksBar() {
