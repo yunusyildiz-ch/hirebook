@@ -1,29 +1,29 @@
 import { createSelector } from "reselect";
 
 export const selectCandidatesState = (state) => state.candidates;
-export const selectUIState = (state) => state.candidatesUI;
+export const selectCandidatesUIState = (state) => state.candidatesUI;
 
 export const selectAllCandidates = createSelector(
   [selectCandidatesState],
-  (candidates) => candidates
+  (candidatesState) => candidatesState.candidates
 );
 
 export const selectSelectedCandidate = createSelector(
-  [selectUIState],
-  (ui) => ui.selectedCandidate
+  [selectCandidatesUIState],
+  (uiState) => uiState.selectedCandidate
 );
 
 export const selectActiveTab = createSelector(
-  [selectUIState],
-  (ui) => ui.activeTab
+  [selectCandidatesUIState],
+  (uiState) => uiState.activeTab
 );
 
 export const selectSearchTerm = createSelector(
-  [selectUIState],
-  (ui) => ui.searchTerm
+  [selectCandidatesUIState],
+  (uiState) => uiState.searchTerm
 );
 
 export const selectViewMode = createSelector(
-  [selectUIState],
-  (ui) => ui.viewMode
+  [selectCandidatesUIState],
+  (uiState) => uiState.viewMode
 );

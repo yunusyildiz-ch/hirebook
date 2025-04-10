@@ -1,83 +1,53 @@
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import CandidateCard from "@/features/candidates/components/CandidateCard";
 import CandidateDetail from "@/features/candidates/components/CandidateDetail";
 import CandidateEditor from "@/features/candidates/components/CandidateEditor";
+import ConfirmModal from "@/components/modals/ConfirmModal";
 import {
   selectActiveTab,
   selectSearchTerm,
   selectSelectedCandidate,
   selectViewMode,
-} from "@/features/candidates/candidatesSelectors";
+  selectAllCandidates,
+} from "@features/candidates/candidatesSelectors";
 import {
-  setSelectedCandidate,
   setViewMode,
   clearSelectedCandidate,
-} from "@/features/candidates/candidatesUI.slice";
-import ConfirmModal from "@/components/modals/ConfirmModal";
-import {showSuccess,showError,showInfo} from "@utils/toastUtils" 
-
-// Dummy data
-const initialCandidates = [
-  {
-    id: "1",
-    name: "Yunus YILDIZ",
-    position: "Full-Stack Developer",
-    status: "Interviewed",
-    tags: ["remote", "junior","qualified","first"],
-    createdAt: "2024-10-10T12:00:00Z",
-  },
-  {
-    id: "2",
-    name: "Liam Chen",
-    position: "UI/UX Designer",
-    status: "Rejected",
-    tags: ["full-time", "hybrid"],
-    createdAt: "2024-10-11T10:30:00Z",
-  },
-  {
-    id: "3",
-    name: "Noah Müller",
-    position: "Backend Developer",
-    status: "Rejected",
-    tags: ["onsite", "contract"],
-    createdAt: "2024-10-12T08:15:00Z",
-  },
-  {
-    id: "4",
-    name: "Alice Morgan",
-    position: "Frontend Developer",
-    status: "Pending",
-    tags: ["remote", "junior"],
-    createdAt: "2024-10-10T12:00:00Z",
-  }
-];
+} from "@features/candidates/candidatesUI.slice";
+import {
+  loadCandidates,
+  addCandidateThunk,
+  updateCandidateThunk,
+  deleteCandidateThunk,
+} from "@features/candidates/candidatesThunks";
 
 export default function Candidates() {
   const dispatch = useDispatch();
+  const candidates = useSelector(selectAllCandidates);
   const activeTab = useSelector(selectActiveTab);
   const viewMode = useSelector(selectViewMode);
   const selectedCandidate = useSelector(selectSelectedCandidate);
   const searchTerm = useSelector(selectSearchTerm);
 
-  const [candidates, setCandidates] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [candidateToDelete, setCandidateToDelete] = useState(null);
 
   useEffect(() => {
-    setCandidates(initialCandidates);
-  }, []);
+    dispatch(loadCandidates());
+  }, [dispatch]);
+
+  const filtered = candidates.filter((c) => {
+    const matchesTab = activeTab === "All" || c.status === activeTab;
+    const matchesSearch = c.name.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesTab && matchesSearch;
+  });
 
   const handleSave = (candidate) => {
-    const exists = candidates.find((c) => c.id === candidate.id);
-    if (exists) {
-      setCandidates((prev) =>
-        prev.map((c) => (c.id === candidate.id ? candidate : c))
-      );
-      showSuccess("Candidate updated");
+    if (candidate.id) {
+      dispatch(updateCandidateThunk(candidate));
     } else {
-      setCandidates((prev) => [candidate, ...prev]);
-      showSuccess("Candidate added");
+      dispatch(addCandidateThunk(candidate));
     }
   };
 
@@ -87,13 +57,13 @@ export default function Candidates() {
   };
 
   const confirmDelete = () => {
-    setCandidates((prev) =>
-      prev.filter((c) => c.id !== candidateToDelete.id)
-    );
-    dispatch(clearSelectedCandidate());
-    dispatch(setViewMode("list"));
+    if (candidateToDelete) {
+      dispatch(deleteCandidateThunk(candidateToDelete.id));
+      dispatch(clearSelectedCandidate());
+      dispatch(setViewMode("list"));
+    }
     setShowConfirm(false);
-    showSuccess("Candidate deleted");
+    setCandidateToDelete(null);
   };
 
   const cancelDelete = () => {
@@ -101,25 +71,10 @@ export default function Candidates() {
     setCandidateToDelete(null);
   };
 
-  const filtered = candidates.filter((c) => {
-    const matchesTab = activeTab === "All" || c.status === activeTab;
-    const matchesSearch = c.name
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-    return matchesTab && matchesSearch;
-  });
-
-  // 🔁 EDIT
   if (viewMode === "edit") {
-    return (
-      <CandidateEditor
-        candidate={selectedCandidate}
-        onSave={handleSave}
-      />
-    );
+    return <CandidateEditor candidate={selectedCandidate} onSave={handleSave} />;
   }
 
-  // 🔁 VIEW
   if (viewMode === "view" && selectedCandidate) {
     return (
       <>
@@ -140,7 +95,6 @@ export default function Candidates() {
 
   return (
     <>
-      {/* ✅ New Candidate Button */}
       <div className="flex justify-end px-6 pb-4">
         <button
           onClick={() => dispatch(setViewMode("edit"))}
@@ -150,7 +104,6 @@ export default function Candidates() {
         </button>
       </div>
 
-      {/* ✅ List */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 px-6 pb-6">
         {filtered.map((candidate) => (
           <CandidateCard
