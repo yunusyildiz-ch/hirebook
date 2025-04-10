@@ -1,3 +1,4 @@
+// ✅ Tasks.jsx
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TaskCard from "@/features/tasks/components/TaskCard";
@@ -17,7 +18,7 @@ import {
   setSelectedTask,
 } from "@/features/tasks/tasksUI.slice";
 import {
-  fetchTasksThunk,
+  startTasksListener,
   addTaskThunk,
   updateTaskThunk,
   deleteTaskThunk,
@@ -34,16 +35,13 @@ export default function Tasks() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState(null);
 
-  
   useEffect(() => {
-    dispatch(fetchTasksThunk());
+    dispatch(startTasksListener());
   }, [dispatch]);
 
   const filteredTasks = tasks.filter((task) => {
     const matchesTab = activeTab === "All" || task.status === activeTab;
-    const matchesSearch = task.title
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
+    const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesTab && matchesSearch;
   });
 
@@ -73,12 +71,10 @@ export default function Tasks() {
     setTaskToDelete(null);
   };
 
-  // ✏️ Edit Mode
   if (viewMode === "edit") {
     return <TaskEditor task={selectedTask} onSave={handleSave} />;
   }
 
-  // 👁️ View Mode
   if (viewMode === "view" && selectedTask) {
     return (
       <>
@@ -96,7 +92,6 @@ export default function Tasks() {
 
   return (
     <>
-      {/* ➕ New Task Button */}
       <div className="flex justify-end px-6 pb-4">
         <button
           onClick={() => {
@@ -109,7 +104,6 @@ export default function Tasks() {
         </button>
       </div>
 
-      {/* 📋 Task List */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 px-6 pb-6">
         {filteredTasks.map((task) => (
           <TaskCard
@@ -120,7 +114,6 @@ export default function Tasks() {
         ))}
       </div>
 
-      {/* ⚠️ Delete Confirmation Modal */}
       <ConfirmModal
         isOpen={showConfirm}
         title="Delete Task"

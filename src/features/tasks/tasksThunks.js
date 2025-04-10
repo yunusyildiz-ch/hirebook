@@ -1,3 +1,4 @@
+// ✅ tasksThunks.js
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   addTaskToFirestore,
@@ -14,22 +15,21 @@ const handleError = (error, rejectWithValue, fallbackMessage) => {
   return rejectWithValue(message);
 };
 
-// 🔁 Realtime Fetch (Subscription)
-export const fetchTasksThunk = createAsyncThunk(
-  "tasks/fetchTasks",
+// ✅ Start Task Listener (no return to avoid non-serializable payload)
+export const startTasksListener = createAsyncThunk(
+  "tasks/startListener",
   async (_, { dispatch, rejectWithValue }) => {
     try {
-      const unsubscribe = subscribeToTasks((tasks) => {
+      subscribeToTasks((tasks) => {
         dispatch(setTasksFromSubscription(tasks));
       });
-      return unsubscribe;
     } catch (error) {
       return handleError(error, rejectWithValue, "Failed to subscribe to tasks.");
     }
   }
 );
 
-// ➕ Add Task
+// ✅ Add Task
 export const addTaskThunk = createAsyncThunk(
   "tasks/addTask",
   async (task, { rejectWithValue }) => {
@@ -42,7 +42,7 @@ export const addTaskThunk = createAsyncThunk(
   }
 );
 
-// ✏️ Update Task
+// ✅ Update Task
 export const updateTaskThunk = createAsyncThunk(
   "tasks/updateTask",
   async ({ id, ...data }, { rejectWithValue }) => {
@@ -55,7 +55,7 @@ export const updateTaskThunk = createAsyncThunk(
   }
 );
 
-// ❌ Delete Task
+// ✅ Delete Task
 export const deleteTaskThunk = createAsyncThunk(
   "tasks/deleteTask",
   async (id, { rejectWithValue }) => {

@@ -1,3 +1,4 @@
+// ✅ tasksSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 import {
   addTaskThunk,
@@ -21,20 +22,15 @@ const tasksSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // ➕ Add Task
       .addCase(addTaskThunk.fulfilled, (state, action) => {
         state.tasks.unshift(action.payload);
       })
-
-      // 📝 Update Task
       .addCase(updateTaskThunk.fulfilled, (state, action) => {
         const index = state.tasks.findIndex((task) => task.id === action.payload.id);
         if (index !== -1) {
           state.tasks[index] = action.payload;
         }
       })
-
-      // ❌ Delete Task
       .addCase(deleteTaskThunk.fulfilled, (state, action) => {
         state.tasks = state.tasks.filter((task) => task.id !== action.payload);
       });
