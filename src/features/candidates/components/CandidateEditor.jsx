@@ -1,11 +1,6 @@
-// src/features/candidates/components/CandidateEditor.jsx
-
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  clearSelectedCandidate,
-  setViewMode,
-} from "../candidatesUI.slice";
+import { clearSelectedCandidate, setViewMode } from "../candidatesUI.slice";
 import { Plus, Save, X } from "lucide-react";
 
 export default function CandidateEditor({ candidate = null, onSave }) {
@@ -18,7 +13,7 @@ export default function CandidateEditor({ candidate = null, onSave }) {
   const [tags, setTags] = useState("");
   const [tagList, setTagList] = useState([]);
 
-  // Formu doldur (edit modunda)
+  // Fill form (edit mod)
   useEffect(() => {
     if (candidate) {
       setName(candidate.name || "");
@@ -30,17 +25,20 @@ export default function CandidateEditor({ candidate = null, onSave }) {
 
   const handleSave = () => {
     if (!name.trim() || !position.trim()) return;
-
-    const newCandidate = {
-      id: candidate?.id || crypto.randomUUID(),
+  
+    const baseCandidate = {
       name: name.trim(),
       position: position.trim(),
       status,
       tags: tagList,
-      createdAt: candidate?.createdAt || new Date().toISOString(),
     };
-
-    onSave(newCandidate);
+  
+    if (candidate?.id) {
+      onSave({ id: candidate.id, ...baseCandidate });
+    } else {
+      onSave(baseCandidate);
+    }
+  
     dispatch(clearSelectedCandidate());
     dispatch(setViewMode("list"));
   };
@@ -94,7 +92,7 @@ export default function CandidateEditor({ candidate = null, onSave }) {
         </select>
       </div>
 
-      {/* Tagler */}
+      {/* Tags */}
       <div className="space-y-2">
         <div className="flex gap-2">
           <input
@@ -115,10 +113,13 @@ export default function CandidateEditor({ candidate = null, onSave }) {
           {tagList.map((tag, i) => (
             <span
               key={i}
-              className="text-xs bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white px-2 py-0.5 rounded-full flex items-center gap-1"
+              className="text-sm bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white px-2 py-0.5 rounded-full flex items-center gap-1"
             >
               #{tag}
-              <button onClick={() => handleRemoveTag(tag)} className="text-xs">
+              <button
+                onClick={() => handleRemoveTag(tag)}
+                className="text-xs text-red-500 hover:text-red-700"
+              >
                 <X size={12} />
               </button>
             </span>

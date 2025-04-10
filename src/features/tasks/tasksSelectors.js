@@ -1,23 +1,31 @@
 import { createSelector } from "reselect";
 
-export const selectTasksUIState = (state) => state.tasksUI;
-
-export const selectActiveTab = createSelector(
-  [selectTasksUIState],
-  (uiState) => uiState.activeTab
+// 🔍 Task State
+export const selectTasksState = (state) => state.tasks;
+export const selectAllTasks = createSelector(
+  [selectTasksState],
+  (tasksState) => tasksState.tasks
 );
+
+// 🔍 UI State
+export const selectTasksUIState = (state) => state.tasksUI;
 
 export const selectViewMode = createSelector(
   [selectTasksUIState],
-  (uiState) => uiState.viewMode
+  (ui) => ui.viewMode
+);
+
+export const selectActiveTab = createSelector(
+  [selectTasksUIState],
+  (ui) => ui.activeTab
 );
 
 export const selectSelectedTask = createSelector(
   [selectTasksUIState],
-  (uiState) => uiState.selectedTask
+  (ui) => ui.selectedTask
 );
 
-export const selectSelectedTaskId = createSelector(
+export const selectSearchTerm = createSelector(
   [selectTasksUIState],
-  (uiState) => uiState.selectedTask?.id
+  (ui) => ui.searchTerm
 );

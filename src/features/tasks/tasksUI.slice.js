@@ -1,41 +1,47 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  activeTab: "All",       // All | In Progress | New
-  viewMode: "list",       // list | view | edit
-  selectedTask: null,     // selected task data
+  viewMode: "list", // list | view | edit
+  activeTab: "All", // All | To-do | In Progress | etc.
+  selectedTask: null,
+  searchTerm: "",
 };
 
 const tasksUISlice = createSlice({
   name: "tasksUI",
   initialState,
   reducers: {
-    setActiveTab(state, action) {
-      state.activeTab = action.payload;
-    },
-    setViewMode(state, action) {
+    setViewMode: (state, action) => {
       state.viewMode = action.payload;
     },
-    setSelectedTask(state, action) {
+    setActiveTab: (state, action) => {
+      state.activeTab = action.payload;
+    },
+    setSelectedTask: (state, action) => {
       state.selectedTask = action.payload;
     },
-    clearSelectedTask(state) {
+    clearSelectedTask: (state) => {
       state.selectedTask = null;
     },
-    resetTaskUI(state) {
-      state.activeTab = "All";
+    setSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
+    },
+    resetUI: (state) => {
       state.viewMode = "list";
+      state.activeTab = "All";
       state.selectedTask = null;
+      state.searchTerm = "";
     },
   },
 });
 
 export const {
-  setActiveTab,
   setViewMode,
+  setActiveTab,
   setSelectedTask,
   clearSelectedTask,
-  resetTaskUI,
+  setSearchTerm,
+  resetUI,
 } = tasksUISlice.actions;
 
 export default tasksUISlice.reducer;

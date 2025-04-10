@@ -1,55 +1,40 @@
-// src/features/tasks/tasksSlice.js
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import {
+  addTaskThunk,
+  updateTaskThunk,
+  deleteTaskThunk,
+} from "./tasksThunks";
 
-// Dummy data
-const dummyTasks = [
-  {
-    id: 1,
-    title: "Prepare onboarding documents",
-    status: "In Progress",
-  },
-  {
-    id: 2,
-    title: "Schedule interview with Jane",
-    status: "To Do",
-  },
-  {
-    id: 3,
-    title: "Review coding challenge submissions",
-    status: "Done",
-  },
-];
-
-// Thunk to simulate loading tasks
-export const loadTasks = createAsyncThunk("tasks/loadTasks", async () => {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(dummyTasks), 300);
-  });
-});
+const initialState = {
+  tasks: [],
+  loading: false,
+  error: null,
+};
 
 const tasksSlice = createSlice({
   name: "tasks",
-  initialState: {
-    tasks: [],
-    loading: false,
-    error: null,
+  initialState,
+  reducers: {
+    setTasksFromSubscription(state, action) {
+      state.tasks = action.payload;
+    },
   },
-  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(loadTasks.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+      .addCase(addTaskThunk.fulfilled, (state, action) => {
+        state.tasks.unshift(action.payload);
       })
-      .addCase(loadTasks.fulfilled, (state, action) => {
-        state.loading = false;
-        state.tasks = action.payload;
+      .addCase(updateTaskThunk.fulfilled, (state, action) => {
+        const index = state.tasks.findIndex((task) => task.id === action.payload.id);
+        if (index !== -1) {
+          state.tasks[index] = action.payload;
+        }
       })
-      .addCase(loadTasks.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || "Failed to load tasks.";
+      .addCase(deleteTaskThunk.fulfilled, (state, action) => {
+        state.tasks = state.tasks.filter((task) => task.id !== action.payload);
       });
   },
 });
 
+export const { setTasksFromSubscription } = tasksSlice.actions;
 export default tasksSlice.reducer;

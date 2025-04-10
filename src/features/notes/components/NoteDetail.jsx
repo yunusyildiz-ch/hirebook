@@ -64,7 +64,7 @@ export default function NoteDetail() {
             className="p-2 rounded-md hover:bg-gray-100 hover:text-red-700 transition dark:hover:bg-gray-700"
             title="Delete Note"
           >
-            <Trash2 size={18} />
+            <Trash2 size={18} className="text-red-500" />
           </button>
         </div>
       </div>
