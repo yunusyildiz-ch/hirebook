@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  viewMode: "list",       // list | view | edit
-  activeTab: "All",       // All | To-do | In Progress | etc.
+  viewMode: "list", // list | view | edit
+  activeTab: "All", // All | To-do | In Progress | etc.
   selectedTask: null,
   searchTerm: "",
 };

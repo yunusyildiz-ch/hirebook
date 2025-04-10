@@ -1,19 +1,21 @@
 import {
     collection,
     addDoc,
-    doc,
     updateDoc,
     deleteDoc,
-    onSnapshot,
+    doc,
     serverTimestamp,
+    onSnapshot,
     query,
     orderBy,
     where,
   } from "firebase/firestore";
+  
   import { db, auth } from "@/services/firebase/config";
   
   const tasksCollection = collection(db, "tasks");
   
+  // ➕ Add Task
   export const addTask = async ({ title, description, status, tags, project }) => {
     const user = auth.currentUser;
     if (!user) throw new Error("You must be logged in to add a task.");
@@ -31,6 +33,7 @@ import {
     return docRef;
   };
   
+  // ✏️ Update Task
   export const updateTask = async (id, { title, description, status, tags, project }) => {
     const taskRef = doc(db, "tasks", id);
     await updateDoc(taskRef, {
@@ -43,11 +46,13 @@ import {
     });
   };
   
+  // ❌ Delete Task
   export const deleteTask = async (id) => {
     const taskRef = doc(db, "tasks", id);
     await deleteDoc(taskRef);
   };
   
+  // 🔁 Real-time Task Sync
   export const subscribeToTasks = (userId, callback) => {
     if (!userId) return () => {};
   
@@ -65,14 +70,15 @@ import {
           return {
             id: doc.id,
             ...data,
-            createdAt: data.createdAt?.toDate()?.toISOString() || null,
-            updatedAt: data.updatedAt?.toDate()?.toISOString() || null,
+            createdAt: data.createdAt?.toDate?.().toISOString() || null,
+            updatedAt: data.updatedAt?.toDate?.().toISOString() || null,
           };
         });
         callback(tasks);
       },
       (error) => {
-        console.error("Realtime sync error:", error.message);
+        console.error("Realtime sync failed:", error.message);
       }
     );
   };
+  

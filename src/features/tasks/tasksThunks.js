@@ -7,12 +7,7 @@ import {
 } from "@/services/tasksService";
 import { showSuccess, showError } from "@/utils/toastUtils";
 
-const handleThunkError = (error, rejectWithValue, fallbackMessage) => {
-  const message = error.message || fallbackMessage;
-  showError(message);
-  return rejectWithValue(message);
-};
-
+// 🔁 Load tasks with real-time updates
 export const loadTasks = createAsyncThunk(
   "tasks/loadTasks",
   async (userId, { rejectWithValue }) => {
@@ -21,11 +16,14 @@ export const loadTasks = createAsyncThunk(
         subscribeToTasks(userId, resolve);
       });
     } catch (error) {
-      return handleThunkError(error, rejectWithValue, "Failed to load tasks");
+      const message = error.message || "Failed to load tasks";
+      showError(message);
+      return rejectWithValue(message);
     }
   }
 );
 
+// ➕ Add new task
 export const addTaskThunk = createAsyncThunk(
   "tasks/addTask",
   async (task, { rejectWithValue }) => {
@@ -34,11 +32,14 @@ export const addTaskThunk = createAsyncThunk(
       showSuccess("Task added");
       return { id: docRef.id, ...task };
     } catch (error) {
-      return handleThunkError(error, rejectWithValue, "Failed to add task");
+      const message = error.message || "Failed to add task";
+      showError(message);
+      return rejectWithValue(message);
     }
   }
 );
 
+// ✏️ Update existing task
 export const updateTaskThunk = createAsyncThunk(
   "tasks/updateTask",
   async ({ id, ...data }, { rejectWithValue }) => {
@@ -47,11 +48,14 @@ export const updateTaskThunk = createAsyncThunk(
       showSuccess("Task updated");
       return { id, ...data };
     } catch (error) {
-      return handleThunkError(error, rejectWithValue, "Failed to update task");
+      const message = error.message || "Failed to update task";
+      showError(message);
+      return rejectWithValue(message);
     }
   }
 );
 
+// 🗑️ Delete task
 export const deleteTaskThunk = createAsyncThunk(
   "tasks/deleteTask",
   async (id, { rejectWithValue }) => {
@@ -60,7 +64,9 @@ export const deleteTaskThunk = createAsyncThunk(
       showSuccess("Task deleted");
       return id;
     } catch (error) {
-      return handleThunkError(error, rejectWithValue, "Failed to delete task");
+      const message = error.message || "Failed to delete task";
+      showError(message);
+      return rejectWithValue(message);
     }
   }
 );
