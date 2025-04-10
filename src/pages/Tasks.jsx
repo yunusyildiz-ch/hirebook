@@ -1,8 +1,8 @@
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import TaskCard from "@/features/tasks/components/TaskCard";
-import TaskEditor from "@/features/tasks/components/TaskEditor";
 import TaskDetail from "@/features/tasks/components/TaskDetail";
+import TaskEditor from "@/features/tasks/components/TaskEditor";
 import ConfirmModal from "@/components/modals/ConfirmModal";
 import {
   selectAllTasks,
@@ -17,11 +17,11 @@ import {
   setSelectedTask,
 } from "@/features/tasks/tasksUI.slice";
 import {
-  addTask,
-  updateTask,
-  deleteTask,
-} from "@/features/tasks/tasksSlice";
-import { showSuccess } from "@/utils/toastUtils";
+  fetchTasksThunk,
+  addTaskThunk,
+  updateTaskThunk,
+  deleteTaskThunk,
+} from "@/features/tasks/tasksThunks";
 
 export default function Tasks() {
   const dispatch = useDispatch();
@@ -34,6 +34,11 @@ export default function Tasks() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState(null);
 
+  
+  useEffect(() => {
+    dispatch(fetchTasksThunk());
+  }, [dispatch]);
+
   const filteredTasks = tasks.filter((task) => {
     const matchesTab = activeTab === "All" || task.status === activeTab;
     const matchesSearch = task.title
@@ -43,13 +48,10 @@ export default function Tasks() {
   });
 
   const handleSave = (task) => {
-    const exists = tasks.find((t) => t.id === task.id);
-    if (exists) {
-      dispatch(updateTask(task));
-      showSuccess("Task updated");
+    if (!task.id) {
+      dispatch(addTaskThunk(task));
     } else {
-      dispatch(addTask(task));
-      showSuccess("Task added");
+      dispatch(updateTaskThunk(task));
     }
   };
 
@@ -60,11 +62,10 @@ export default function Tasks() {
 
   const confirmDelete = () => {
     if (!taskToDelete) return;
-    dispatch(deleteTask(taskToDelete.id));
+    dispatch(deleteTaskThunk(taskToDelete.id));
     dispatch(clearSelectedTask());
     dispatch(setViewMode("list"));
     setShowConfirm(false);
-    showSuccess("Task deleted");
   };
 
   const cancelDelete = () => {
@@ -72,12 +73,12 @@ export default function Tasks() {
     setTaskToDelete(null);
   };
 
-  // Edit Mode
+  // ✏️ Edit Mode
   if (viewMode === "edit") {
     return <TaskEditor task={selectedTask} onSave={handleSave} />;
   }
 
-  // View Mode
+  // 👁️ View Mode
   if (viewMode === "view" && selectedTask) {
     return (
       <>
@@ -95,7 +96,7 @@ export default function Tasks() {
 
   return (
     <>
-      {/* ✅ New Task Button */}
+      {/* ➕ New Task Button */}
       <div className="flex justify-end px-6 pb-4">
         <button
           onClick={() => {
@@ -108,7 +109,7 @@ export default function Tasks() {
         </button>
       </div>
 
-      {/* ✅ List */}
+      {/* 📋 Task List */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 px-6 pb-6">
         {filteredTasks.map((task) => (
           <TaskCard
@@ -119,7 +120,7 @@ export default function Tasks() {
         ))}
       </div>
 
-      {/* ✅ Confirm Delete Modal*/}
+      {/* ⚠️ Delete Confirmation Modal */}
       <ConfirmModal
         isOpen={showConfirm}
         title="Delete Task"

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { format } from "date-fns";
 import { Pencil, Trash2, ArrowLeft } from "lucide-react";
 import ConfirmModal from "@/components/modals/ConfirmModal";
-import { deleteTask } from "../tasksSlice";
+import { deleteTaskThunk } from "../tasksThunks";
 import {
   clearSelectedTask,
   setViewMode,
@@ -25,7 +25,7 @@ export default function TaskDetail() {
 
   const confirmDelete = () => {
     if (!task) return;
-    dispatch(deleteTask(task.id));
+    dispatch(deleteTaskThunk(task.id));
     dispatch(clearSelectedTask());
     dispatch(setViewMode("list"));
     setShowConfirm(false);

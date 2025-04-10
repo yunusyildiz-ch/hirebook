@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  fetchTasksThunk,
   addTaskThunk,
   updateTaskThunk,
   deleteTaskThunk,
@@ -15,23 +14,13 @@ const initialState = {
 const tasksSlice = createSlice({
   name: "tasks",
   initialState,
-  reducers: {},
+  reducers: {
+    setTasksFromSubscription(state, action) {
+      state.tasks = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
-      // 🔄 Fetch Tasks
-      .addCase(fetchTasksThunk.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchTasksThunk.fulfilled, (state, action) => {
-        state.loading = false;
-        state.tasks = action.payload;
-      })
-      .addCase(fetchTasksThunk.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-
       // ➕ Add Task
       .addCase(addTaskThunk.fulfilled, (state, action) => {
         state.tasks.unshift(action.payload);
@@ -52,4 +41,5 @@ const tasksSlice = createSlice({
   },
 });
 
+export const { setTasksFromSubscription } = tasksSlice.actions;
 export default tasksSlice.reducer;

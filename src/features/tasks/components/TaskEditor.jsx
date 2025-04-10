@@ -6,6 +6,10 @@ import {
 } from "../tasksUI.slice";
 import { showSuccess, showError } from "@/utils/toastUtils";
 import { Save, Plus, X } from "lucide-react";
+import {
+  addTaskToFirestore,
+  updateTaskInFirestore,
+} from "@/services/tasksService";
 
 const statusOptions = [
   "To-do",
@@ -15,7 +19,7 @@ const statusOptions = [
   "Archived",
 ];
 
-export default function TaskEditor({ task, onSave }) {
+export default function TaskEditor({ task }) {
   const dispatch = useDispatch();
 
   const [title, setTitle] = useState("");
@@ -53,26 +57,33 @@ export default function TaskEditor({ task, onSave }) {
     setTags(tags.filter((tag) => tag !== tagToRemove));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!title.trim()) {
       showError("Title is required.");
       return;
     }
 
     const taskData = {
-      id: task?.id || `t${Date.now()}`,
       title,
       description,
       status,
       tags,
       project,
-      createdAt: task?.createdAt || new Date().toISOString(),
     };
 
-    onSave(taskData);
-    showSuccess(task ? "Task updated" : "Task added");
-    dispatch(clearSelectedTask());
-    dispatch(setViewMode("list"));
+    try {
+      if (task?.id) {
+        await updateTaskInFirestore(task.id, taskData);
+        showSuccess("Task updated");
+      } else {
+        await addTaskToFirestore(taskData);
+        showSuccess("Task added");
+      }
+      dispatch(clearSelectedTask());
+      dispatch(setViewMode("list"));
+    } catch (error) {
+      showError("Failed to save task.");
+    }
   };
 
   const handleCancel = () => {

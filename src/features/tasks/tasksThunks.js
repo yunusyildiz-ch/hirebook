@@ -5,68 +5,65 @@ import {
   deleteTaskFromFirestore,
   subscribeToTasks,
 } from "@/services/tasksService";
+import { setTasksFromSubscription } from "./tasksSlice";
 import { showSuccess, showError } from "@/utils/toastUtils";
 
-// 🔁 Load tasks with real-time updates
-export const loadTasks = createAsyncThunk(
-  "tasks/loadTasks",
-  async (userId, { rejectWithValue }) => {
+const handleError = (error, rejectWithValue, fallbackMessage) => {
+  const message = error.message || fallbackMessage;
+  showError(message);
+  return rejectWithValue(message);
+};
+
+// 🔁 Realtime Fetch (Subscription)
+export const fetchTasksThunk = createAsyncThunk(
+  "tasks/fetchTasks",
+  async (_, { dispatch, rejectWithValue }) => {
     try {
-      return await new Promise((resolve) => {
-        subscribeToTasks(userId, resolve);
+      const unsubscribe = subscribeToTasks((tasks) => {
+        dispatch(setTasksFromSubscription(tasks));
       });
+      return unsubscribe;
     } catch (error) {
-      const message = error.message || "Failed to load tasks";
-      showError(message);
-      return rejectWithValue(message);
+      return handleError(error, rejectWithValue, "Failed to subscribe to tasks.");
     }
   }
 );
 
-// ➕ Add new task
+// ➕ Add Task
 export const addTaskThunk = createAsyncThunk(
   "tasks/addTask",
   async (task, { rejectWithValue }) => {
     try {
       const docRef = await addTaskToFirestore(task);
-      showSuccess("Task added");
       return { id: docRef.id, ...task };
     } catch (error) {
-      const message = error.message || "Failed to add task";
-      showError(message);
-      return rejectWithValue(message);
+      return handleError(error, rejectWithValue, "Failed to add task.");
     }
   }
 );
 
-// ✏️ Update existing task
+// ✏️ Update Task
 export const updateTaskThunk = createAsyncThunk(
   "tasks/updateTask",
   async ({ id, ...data }, { rejectWithValue }) => {
     try {
       await updateTaskInFirestore(id, data);
-      showSuccess("Task updated");
       return { id, ...data };
     } catch (error) {
-      const message = error.message || "Failed to update task";
-      showError(message);
-      return rejectWithValue(message);
+      return handleError(error, rejectWithValue, "Failed to update task.");
     }
   }
 );
 
-// 🗑️ Delete task
+// ❌ Delete Task
 export const deleteTaskThunk = createAsyncThunk(
   "tasks/deleteTask",
   async (id, { rejectWithValue }) => {
     try {
       await deleteTaskFromFirestore(id);
-      showSuccess("Task deleted");
       return id;
     } catch (error) {
-      const message = error.message || "Failed to delete task";
-      showError(message);
-      return rejectWithValue(message);
+      return handleError(error, rejectWithValue, "Failed to delete task.");
     }
   }
 );
