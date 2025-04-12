@@ -1,36 +1,41 @@
 import { useState } from "react";
 import ReactDOM from "react-dom";
-import { Mail, Lock, X } from "lucide-react";
-import { useLogin } from "../auth/useLogin";
-import { validateLoginForm } from "../utils/validators";
+import { X, Mail, Lock } from "lucide-react";
+import { useRegister } from "@/auth/useRegister";
+import { validateRegisterForm } from "@/utils/validators";
+import { toast } from "react-hot-toast";
 
-const modalRoot = document.getElementById("modal-root") || document.body;
-
-export default function LoginModal({ onClose }) {
+export default function RegisterModal({ onClose }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { handleLogin, error, authLoading } = useLogin();
+  const [error, setError] = useState("");
+  const { handleRegister, authLoading } = useRegister();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validationError = validateLoginForm(email, password);
-    if (validationError) return;
-    await handleLogin(email, password);
+    setError("");
+
+    const validationError = validateRegisterForm(email, password);
+    if (validationError) {
+      toast.error(validationError);
+      return;
+    }
+
+    await handleRegister(email, password, setError);
   };
 
   return ReactDOM.createPortal(
-    <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-      <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-xl w-full max-w-md relative">
-        {/* Close button */}
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg w-full max-w-md relative">
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 text-gray-600 dark:text-gray-300 hover:text-red-500"
+          className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 dark:hover:text-white"
         >
           <X size={20} />
         </button>
 
         <h2 className="text-2xl font-bold text-center mb-6 dark:text-white">
-          Sign In 🔐
+          Create an Account 👤
         </h2>
 
         {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
@@ -69,19 +74,19 @@ export default function LoginModal({ onClose }) {
             disabled={authLoading}
             className={`w-full text-white p-2 rounded-lg transition ${
               authLoading
-                ? "bg-blue-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
+                ? "bg-green-400 cursor-not-allowed"
+                : "bg-green-600 hover:bg-green-700"
             }`}
           >
-            {authLoading ? "Signing in..." : "Sign In"}
+            {authLoading ? "Creating account..." : "Register"}
           </button>
         </form>
 
-        <p className="text-xs text-center text-gray-500 mt-6 dark:text-gray-400">
-          By signing in, you agree to our Terms of Service and Privacy Policy.
+        <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-4">
+          By signing up, you agree to the Terms of Service and Privacy Policy.
         </p>
       </div>
     </div>,
-    modalRoot
+    document.body
   );
 }

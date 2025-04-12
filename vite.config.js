@@ -20,7 +20,8 @@ export default defineConfig({
       "@features" : path.resolve(__dirname,"./src/features"),
       "@utils" : path.resolve(__dirname,"./src/utils"),
       "@services" : path.resolve(__dirname,"./src/services"),
-      "@constants" : path.resolve(__dirname,"./src/constants")
+      "@constants" : path.resolve(__dirname,"./src/constants"),
+      "@assets" : path.resolve(__dirname,"./src/assets")
     },
   },
 });
