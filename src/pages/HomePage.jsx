@@ -28,7 +28,9 @@ export default function HomePage() {
       <div className="flex items-center justify-center px-8 py-8">
         <div className="space-y-6 max-w-lg w-full">
           {/* Logo */}
-          <QatipLogo />
+          <div className="w-full flex justify-center">
+            <QatipLogo />
+          </div>
 
           <h2 className="text-2xl font-bold">
             Welcome to your all-in-one hiring assistant!
