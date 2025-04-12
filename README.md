@@ -1,7 +1,7 @@
 # 💻 Qatip App – Smart Note-Task Assistant & Productivity Toolkit
 
 <p align="center">
-  <img src="docs/media/qatip.png" width="250" height="250" alt="HiReBOOK Logo" />
+  <img src="public/qatip_logo.png" width="550" height="250" alt="Qatip App Logo" />
 </p>
 
 ## 📘 Introduction & Project Overview
