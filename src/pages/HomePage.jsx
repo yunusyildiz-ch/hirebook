@@ -10,10 +10,13 @@ import { FcGoogle } from "react-icons/fc";
 import { RiAppleFill } from "react-icons/ri";
 import WindowsLogo from "../assets/WindowsLogo";
 import AppleLogo from "../assets/AppleLogo";
+import { useGoogleLogin } from "@/auth/useGoogleLogin";
+
 
 export default function HomePage() {
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
+  const { handleGoogleLogin } = useGoogleLogin();
 
   useEffect(() => {
     document.body.style.overflow =
@@ -120,26 +123,25 @@ export default function HomePage() {
           </div>
 
           <button
-            type="button"
-            className="w-full flex items-center justify-center gap-2 
-             bg-black text-white border border-gray-300 dark:border-gray-600  
-             hover:bg-gray-800 dark:hover:bg-white/10 
-             hover:text-white py-2 rounded-lg transition"
-          >
-            <RiAppleFill size="24" /> Sign up with Apple
-          </button>
+  type="button"
+  onClick={handleGoogleLogin}
+  className="w-full flex items-center justify-center gap-2 
+    border border-gray-300 dark:border-gray-600 
+    bg-transparent hover:bg-blue-400 dark:hover:bg-white/10 
+    text-black dark:text-white hover:text-white 
+    py-2 rounded-lg transition"
+>
+  <FcGoogle size={24} /> Continue with Google
+</button>
 
           <button
             type="button"
             className="w-full flex items-center justify-center gap-2 
-             border border-gray-300 dark:border-gray-600 
-            bg-transparent 
-             hover:bg-blue-400 dark:hover:bg-white/10 
-             text-black dark:text-white 
-             hover:text-white 
-             py-2 rounded-lg transition"
+   bg-black text-white 
+   px-4 py-2 rounded-lg border border-gray-600 
+   hover:bg-gray-800  transition-colors duration-200"
           >
-            <FcGoogle size={24} /> Sign up with Google
+            <RiAppleFill size="24" /> Continue with Apple
           </button>
 
           <div className="flex items-center my-4">

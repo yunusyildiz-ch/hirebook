@@ -4,11 +4,14 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  GoogleAuthProvider,       
+  signInWithPopup,          
 } from "firebase/auth";
 import { auth } from "../services/firebase/config";
 import { createUserProfile } from "../services/userService";
 import { getFirebaseErrorMessage } from "../utils/firebaseErrors";
 import Loader from "../components/Loader";
+import { toast } from "react-hot-toast";
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
@@ -51,6 +54,23 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const loginWithGoogle = async () => {
+    setAuthLoading(true);
+    const provider = new GoogleAuthProvider();
+  
+    try {
+      const result = await signInWithPopup(auth, provider);
+      await createUserProfile(result.user);
+      toast.success(`Welcome, ${result.user.displayName || "👋"}!`);
+      return true; 
+    } catch (error) {
+      toast.error(getFirebaseErrorMessage(error.code));
+      return false;
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
   const logout = async () => {
     try {
       await signOut(auth);
@@ -69,7 +89,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, register, logout, loading, authLoading }}
+      value={{ user, login, register, logout, loading, authLoading,loginWithGoogle }}
     >
       {loading ? <Loader message="Authenticating..." /> : children}
     </AuthContext.Provider>
