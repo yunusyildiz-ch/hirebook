@@ -10,7 +10,7 @@ import { FcGoogle } from "react-icons/fc";
 import { RiAppleFill } from "react-icons/ri";
 import WindowsLogo from "../assets/WindowsLogo";
 import AppleLogo from "../assets/AppleLogo";
-import { useGoogleLogin } from "@/auth/useGoogleLogin";
+import { useGoogleLogin } from "@hooks/useGoogleLogin";
 
 
 export default function HomePage() {

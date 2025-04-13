@@ -13,6 +13,7 @@ export const createUserProfile = async (user) => {
         email: user.email,
         displayName: user.displayName || "",
         photoURL: user.photoURL || "",
+        role: "viewer", //default role 
         createdAt: serverTimestamp(),
       });
     }

@@ -1,8 +1,12 @@
 import { NavLink } from "react-router-dom";
-import { StickyNote, Users, CheckSquare } from "lucide-react";
+import { StickyNote, Users, CheckSquare, ShieldCheck } from "lucide-react";
 import QatipLogo from '../assets/QatipLogo';
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Sidebar() {
+  const { user } = useAuth();
+  const userRole = user?.role || "viewer";
+
   const linkClass = ({ isActive }) =>
     `flex items-center gap-3 px-4 py-2 rounded-md transition font-medium text-sm nav-text ${
       isActive
@@ -34,6 +38,14 @@ export default function Sidebar() {
           <CheckSquare size={18} />
           Tasks
         </NavLink>
+
+        {/* 🔒 Admin-only Link */}
+        {userRole === "admin" && (
+          <NavLink to="/admin/users" className={linkClass}>
+            <ShieldCheck size={18} />
+            User Management
+          </NavLink>
+        )}
       </nav>
     </aside>
   );
