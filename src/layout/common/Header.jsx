@@ -1,6 +1,5 @@
 import { useLocation } from "react-router-dom";
 import { Menu, Search } from "lucide-react";
-import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Header({ onToggleSidebar }) {
   const location = useLocation();
@@ -41,8 +40,6 @@ export default function Header({ onToggleSidebar }) {
             className="absolute top-1.5 right-2 text-gray-400 dark:text-gray-300"
           />
         </div>
-
-        <ThemeToggle />
       </div>
     </header>
   );

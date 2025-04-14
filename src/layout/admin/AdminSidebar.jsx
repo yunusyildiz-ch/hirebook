@@ -8,7 +8,7 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
-import QatipQLogo from "@/assets/QatipQLogo";
+import QatipCatLogo from "@/assets/QatipCatLogo";
 
 export default function AdminSidebar({ isMobile, onClose }) {
   const [collapsed, setCollapsed] = useState(false);
@@ -44,9 +44,9 @@ export default function AdminSidebar({ isMobile, onClose }) {
       } flex flex-col text-gray-900 dark:text-white border-r border-gray-200 dark:border-gray-700 transition-all duration-300`}
     >
       {/* Header */}
-      <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex items-center justify-between h-14 px-4  border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-2">
-          <QatipQLogo className="w-6 h-6" />
+          <QatipCatLogo className="w-12 h-12" />
           {!isCollapsed && !isMobile && (
             <span className="text-lg font-semibold">Admin</span>
           )}

@@ -26,7 +26,7 @@ export default function Layout() {
   };
 
   return (
-    <div className="min-h-screen flex bg-gray-100 dark:bg-gray-900">
+    <div className="min-h-screen flex bg-white dark:bg-gray-900 transition-all duration-300">
       {isSidebarOpen && <Sidebar onClose={closeSidebar} isMobile={isMobile} />}
 
       <div className="flex-1 flex flex-col overflow-hidden">

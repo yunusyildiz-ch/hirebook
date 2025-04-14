@@ -28,7 +28,7 @@ export default function AdminLayout() {
   };
 
   return (
-    <div className="min-h-screen flex bg-gray-100 dark:bg-gray-900">
+    <div className="min-h-screen flex bg-white dark:bg-gray-900">
       {isSidebarOpen && (
         <AdminSidebar isMobile={isMobile} onClose={closeSidebar} />
       )}
