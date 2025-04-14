@@ -1,8 +1,8 @@
-// src/layout/Layout.jsx
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./common/Header";
+import UserPanel from "./user.panel/UserPanel";
 
 export default function Layout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -27,9 +27,7 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen flex bg-gray-100 dark:bg-gray-900">
-      {isSidebarOpen && (
-        <Sidebar onClose={closeSidebar} isMobile={isMobile} />
-      )}
+      {isSidebarOpen && <Sidebar onClose={closeSidebar} isMobile={isMobile} />}
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header onToggleSidebar={toggleSidebar} />
@@ -38,6 +36,7 @@ export default function Layout() {
           <Outlet />
         </main>
       </div>
+      <UserPanel />
     </div>
   );
 }

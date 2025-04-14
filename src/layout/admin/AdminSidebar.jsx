@@ -1,5 +1,3 @@
-// File: src/layout/admin/AdminSidebar.jsx
-
 import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -23,7 +21,11 @@ export default function AdminSidebar({ isMobile, onClose }) {
     `flex items-center ${
       isCollapsed ? "justify-center" : "justify-start"
     } gap-3 px-4 py-2 rounded-md transition font-medium text-sm whitespace-nowrap
-    ${isActive ? "bg-blue-100 dark:bg-gray-700 text-blue-600 dark:text-blue-300" : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"}`;
+    ${
+      isActive
+        ? "bg-blue-100 dark:bg-gray-700 text-blue-600 dark:text-blue-300"
+        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+    }`;
 
   const links = [
     { to: "/admin", label: "Dashboard", icon: <LayoutDashboard size={18} /> },

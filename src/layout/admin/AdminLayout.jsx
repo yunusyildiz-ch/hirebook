@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
 import AdminHeader from "./AdminHeader";
+import UserPanel from "../user.panel/UserPanel";
 
 export default function AdminLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -38,6 +39,7 @@ export default function AdminLayout() {
           <Outlet />
         </main>
       </div>
+      <UserPanel />
     </div>
   );
 }

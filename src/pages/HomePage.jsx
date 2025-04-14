@@ -12,7 +12,6 @@ import WindowsLogo from "../assets/WindowsLogo";
 import AppleLogo from "../assets/AppleLogo";
 import { useGoogleLogin } from "@hooks/useGoogleLogin";
 
-
 export default function HomePage() {
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
@@ -25,19 +24,25 @@ export default function HomePage() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1 }}
-      className="relative min-h-screen flex flex-col md:grid md:grid-cols-2 dark:bg-gray-900 text-gray-800 dark:text-white"
-    >
+    initial={{ opacity: 0, y: 50 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 1 }}
+    className="h-screen overflow-y-auto relative flex flex-col md:grid md:grid-cols-2 dark:bg-gray-900 text-gray-800 dark:text-white"
+  >
       {/* Theme Toggle */}
       <div className="absolute top-4 right-4 z-50">
         <ThemeToggle />
       </div>
 
+      {/* QatipLogo - Mobile only */}
+      <div className="flex justify-center mt-4 md:hidden order-1">
+        <QatipLogo />
+      </div>
+
       {/* Info Section */}
       <div className="order-3 md:order-first flex items-center justify-center px-8 py-8">
         <div className="space-y-6 max-w-lg w-full">
+          {/* QatipLogo - Desktop only */}
           <div className="hidden md:flex justify-center mb-6">
             <QatipLogo />
           </div>
@@ -63,7 +68,7 @@ export default function HomePage() {
             <li>🌙 Light/Dark Mode Support</li>
           </ul>
 
-          {/* Apple Button */}
+          {/* Mac Button */}
           <a
             href="#"
             type="button"
@@ -91,6 +96,7 @@ export default function HomePage() {
             Download for Windows
           </a>
 
+          {/* Footer */}
           <footer className="pt-10 text-sm text-gray-500 dark:text-gray-400">
             <div className="flex gap-4 items-center mb-2">
               <a href="#" aria-label="Facebook" className="hover:text-blue-500">
@@ -123,23 +129,23 @@ export default function HomePage() {
           </div>
 
           <button
-  type="button"
-  onClick={handleGoogleLogin}
-  className="w-full flex items-center justify-center gap-2 
-    border border-gray-300 dark:border-gray-600 
-    bg-transparent hover:bg-blue-400 dark:hover:bg-white/10 
-    text-black dark:text-white hover:text-white 
-    py-2 rounded-lg transition"
->
-  <FcGoogle size={24} /> Continue with Google
-</button>
+            type="button"
+            onClick={handleGoogleLogin}
+            className="w-full flex items-center justify-center gap-2 
+              border border-gray-300 dark:border-gray-600 
+              bg-transparent hover:bg-blue-400 dark:hover:bg-white/10 
+              text-black dark:text-white hover:text-white 
+              py-2 rounded-lg transition"
+          >
+            <FcGoogle size={24} /> Continue with Google
+          </button>
 
           <button
             type="button"
             className="w-full flex items-center justify-center gap-2 
-   bg-black text-white 
-   px-4 py-2 rounded-lg border border-gray-600 
-   hover:bg-gray-800  transition-colors duration-200"
+              bg-black text-white 
+              px-4 py-2 rounded-lg border border-gray-600 
+              hover:bg-gray-800  transition-colors duration-200"
           >
             <RiAppleFill size="24" /> Continue with Apple
           </button>

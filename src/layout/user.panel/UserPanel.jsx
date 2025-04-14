@@ -1,11 +1,8 @@
-// 📁 File: src/layout/user.panel/UserPanel.jsx
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogOut, Settings, Bell, Menu } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import ThemeToggle from "@/components/ThemeToggle";
 import UserMenu from "./UserMenu";
 
 export default function UserPanel() {
@@ -62,10 +59,6 @@ export default function UserPanel() {
             </div>
 
             <UserMenu onLogout={handleLogout} />
-
-            <div className="mt-auto">
-              <ThemeToggle />
-            </div>
           </div>
         )}
       </>
@@ -82,10 +75,6 @@ export default function UserPanel() {
       </div>
 
       <UserMenu onLogout={handleLogout} />
-
-      <div className="mt-auto">
-        <ThemeToggle />
-      </div>
     </aside>
   );
 }
