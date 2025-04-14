@@ -1,12 +1,25 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { LogOut, Settings, Bell } from "lucide-react";
+import { LogOut, Settings, Bell, Menu } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import ThemeToggle from "@/components/ThemeToggle";
+import UserMenu from "./UserMenu";
 
 export default function UserPanel() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Detect screen width
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -19,54 +32,49 @@ export default function UserPanel() {
   };
 
   const userInitial = user?.email?.charAt(0).toUpperCase() || "?";
-  const userFullName = user?.firstName + user?.lastName || "John Doe";
-  const userEmail = user?.email || "unknown@example.com";
 
+  // Mobile full-screen overlay
+  if (isMobile) {
+    return (
+      <>
+        <button
+          onClick={() => setIsOpen(true)}
+          className="fixed top-4 right-4 z-50 bg-blue-600 text-white p-2 rounded-full shadow-lg"
+        >
+          <Menu size={20} />
+        </button>
+
+        {isOpen && (
+          <div className="fixed inset-0 bg-white dark:bg-gray-900 z-50 p-6 flex flex-col gap-6">
+            <div className="flex items-center justify-between">
+              <div className="bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center text-sm font-semibold">
+                {userInitial}
+              </div>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-gray-500 hover:text-black dark:text-gray-300 dark:hover:text-white"
+              >
+                Close
+              </button>
+            </div>
+
+            <UserMenu onLogout={handleLogout} />
+          </div>
+        )}
+      </>
+    );
+  }
+
+  // Desktop Sidebar (fixed right)
   return (
-    <aside className="w-16 bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-700 flex flex-col items-center justify-between py-4 relative overflow-visible z-50">
-      {/* Top - Avatar with Tooltip */}
+    <aside className="w-16 bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-700 flex flex-col items-center justify-between py-4 relative overflow-visible z-40">
       <div className="group relative">
         <div className="bg-blue-500 text-white rounded-full w-10 h-10 flex items-center justify-center text-sm font-semibold hover:scale-105 transition cursor-pointer">
           {userInitial}
         </div>
-
-        <div className="absolute right-full mr-2 top-1/5 -translate-y-1/2 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 shadow-md rounded-md px-4 py-3 w-56 opacity-0 group-hover:opacity-100 transition z-50 text-sm">
-          <p className="text-xs font-bold text-red-600 dark:text-red-400 mb-1">
-            Qatip Account:
-          </p>
-          <p className="font-medium truncate">{userFullName}</p>
-          <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-            {userEmail}
-          </p>
-        </div>
       </div>
 
-      {/* Tooltips */}
-      <div className="flex flex-col gap-6 items-center mt-8">
-        <TooltipButton icon={<Bell size={20} />} label="Notifications" />
-        <TooltipButton icon={<Settings size={20} />} label="Settings" />
-        <TooltipButton
-          icon={<LogOut size={20} />}
-          label="Logout"
-          onClick={handleLogout}
-        />
-      </div>
-
-      {/* Bottom - Theme Toggle */}
-      <div className="mt-auto">
-        <ThemeToggle />
-      </div>
+      <UserMenu onLogout={handleLogout} />
     </aside>
-  );
-}
-
-function TooltipButton({ icon, label, onClick }) {
-  return (
-    <div className="group relative">
-      <button onClick={onClick}>{icon}</button>
-      <span className="absolute right-full mr-2 top-1/2 -translate-y-1/2 bg-gray-300 text-black text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition z-50 whitespace-nowrap">
-        {label}
-      </span>
-    </div>
   );
 }

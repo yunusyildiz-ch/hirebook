@@ -1,13 +1,22 @@
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "./firebase/config";
 
-// Create user document in Firestore
+// Create user document in Firestore if it doesn't exist
 export const createUserProfile = async (user) => {
   try {
-    await setDoc(doc(db, "users", user.uid), {
-      email: user.email,
-      createdAt: serverTimestamp(),
-    });
+    const userRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(userRef);
+
+    if (!docSnap.exists()) {
+      await setDoc(userRef, {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName || "",
+        photoURL: user.photoURL || "",
+        role: "viewer", //default role 
+        createdAt: serverTimestamp(),
+      });
+    }
   } catch (error) {
     console.error("Error creating user profile:", error);
     throw error;

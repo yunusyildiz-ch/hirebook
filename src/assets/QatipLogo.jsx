@@ -1,7 +1,7 @@
-const QatipLogo = () => (
+const QatipLogo = ({ className = "w-full max-w-[350px] h-auto aspect-[300/124] fill-current" }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="w-full max-w-[350px] h-auto aspect-[300/124] fill-current"
+    className={className}
     viewBox="0 0 300 124"
     preserveAspectRatio="xMidYMid meet"
   >

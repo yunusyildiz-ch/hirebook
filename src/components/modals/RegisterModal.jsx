@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ReactDOM from "react-dom";
 import { X, Mail, Lock } from "lucide-react";
-import { useRegister } from "@/auth/useRegister";
+import { useRegister } from "@hooks/useRegister";
 import { validateRegisterForm } from "@/utils/validators";
 import { toast } from "react-hot-toast";
 
