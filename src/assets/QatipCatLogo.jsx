@@ -1,10 +1,12 @@
-const QatipCatLogo = () => {
+const QatipCatLogo = ({
+  className = "w-20 h-20 text-gray-800 dark:text-white",
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 300 300"
       fill="currentColor"
-      className="w-20 h-20 text-gray-800 dark:text-white"
+      className={className}
     >
       <g transform="translate(0,300) scale(0.1,-0.1)" stroke="none">
         <path
