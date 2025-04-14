@@ -1,12 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "@/layout/Layout";
+import AdminLayout from "@/layout/admin/AdminLayout";
 import Notes from "@pages/Notes";
 import Candidates from "@pages/Candidates";
 import Tasks from "@pages/Tasks";
 import ProtectedRoute from "./ProtectedRoute";
 import GuestRoute from "./GuestRoute";
-import HomePage from "@pages/HomePage";
 import RoleProtectedRoute from "./RoleProtectedRoute";
+import HomePage from "@pages/HomePage";
 import AdminDashboard from "@pages/AdminDashboard";
 import Unauthorized from "@pages/Unauthorized";
 import UserManagement from "@pages/UserManagement";
@@ -37,17 +38,23 @@ const router = createBrowserRouter([
     ],
   },
 
-  // 🛡 Admin-Only Section (Role Protected)
+  // 🛡 Admin-Only Section with Admin Layout
   {
     path: "/admin",
     element: (
       <RoleProtectedRoute allowedRoles={["admin"]}>
-        <Layout />
+        <AdminLayout />
       </RoleProtectedRoute>
     ),
     children: [
-      { path: "", element: <AdminDashboard /> },
-      { path: "users", element: <UserManagement /> },
+      {
+        index: true, // 👈 AdminDashboard is the default route when visiting "/admin"
+        element: <AdminDashboard />,
+      },
+      {
+        path: "users",
+        element: <UserManagement />,
+      },
     ],
   },
 

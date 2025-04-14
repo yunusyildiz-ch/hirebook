@@ -1,24 +1,26 @@
-import { LogOut, Settings, Bell, User } from "lucide-react"; // ✅ eklendi
-import { toast } from "react-hot-toast";
+import { LogOut, Settings, Bell, User } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { useState } from "react";
+import { toast } from "react-hot-toast";
 import NotificationPanel from "./NotificationPanel";
 import SettingsPanel from "./SettingsPanel";
-import ProfileEditModal from "../../components/modals/ProfileEditModal";
+import ProfileEditModal from "@/components/modals/ProfileEditModal";
 
-function TooltipButton({ icon, label, onClick }) {
+// Tooltip-enabled button with optional label
+function TooltipButton({ icon, label, onClick, showText = false }) {
   return (
-    <div className="group relative">
+    <div className="group relative flex flex-col items-center">
       <button
         onClick={onClick}
         className="text-gray-700 dark:text-gray-200 hover:text-black dark:hover:text-white"
       >
         {icon}
       </button>
-      <span className="absolute right-full mr-2 top-1/2 -translate-y-1/2 bg-gray-300 text-black text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition z-50 whitespace-nowrap">
+      <span className="absolute top-full mt-1 px-2 py-1 rounded text-xs bg-gray-300 text-black opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-50">
         {label}
       </span>
+      {showText && <span className="text-xs mt-1">{label}</span>}
     </div>
   );
 }
@@ -45,7 +47,7 @@ export default function UserMenu() {
       <TooltipButton
         icon={<Bell size={20} />}
         label="Notifications"
-        onClick={() => setShowNotifications((prev) => !prev)}
+        onClick={() => setShowNotifications(true)}
       />
       <TooltipButton
         icon={<Settings size={20} />}
@@ -63,11 +65,14 @@ export default function UserMenu() {
         onClick={handleLogout}
       />
 
+      {/* Panels/Modals */}
       {showNotifications && (
         <NotificationPanel onClose={() => setShowNotifications(false)} />
       )}
       {showSettings && <SettingsPanel onClose={() => setShowSettings(false)} />}
-      {showProfileEdit && <ProfileEditModal onClose={() => setShowProfileEdit(false)} />}
+      {showProfileEdit && (
+        <ProfileEditModal onClose={() => setShowProfileEdit(false)} />
+      )}
     </div>
   );
 }

@@ -1,25 +1,26 @@
-// src/layout/Layout.jsx
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import Sidebar from "./Sidebar";
-import Header from "./common/Header";
+import AdminSidebar from "./AdminSidebar";
+import AdminHeader from "./AdminHeader";
 
-export default function Layout() {
+export default function AdminLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Detect screen size for responsiveness
+  // Detect mobile screen size
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
-      setIsSidebarOpen(window.innerWidth >= 768); // Close sidebar on mobile
+      setIsSidebarOpen(window.innerWidth >= 768);
     };
-    handleResize(); // Initial check
+    handleResize(); // initial run
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prev) => !prev);
+  };
 
   const closeSidebar = () => {
     if (isMobile) setIsSidebarOpen(false);
@@ -28,12 +29,11 @@ export default function Layout() {
   return (
     <div className="min-h-screen flex bg-gray-100 dark:bg-gray-900">
       {isSidebarOpen && (
-        <Sidebar onClose={closeSidebar} isMobile={isMobile} />
+        <AdminSidebar isMobile={isMobile} onClose={closeSidebar} />
       )}
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header onToggleSidebar={toggleSidebar} />
-
+        <AdminHeader onToggleSidebar={toggleSidebar} />
         <main className="flex-1 p-6 overflow-y-auto">
           <Outlet />
         </main>
