@@ -22,7 +22,7 @@ export default function Sidebar({ onClose, isMobile }) {
   const toggleCollapse = () => setCollapsed((prev) => !prev);
 
   const linkClass = ({ isActive }) =>
-    `cursor-default flex items-center ${
+    `flex items-center ${
       collapsed && !isMobile ? "justify-center" : "justify-start"
     } gap-3 px-4 py-2 rounded-md transition-all duration-300 font-medium text-sm whitespace-nowrap
     ${
@@ -103,11 +103,21 @@ export default function Sidebar({ onClose, isMobile }) {
               key={link.to}
               to={link.to}
               className={linkClass}
+              end // 🔹 only exact match will be active
               onClick={onClose}
             >
-              {link.icon}
-              {!collapsed && (
-                <span className="transition-all duration-300">{link.label}</span>
+              {({ isActive }) => (
+                <>
+                  {link.icon}
+                  {!collapsed && (
+                    <span className="transition-all duration-300 relative">
+                      {link.label}
+                      {isActive && (
+                        <span className="absolute -right-3 top-1/2 -translate-y-1/2 w-2 h-2 bg-red-500 dark:bg-red-400 rounded-full" />
+                      )}
+                    </span>
+                  )}
+                </>
               )}
             </NavLink>
           ))}
@@ -121,7 +131,7 @@ export default function Sidebar({ onClose, isMobile }) {
               <div
                 onClick={toggleCollapse}
                 className="flex flex-grow items-start justify-center mt-4 cursor-pointer border-t border-gray-200 dark:border-gray-700"
-                title="Expand sidebar"
+                title="Expand Sidebar"
               >
                 <div className="p-2 rounded-full transition transform hover:scale-105">
                   <ChevronRight
@@ -137,7 +147,7 @@ export default function Sidebar({ onClose, isMobile }) {
               <div
                 onClick={toggleCollapse}
                 className="flex flex-grow items-end justify-end pr-2 mt-4 pb-4 cursor-pointer border-t border-gray-200 dark:border-gray-700"
-                title="Collapse sidebar"
+                title="Collapse Sidebar"
               >
                 <div className="p-2 rounded-full transition transform hover:scale-105">
                   <ChevronLeft
