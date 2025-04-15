@@ -43,7 +43,7 @@ export default function AdminSidebar({ isMobile, onClose }) {
       } flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-white border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out`}
     >
       {/* Header */}
-      <div className="flex items-center justify-between h-14 px-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex items-center justify-between h-14 px-2 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-2 overflow-hidden transition-all duration-300">
           <QatipCatLogo className="w-12 h-12 shrink-0" />
           {!collapsed && !isMobile && (
