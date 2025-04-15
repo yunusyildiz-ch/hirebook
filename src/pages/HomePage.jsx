@@ -10,6 +10,7 @@ import { FcGoogle } from "react-icons/fc";
 import { RiAppleFill } from "react-icons/ri";
 import { useGoogleLogin } from "@hooks/useGoogleLogin";
 import DownloadSection from "@components/ui/DownloadSection";
+import MobilAppStoreBadges from "../assets/MobilAppStoreBadges";
 
 export default function HomePage() {
   const [showLogin, setShowLogin] = useState(false);
@@ -23,11 +24,11 @@ export default function HomePage() {
 
   return (
     <motion.div
-    initial={{ opacity: 0, y: 50 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 1 }}
-    className="h-screen overflow-y-auto relative flex flex-col md:grid md:grid-cols-2 dark:bg-gray-900 text-gray-800 dark:text-white"
-  >
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1 }}
+      className="h-screen overflow-y-auto relative flex flex-col md:grid md:grid-cols-2 dark:bg-gray-900 text-gray-800 dark:text-white"
+    >
       {/* Theme Toggle */}
       <div className="absolute top-4 right-4 z-50">
         <ThemeToggle />
@@ -68,7 +69,7 @@ export default function HomePage() {
           </ul>
 
           {/* Download Section */}
-          <DownloadSection/>
+          <DownloadSection />
 
           {/* Footer */}
           <footer className="pt-10 text-sm text-gray-500 dark:text-gray-400">
@@ -183,6 +184,7 @@ export default function HomePage() {
               Sign In
             </button>
           </div>
+          <MobilAppStoreBadges />
         </div>
       </div>
 
