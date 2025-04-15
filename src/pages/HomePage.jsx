@@ -8,13 +8,15 @@ import QatipCatLogo from "@assets/QatipCatLogo";
 import ThemeToggle from "@components/ThemeToggle";
 import { FcGoogle } from "react-icons/fc";
 import { RiAppleFill } from "react-icons/ri";
-import WindowsLogo from "../assets/WindowsLogo";
-import AppleLogo from "../assets/AppleLogo";
 import { useGoogleLogin } from "@hooks/useGoogleLogin";
+import DownloadSection from "@components/ui/DownloadSection";
+import MobilAppStoreBadges from "@assets/MobilAppStoreBadges";
+import ComingSoonModal from "@components/modals/ComingSoonModal";
 
 export default function HomePage() {
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
+  const [showComingSoon, setShowComingSoon] = useState(false);
   const { handleGoogleLogin } = useGoogleLogin();
 
   useEffect(() => {
@@ -24,11 +26,11 @@ export default function HomePage() {
 
   return (
     <motion.div
-    initial={{ opacity: 0, y: 50 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 1 }}
-    className="h-screen overflow-y-auto relative flex flex-col md:grid md:grid-cols-2 dark:bg-gray-900 text-gray-800 dark:text-white"
-  >
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1 }}
+      className="h-screen overflow-y-auto relative flex flex-col md:grid md:grid-cols-2 dark:bg-gray-900 text-gray-800 dark:text-white"
+    >
       {/* Theme Toggle */}
       <div className="absolute top-4 right-4 z-50">
         <ThemeToggle />
@@ -68,33 +70,8 @@ export default function HomePage() {
             <li>🌙 Light/Dark Mode Support</li>
           </ul>
 
-          {/* Mac Button */}
-          <a
-            href="#"
-            type="button"
-            className="flex items-center justify-center gap-2 
-             bg-black text-white 
-             px-4 py-2 rounded-lg 
-             hover:bg-gray-800 
-             transition-colors duration-200"
-          >
-            <AppleLogo className="w-5 h-5 fill-white" />
-            Download for Mac
-          </a>
-
-          {/* Windows Button */}
-          <a
-            href="#"
-            type="button"
-            className="flex items-center justify-center gap-2 
-             bg-black text-white    
-             px-4 py-2 rounded-lg 
-             hover:bg-gray-800 
-             transition-colors duration-200"
-          >
-            <WindowsLogo className="w-5 h-5" />
-            Download for Windows
-          </a>
+          {/* Download Section */}
+          <DownloadSection onComingSoon={() => setShowComingSoon(true)} />
 
           {/* Footer */}
           <footer className="pt-10 text-sm text-gray-500 dark:text-gray-400">
@@ -142,6 +119,7 @@ export default function HomePage() {
 
           <button
             type="button"
+            onClick={() => setShowComingSoon(true)}
             className="w-full flex items-center justify-center gap-2 
               bg-black text-white 
               px-4 py-2 rounded-lg border border-gray-600 
@@ -209,10 +187,17 @@ export default function HomePage() {
               Sign In
             </button>
           </div>
+          <MobilAppStoreBadges />
         </div>
       </div>
 
       {/* Modals */}
+      {showComingSoon && (
+        <ComingSoonModal
+          isOpen={showComingSoon}
+          onClose={() => setShowComingSoon(false)}
+        />
+      )}
       {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
       {showRegister && (
         <RegisterModal
