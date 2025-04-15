@@ -10,11 +10,13 @@ import { FcGoogle } from "react-icons/fc";
 import { RiAppleFill } from "react-icons/ri";
 import { useGoogleLogin } from "@hooks/useGoogleLogin";
 import DownloadSection from "@components/ui/DownloadSection";
-import MobilAppStoreBadges from "../assets/MobilAppStoreBadges";
+import MobilAppStoreBadges from "@assets/MobilAppStoreBadges";
+import ComingSoonModal from "@components/modals/ComingSoonModal";
 
 export default function HomePage() {
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
+  const [showComingSoon, setShowComingSoon] = useState(false);
   const { handleGoogleLogin } = useGoogleLogin();
 
   useEffect(() => {
@@ -69,7 +71,7 @@ export default function HomePage() {
           </ul>
 
           {/* Download Section */}
-          <DownloadSection />
+          <DownloadSection onComingSoon={() => setShowComingSoon(true)} />
 
           {/* Footer */}
           <footer className="pt-10 text-sm text-gray-500 dark:text-gray-400">
@@ -117,6 +119,7 @@ export default function HomePage() {
 
           <button
             type="button"
+            onClick={() => setShowComingSoon(true)}
             className="w-full flex items-center justify-center gap-2 
               bg-black text-white 
               px-4 py-2 rounded-lg border border-gray-600 
@@ -189,6 +192,12 @@ export default function HomePage() {
       </div>
 
       {/* Modals */}
+      {showComingSoon && (
+        <ComingSoonModal
+          isOpen={showComingSoon}
+          onClose={() => setShowComingSoon(false)}
+        />
+      )}
       {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
       {showRegister && (
         <RegisterModal
