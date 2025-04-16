@@ -9,13 +9,13 @@ export default function LegalLayout() {
     <div className="flex flex-col md:flex-row min-h-screen">
       {/* 📦 Sidebar */}
       <aside className="w-full md:w-1/4 md:fixed md:h-screen md:overflow-y-auto bg-white dark:bg-gray-800 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-700 shadow-md z-10">
-        <div className="flex flex-col md:items-end md:p-6 space-y-6 text-right w-full">
+        <div className="flex flex-col md:items-end md:p-4 space-y-2 text-right w-full">
 
           {/* 🔝 Header Area (Mobile: top — Desktop: top-right) */}
-          <div className="flex justify-between items-center px-4 pt-4 md:block md:space-y-2 md:px-0">
+          <div className="flex justify-between items-center px-4 pt-4 pb-2 md:block md:space-y-2 md:px-0">
             {/* Logo & Slogan */}
             <NavLink to="/" className="flex items-center gap-2 md:flex-col md:items-end md:gap-0">
-              <QatipLogo className="h-10 fill-current text-gray-900 dark:text-white" />
+              <QatipLogo className="h-20 fill-current text-gray-900 dark:text-white" />
               <span className="hidden md:inline-block text-xs text-gray-500 dark:text-gray-400 mt-1">
                 Your all-in-one hiring assistant.
               </span>
@@ -28,7 +28,7 @@ export default function LegalLayout() {
           </div>
 
           {/* 🧭 Navigation Links */}
-          <nav className="flex flex-row md:flex-col justify-center md:justify-end md:space-y-3 gap-4 px-4 md:px-0 pb-2 md:pb-0 overflow-x-auto w-full text-right">
+          <nav className="flex flex-row md:flex-col justify-center md:justify-end md:space-y-3 gap-2 px-4 md:px-0 pb-2 md:pb-0 overflow-x-auto w-full text-right">
             <NavLink
               to="/legal/terms"
               className={({ isActive }) =>

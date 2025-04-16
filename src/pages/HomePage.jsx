@@ -149,7 +149,7 @@ export default function HomePage() {
             By signing up, you agree to our{" "}
             <a
               href="/legal/terms"
-              className="underline hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className="underline text-primary hover:text-navyBlue dark:hover:text-blue-400  dark:hover:text-blue-400 transition-colors"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -158,7 +158,7 @@ export default function HomePage() {
             and{" "}
             <a
               href="/legal/privacy"
-              className="underline hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className="underline text-primary hover:text-navyBlue dark:hover:text-blue-400 transition-colors"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -167,7 +167,7 @@ export default function HomePage() {
             , including{" "}
             <a
               href="/legal/cookies"
-              className="underline hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              className="underline text-primary hover:text-navyBlue dark:hover:text-blue-400 transition-colors"
               target="_blank"
               rel="noopener noreferrer"
             >
