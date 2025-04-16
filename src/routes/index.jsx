@@ -15,6 +15,7 @@ import LegalLayout from "@layout/LegalLayout";
 import TermsPage from "@pages/legal/TermsPage";
 import PrivacyPage from "@pages/legal/PrivacyPage";
 import CookiesPage from "@pages/legal/CookiesPage";
+import TestPage from "@pages/TestPage";
 
 const router = createBrowserRouter([
   // 🏠 Public Home Page (Guest Only)
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
     path: "/unauthorized",
     element: <Unauthorized />,
   },
+  {
+    path:"/test-cookie",
+    element:<TestPage/>,
+  }
 ]);
 
 export default router;

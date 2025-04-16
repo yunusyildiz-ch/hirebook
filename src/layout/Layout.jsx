@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./common/Header";
 import UserPanel from "./user.panel/UserPanel";
+import CookieBanner from "@components/CookieBanner";
 
 export default function Layout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -34,9 +35,13 @@ export default function Layout() {
 
         <main className="flex-1 p-6 overflow-y-auto">
           <Outlet />
+          <CookieBanner />
         </main>
+           {/* 🍪 Cookie Banner */}
+           
       </div>
       <UserPanel />
+      
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import QatipLogo from "@assets/QatipLogo";
 import ThemeToggle from "@components/ThemeToggle";
 import { ShieldCheck, Lock, Cookie } from "lucide-react";
+import CookieBanner from "@components/CookieBanner";
 
 export default function LegalLayout() {
   return (
@@ -87,6 +88,7 @@ export default function LegalLayout() {
       {/* 📃 Main Content Area */}
       <main className="w-full md:ml-[25%] flex-1 p-6 overflow-y-auto bg-white dark:text-gray-400 dark:bg-gray-900 h-screen">
         <Outlet />
+        <CookieBanner />
       </main>
     </div>
   );

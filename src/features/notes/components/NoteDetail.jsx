@@ -6,7 +6,7 @@ import { deleteNoteThunk } from "../notesThunks";
 import { clearSelectedNote } from "../notesSlice";
 import { setViewMode } from "../notesUI.slice";
 import { selectSelectedNote } from "../notesSelectors";
-import ConfirmModal from "@/components/modals/ConfirmModal";
+import ConfirmModal from "@modals/ConfirmModal";
 
 export default function NoteDetail() {
   const dispatch = useDispatch();

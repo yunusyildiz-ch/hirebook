@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CandidateCard from "@/features/candidates/components/CandidateCard";
 import CandidateDetail from "@/features/candidates/components/CandidateDetail";
 import CandidateEditor from "@/features/candidates/components/CandidateEditor";
-import ConfirmModal from "@/components/modals/ConfirmModal";
+import ConfirmModal from "@modals/ConfirmModal";
 import {
   selectActiveTab,
   selectSearchTerm,

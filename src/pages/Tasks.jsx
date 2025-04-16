@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import TaskCard from "@/features/tasks/components/TaskCard";
 import TaskDetail from "@/features/tasks/components/TaskDetail";
 import TaskEditor from "@/features/tasks/components/TaskEditor";
-import ConfirmModal from "@/components/modals/ConfirmModal";
+import ConfirmModal from "@modals/ConfirmModal";
 import {
   selectAllTasks,
   selectActiveTab,

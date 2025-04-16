@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Facebook, Twitter, Linkedin, Github } from "lucide-react";
-import LoginModal from "@components/modals/LoginModal";
-import RegisterModal from "@components/modals/RegisterModal";
+import LoginModal from "@modals/LoginModal";
+import RegisterModal from "@modals/RegisterModal";
 import QatipLogo from "@assets/QatipLogo";
 import QatipCatLogo from "@assets/QatipCatLogo";
 import ThemeToggle from "@components/ThemeToggle";
@@ -11,7 +11,8 @@ import { RiAppleFill } from "react-icons/ri";
 import { useGoogleLogin } from "@hooks/useGoogleLogin";
 import DownloadSection from "@components/ui/DownloadSection";
 import MobilAppStoreBadges from "@assets/MobilAppStoreBadges";
-import ComingSoonModal from "@components/modals/ComingSoonModal";
+import ComingSoonModal from "@modals/ComingSoonModal";
+import CookieBanner from "@components/CookieBanner";
 
 export default function HomePage() {
   const [showLogin, setShowLogin] = useState(false);
@@ -190,7 +191,7 @@ export default function HomePage() {
           <MobilAppStoreBadges />
         </div>
       </div>
-
+      <CookieBanner />
       {/* Modals */}
       {showComingSoon && (
         <ComingSoonModal

@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { format } from "date-fns";
 import { Pencil, Trash2, ArrowLeft } from "lucide-react";
-import ConfirmModal from "@/components/modals/ConfirmModal";
+import ConfirmModal from "@modals/ConfirmModal";
 import { deleteTaskThunk } from "../tasksThunks";
 import {
   clearSelectedTask,

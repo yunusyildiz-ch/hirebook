@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
 import AdminHeader from "./AdminHeader";
 import UserPanel from "../user.panel/UserPanel";
+import CookieBanner from "@components/CookieBanner";
 
 export default function AdminLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -37,6 +38,7 @@ export default function AdminLayout() {
         <AdminHeader onToggleSidebar={toggleSidebar} />
         <main className="flex-1 p-6 overflow-y-auto">
           <Outlet />
+          <CookieBanner />
         </main>
       </div>
       <UserPanel />

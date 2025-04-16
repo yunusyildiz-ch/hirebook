@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "react-hot-toast";
 import NotificationPanel from "./NotificationPanel";
 import SettingsPanel from "./SettingsPanel";
-import ProfileEditModal from "@/components/modals/ProfileEditModal";
+import ProfileEditModal from "@modals/ProfileEditModal";
 import ThemeToggle from "@components/ThemeToggle";
 
 // Tooltip-enabled button with optional label
