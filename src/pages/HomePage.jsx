@@ -147,7 +147,7 @@ export default function HomePage() {
           <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
             By signing up, you agree to our{" "}
             <a
-              href="/terms"
+              href="/legal/terms"
               className="underline hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               target="_blank"
               rel="noopener noreferrer"
@@ -156,7 +156,7 @@ export default function HomePage() {
             </a>{" "}
             and{" "}
             <a
-              href="/privacy"
+              href="/legal/privacy"
               className="underline hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               target="_blank"
               rel="noopener noreferrer"
@@ -165,7 +165,7 @@ export default function HomePage() {
             </a>
             , including{" "}
             <a
-              href="/cookies"
+              href="/legal/cookies"
               className="underline hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               target="_blank"
               rel="noopener noreferrer"

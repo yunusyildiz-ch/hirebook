@@ -11,6 +11,10 @@ import HomePage from "@pages/HomePage";
 import AdminDashboard from "@pages/AdminDashboard";
 import Unauthorized from "@pages/Unauthorized";
 import UserManagement from "@pages/UserManagement";
+import LegalLayout from "@layout/LegalLayout";
+import TermsPage from "@pages/legal/TermsPage";
+import PrivacyPage from "@pages/legal/PrivacyPage";
+import CookiesPage from "@pages/legal/CookiesPage";
 
 const router = createBrowserRouter([
   // 🏠 Public Home Page (Guest Only)
@@ -55,6 +59,16 @@ const router = createBrowserRouter([
         path: "users",
         element: <UserManagement />,
       },
+    ],
+  },
+  // Legal Pages
+  {
+    path: "/legal",
+    element: <LegalLayout />,
+    children: [
+      { path: "terms", element: <TermsPage /> },
+      { path: "privacy", element: <PrivacyPage /> },
+      { path: "cookies", element: <CookiesPage /> },
     ],
   },
 
