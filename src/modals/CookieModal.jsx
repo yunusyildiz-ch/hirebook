@@ -48,9 +48,11 @@ export default function CookieModal({ onClose }) {
 
         <h2 className="text-xl font-semibold">Manage Cookie Preferences</h2>
         <p className="text-sm text-gray-600 dark:text-gray-400">
-          Customize how <span className="italic font-bold ">Qatip.App</span> uses cookies to enhance your experience.
+          Customize how <span className="italic font-bold ">Qatip.App</span>{" "}
+          uses cookies to enhance your experience.
           <span className="block mt-1">
-            <strong>Note:</strong> Essential cookies are always active for app functionality.
+            <strong>Note:</strong> Essential cookies are always active for app
+            functionality.
           </span>
         </p>
 
@@ -60,7 +62,8 @@ export default function CookieModal({ onClose }) {
             <div>
               <span className="font-medium">Analytics Cookies</span>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                Help us understand how users interact with Qatip to improve performance.
+                Help us understand how users interact with Qatip to improve
+                performance.
               </p>
             </div>
             <Toggle enabled={analytics} setEnabled={setAnalytics} />
@@ -71,7 +74,8 @@ export default function CookieModal({ onClose }) {
             <div>
               <span className="font-medium">Marketing Cookies</span>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                Used to show personalized ads and measure advertising effectiveness.
+                Used to show personalized ads and measure advertising
+                effectiveness.
               </p>
             </div>
             <Toggle enabled={marketing} setEnabled={setMarketing} />
@@ -93,14 +97,15 @@ export default function CookieModal({ onClose }) {
             <div>
               <span className="font-medium">Social Media Cookies</span>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                Enable sharing features and track engagement across social platforms.
+                Enable sharing features and track engagement across social
+                platforms.
               </p>
             </div>
             <Toggle enabled={social} setEnabled={setSocial} />
           </div>
         </div>
 
-        <div className="flex justify-end gap-3 pt-6">
+        <div className="flex flex-col sm:flex-row gap-2 sm:justify-end pt-6 w-full">
           <button
             onClick={onClose}
             className="text-sm px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
