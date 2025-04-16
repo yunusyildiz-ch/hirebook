@@ -22,7 +22,9 @@ export default defineConfig({
       "@services" : path.resolve(__dirname,"./src/services"),
       "@constants" : path.resolve(__dirname,"./src/constants"),
       "@assets" : path.resolve(__dirname,"./src/assets"),
-      "@hooks" : path.resolve(__dirname,"./src/hooks")
+      "@hooks" : path.resolve(__dirname,"./src/hooks"),
+      "@legal" : path.resolve(__dirname,"./src/legal"),
+      "@layout" : path.resolve(__dirname,"./src/layout")
     },
   },
 });
