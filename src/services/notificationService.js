@@ -7,7 +7,7 @@
 //     onSnapshot,
 //     serverTimestamp,
 //   } from "firebase/firestore";
-//   import { db } from "@/firebase";
+//   import { db } from "@firebase/config";
   
 //   const notificationsRef = collection(db, "notifications");
   

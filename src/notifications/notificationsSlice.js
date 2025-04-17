@@ -9,15 +9,18 @@ import { db } from "@services/firebase/config";
 
 export const listenToNotifications = createAsyncThunk(
   "notifications/listen",
-  async (_, { dispatch, rejectWithValue }) => {
+  async (userId, { dispatch, rejectWithValue }) => {
     try {
-      const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
+      const q = query(
+        collection(db, "notifications"),
+        orderBy("createdAt", "desc")
+      );
 
       onSnapshot(q, (snapshot) => {
-        const notifs = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const notifs = snapshot.docs
+          .map((doc) => ({ id: doc.id, ...doc.data() }))
+          .filter((notif) => notif.to === "all" || notif.to === userId); // 💡 filtre eklendi
+
         dispatch(setNotifications(notifs));
       });
 
