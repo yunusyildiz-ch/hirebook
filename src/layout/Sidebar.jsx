@@ -146,7 +146,7 @@ export default function Sidebar({ onClose, isMobile }) {
             {!collapsed && (
               <div
                 onClick={toggleCollapse}
-                className="flex flex-grow items-end justify-end pr-2 mt-4 pb-4 cursor-pointer border-t border-gray-200 dark:border-gray-700"
+                className="flex flex-grow items-end justify-end pr-2 mt-4 pb-6 cursor-pointer border-t border-gray-200 dark:border-gray-700"
                 title="Collapse Sidebar"
               >
                 <div className="p-2 rounded-full transition transform hover:scale-105">

@@ -28,7 +28,7 @@ export default function VerticalIconMenu({
   };
 
   return (
-    <div className="flex flex-col items-center justify-between h-screen w-16 bg-gray-100 dark:bg-gray-800 border-r border-gray-300 dark:border-gray-700">
+    <div className="flex flex-col items-center justify-between min-h-[100dvh] w-16 bg-gray-100 dark:bg-gray-800 border-r border-gray-300 dark:border-gray-700">
       <div className="flex flex-col items-center gap-6 mt-6">
         {/* ✅ Avatar Icon as Profile Button */}
         <IconButton
@@ -65,7 +65,7 @@ export default function VerticalIconMenu({
       </div>
 
       {/* 🌗 Theme Toggle */}
-      <div className="mb-4">
+      <div className="mb-6">
         <ThemeToggle />
       </div>
     </div>
