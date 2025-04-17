@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 import UserContentPanel from "./UserContentPanel";
 import VerticalIconMenu from "./components/VerticalIconMenu";
 
@@ -7,6 +7,12 @@ export default function UserPanel() {
   const [isMobile, setIsMobile] = useState(false);
   const [activePanel, setActivePanel] = useState(null);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const { user } = useAuth();
+
+  const userInitial =
+    user?.displayName?.charAt(0)?.toUpperCase() ||
+    user?.email?.charAt(0)?.toUpperCase() ||
+    "?";
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -24,15 +30,18 @@ export default function UserPanel() {
     return (
       <>
         <button
-          onClick={() => setIsMobileOpen(true)}
-          className="fixed bottom-4 right-4 z-50 bg-blue-600 text-white p-2 rounded-full shadow-lg hover:bg-blue-700"
+          onClick={() => {
+            setIsMobileOpen(true);
+            setActivePanel("profile");
+          }}
+          className="fixed bottom-4 right-4 z-50 bg-trabzonBlue border border-trabzonBordo text-trabzonBordo rounded-full w-12 h-12 flex items-center justify-center text-base font-semibold shadow-lg hover:scale-105 transition"
         >
-          <Menu size={20} />
+          {userInitial}
         </button>
 
         {isMobileOpen && (
           <UserContentPanel
-            type={activePanel || "settings"} // varsayılan bir panel göstermek için
+            type={activePanel || "profile"}
             onClose={() => {
               setIsMobileOpen(false);
               setActivePanel(null);
@@ -52,16 +61,19 @@ export default function UserPanel() {
         activePanel ? "w-80" : "w-16"
       }`}
     >
-      <VerticalIconMenu activePanel={activePanel} onTogglePanel={togglePanel} />
+      <VerticalIconMenu
+        activePanel={activePanel}
+        onTogglePanel={togglePanel}
+      />
 
       {activePanel && (
-  <UserContentPanel
-    key={activePanel} // 💥
-    type={activePanel}
-    onClose={togglePanel}
-    isMobile={false}
-  />
-)}
+        <UserContentPanel
+          key={activePanel}
+          type={activePanel}
+          onClose={togglePanel}
+          isMobile={false}
+        />
+      )}
     </aside>
   );
 }
