@@ -7,11 +7,13 @@ import tasksReducer from "../features/tasks/tasksSlice";
 import notesUIReducer from "../features/notes/notesUI.slice";
 import tasksUIReducer from "../features/tasks/tasksUI.slice";
 import candidatesUIReducer from "../features/candidates/candidatesUI.slice";
+import notificationsReducer from "@notifications/notificationsSlice";
 
 const rootReducer = combineReducers({
   notes: notesReducer,
   candidates: candidatesReducer,
   tasks: tasksReducer,
+  notifications: notificationsReducer,
 
   notesUI: notesUIReducer,
   tasksUI: tasksUIReducer,

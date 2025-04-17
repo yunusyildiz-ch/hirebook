@@ -26,6 +26,7 @@ export default defineConfig({
       "@legal" : path.resolve(__dirname,"./src/legal"),
       "@layout" : path.resolve(__dirname,"./src/layout"),
       "@modals" : path.resolve(__dirname,"./src/modals"),
+      "@notifications" : path.resolve(__dirname,"./src/notifications"),
     },
   },
 });

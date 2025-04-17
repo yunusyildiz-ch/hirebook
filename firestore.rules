@@ -25,7 +25,19 @@ service cloud.firestore {
       allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
     }
 
-    // 🔒 Fallback
+    // 🔔 Notifications
+    match /notifications/{notificationId} {
+      allow read: if request.auth != null && (
+        // 📣 genel bildirimler
+        !('userId' in resource.data) ||
+        // 🔐 kullanıcıya özel bildirimler
+        request.auth.uid == resource.data.userId
+      );
+      allow create: if request.auth.token.admin == true; // sadece admin yazabilir
+      allow delete: if false;
+    }
+
+    // 🔒 Fallback: diğer koleksiyonlara erişim engellenir
     match /{document=**} {
       allow read, write: if false;
     }
