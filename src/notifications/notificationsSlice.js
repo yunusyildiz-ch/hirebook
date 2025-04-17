@@ -5,8 +5,9 @@ import {
   orderBy,
   onSnapshot,
 } from "firebase/firestore";
-import { db } from "@services/firebase/config";
+import { db } from "@/services/firebase/config";
 
+// 🎧 Firestore'dan notification'ları dinleme
 export const listenToNotifications = createAsyncThunk(
   "notifications/listen",
   async (userId, { dispatch, rejectWithValue }) => {
@@ -16,10 +17,14 @@ export const listenToNotifications = createAsyncThunk(
         orderBy("createdAt", "desc")
       );
 
+      // Realtime dinleme
       onSnapshot(q, (snapshot) => {
         const notifs = snapshot.docs
           .map((doc) => ({ id: doc.id, ...doc.data() }))
-          .filter((notif) => notif.to === "all" || notif.to === userId); // 💡 filtre eklendi
+          .filter(
+            (notif) =>
+              notif.to === "all" || notif.userId === userId
+          ); // ✅ Sadece genel veya kullanıcıya özel
 
         dispatch(setNotifications(notifs));
       });
