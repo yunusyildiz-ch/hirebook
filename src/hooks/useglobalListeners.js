@@ -2,7 +2,10 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useAuth } from "@/contexts/AuthContext";
-import { listenToNotifications } from "@notifications/notificationsSlice";
+import {
+  startNotificationsListener,
+  stopNotificationsListener,
+} from "@notifications/notificationsSlice";
 
 export default function useGlobalListeners() {
   const dispatch = useDispatch();
@@ -10,7 +13,11 @@ export default function useGlobalListeners() {
 
   useEffect(() => {
     if (user?.uid) {
-      dispatch(listenToNotifications(user.uid));
+      startNotificationsListener(user.uid, dispatch);
     }
+
+    return () => {
+      stopNotificationsListener(); // ✅ logout veya user null olursa dinleyici durur
+    };
   }, [dispatch, user]);
 }

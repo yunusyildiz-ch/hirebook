@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { listenToNotifications } from "@notifications/notificationsSlice";
+import {
+  startNotificationsListener,
+  stopNotificationsListener,
+} from "@notifications/notificationsSlice";
 import NotificationItem from "@notifications/NotificationItem";
 import { useAuth } from "@/contexts/AuthContext";
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
@@ -15,8 +18,12 @@ export default function NotificationsPanel() {
 
   useEffect(() => {
     if (user?.uid) {
-      dispatch(listenToNotifications(user.uid));
+      startNotificationsListener(user.uid, dispatch);
     }
+
+    return () => {
+      stopNotificationsListener(); // 🔁 Unsubscribe on unmount
+    };
   }, [dispatch, user]);
 
   const handleClearAll = async () => {
