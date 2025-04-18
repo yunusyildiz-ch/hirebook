@@ -16,13 +16,22 @@ initializeApp();
 const db = getFirestore();
 
 /**
- * 📣 General Notification Sending
+ * 📣 Genel Bildirim Gönderme
  * HTTP POST: /sendGeneralNotification
- * Body: { title, message, type }
+ * Body: { title, message, type, category, priority, icon, url, actionText }
  */
 export const sendGeneralNotification = onRequest(async (req, res) => {
   try {
-    const { title, message, type = "info" } = req.body;
+    const {
+      title,
+      message,
+      type = "info",
+      category = "system",
+      priority = "normal",
+      icon = "bell",
+      url = "",
+      actionText = "View",
+    } = req.body;
 
     if (!title || !message) {
       res.status(400).send("Missing title or message.");
@@ -33,7 +42,14 @@ export const sendGeneralNotification = onRequest(async (req, res) => {
       title,
       message,
       type,
+      category,
+      priority,
+      icon,
+      url,
+      actionText,
       to: "all",
+      readBy: [],
+      dismissedBy: [],
       createdAt: Timestamp.now(),
     });
 
@@ -46,8 +62,7 @@ export const sendGeneralNotification = onRequest(async (req, res) => {
 });
 
 /**
- * 🎉 after registering new user Welcome Notification
- * Trigger: Firebase Auth → User Created
+ * 🎉 Welcome Bildirimi (Yeni Kullanıcı Kaydı)
  */
 export const sendWelcomeNotification = functions.auth.user().onCreate(async (user) => {
   try {
@@ -57,7 +72,14 @@ export const sendWelcomeNotification = functions.auth.user().onCreate(async (use
       title: "🎉 Welcome to Qatip!",
       message: `Hi ${displayName}, glad to have you on board.`,
       type: "info",
+      category: "welcome",
+      priority: "high",
+      icon: "user-plus",
+      url: "/dashboard",
+      actionText: "Get Started",
       userId: uid,
+      readBy: [],
+      dismissedBy: [],
       createdAt: Timestamp.now(),
     });
 

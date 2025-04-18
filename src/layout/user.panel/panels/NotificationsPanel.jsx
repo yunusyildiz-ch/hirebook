@@ -7,7 +7,6 @@ import { useAuth } from "@/contexts/AuthContext";
 export default function NotificationsPanel() {
   const dispatch = useDispatch();
   const { user } = useAuth();
-
   const { list: notifications, loading, error } = useSelector(
     (state) => state.notifications
   );
@@ -16,7 +15,7 @@ export default function NotificationsPanel() {
     if (user?.uid) {
       dispatch(listenToNotifications(user.uid));
     }
-  }, [dispatch, user?.uid]);
+  }, [dispatch, user]);
 
   return (
     <div className="space-y-4 text-sm text-gray-800 dark:text-gray-200">

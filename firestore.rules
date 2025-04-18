@@ -2,6 +2,33 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // 🔔 Notifications
+    match /notifications/{notificationId} {
+      allow read: if request.auth != null &&
+        (!("userId" in resource.data) || request.auth.uid == resource.data.userId);
+
+      allow create: if request.auth != null && request.auth.token.admin == true;
+
+      allow update: if request.auth != null &&
+(
+  // ✅ okuma işlemi (readBy)
+  (
+    request.resource.data.readBy.size() == resource.data.readBy.size() + 1 &&
+    request.resource.data.readBy.hasAll(resource.data.readBy) &&
+    request.resource.data.readBy.hasOnly(resource.data.readBy.concat([request.auth.uid]))
+  )
+  ||
+
+  // ✅ dismiss işlemi (dismissedBy)
+  (
+    request.resource.data.dismissedBy.size() == resource.data.dismissedBy.size() + 1 &&
+    request.resource.data.dismissedBy.hasAll(resource.data.dismissedBy) &&
+    request.resource.data.dismissedBy.hasOnly(resource.data.dismissedBy.concat([request.auth.uid]))
+  )
+);
+      allow delete: if false;
+    }
+
     // 👤 User Profile
     match /users/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
@@ -25,14 +52,7 @@ service cloud.firestore {
       allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
     }
 
-    // 🔔 Notifications
-  match /notifications/{notificationId} {
-  allow read: if request.auth != null &&
-    (!('userId' in resource.data) || request.auth.uid == resource.data.userId);
-  allow create: if request.auth.token.admin == true;
-}
-
-    // 🔒 Fallback: diğer koleksiyonlara erişim engellenir
+    // 🔒 Diğer her şey kapalı
     match /{document=**} {
       allow read, write: if false;
     }

@@ -1,16 +1,19 @@
+// VerticalIconMenu.jsx
 import { Bell, Settings, LogOut } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { showSuccess, showError } from "@/utils/toastUtils";
+import { useSelector } from "react-redux";
 
-export default function VerticalIconMenu({
-  activePanel,
-  onTogglePanel,
-  isSidebar = false,
-}) {
+export default function VerticalIconMenu({ activePanel, onTogglePanel }) {
   const { logout, user } = useAuth();
   const navigate = useNavigate();
+
+  const { list: notifications } = useSelector((state) => state.notifications);
+  const unreadCount = notifications?.filter(
+    (n) => !n.readBy.includes(user?.uid)
+  )?.length || 0;
 
   const userInitial =
     user?.displayName?.charAt(0)?.toUpperCase() ||
@@ -30,7 +33,6 @@ export default function VerticalIconMenu({
   return (
     <div className="flex flex-col items-center justify-between min-h-[100dvh] w-16 bg-gray-100 dark:bg-gray-800 border-r border-gray-300 dark:border-gray-700">
       <div className="flex flex-col items-center gap-6 mt-6">
-        {/* ✅ Avatar Icon as Profile Button */}
         <IconButton
           icon={
             <div className="bg-trabzonBlue border border-trabzonBordo text-trabzonBordo rounded-full w-10 h-10 flex items-center justify-center text-sm font-semibold">
@@ -41,21 +43,25 @@ export default function VerticalIconMenu({
           onClick={() => onTogglePanel("profile")}
         />
 
-        {/* 🔔 Notifications */}
         <IconButton
-          icon={<Bell size={20} />}
+          icon={
+            <div className="relative">
+              <Bell size={20} />
+              {unreadCount > 0 && (
+                <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500" />
+              )}
+            </div>
+          }
           active={activePanel === "notifications"}
           onClick={() => onTogglePanel("notifications")}
         />
 
-        {/* ⚙️ Settings */}
         <IconButton
           icon={<Settings size={20} />}
           active={activePanel === "settings"}
           onClick={() => onTogglePanel("settings")}
         />
 
-        {/* 🚪 Logout */}
         <button
           onClick={handleLogout}
           className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition"
@@ -64,7 +70,6 @@ export default function VerticalIconMenu({
         </button>
       </div>
 
-      {/* 🌗 Theme Toggle */}
       <div className="mb-6">
         <ThemeToggle />
       </div>

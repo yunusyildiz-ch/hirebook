@@ -20,12 +20,19 @@ export const listenToNotifications = createAsyncThunk(
       // Realtime dinleme
       onSnapshot(q, (snapshot) => {
         const notifs = snapshot.docs
-          .map((doc) => ({ id: doc.id, ...doc.data() }))
+          .map((doc) => {
+            const data = doc.data();
+            return {
+              id: doc.id,
+              ...data,
+              createdAt: data.createdAt?.toMillis?.() || Date.now(), // ✅ serializable timestamp
+            };
+          })
           .filter(
             (notif) =>
-              notif.to === "all" || notif.userId === userId
-          ); // ✅ Sadece genel veya kullanıcıya özel
-
+              (notif.to === "all" || notif.userId === userId) &&
+              !(notif.dismissedBy || []).includes(userId) 
+          )
         dispatch(setNotifications(notifs));
       });
 
