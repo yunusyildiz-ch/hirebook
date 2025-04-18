@@ -73,7 +73,7 @@ export const sendWelcomeNotification = functions.auth.user().onCreate(async (use
       message: `Hi ${displayName}, glad to have you on board.`,
       type: "info",
       category: "welcome",
-      priority: "high",
+      priority: "normal",
       icon: "user-plus",
       url: "/dashboard",
       actionText: "Get Started",
