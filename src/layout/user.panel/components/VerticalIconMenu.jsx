@@ -1,4 +1,3 @@
-// VerticalIconMenu.jsx
 import { Bell, Settings, LogOut } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
@@ -30,6 +29,7 @@ export default function VerticalIconMenu({ activePanel, onTogglePanel }) {
   return (
     <div className="flex flex-col items-center justify-between min-h-[100dvh] w-16 bg-gray-100 dark:bg-gray-800 border-r border-gray-300 dark:border-gray-700">
       <div className="flex flex-col items-center gap-6 mt-6">
+        {/* 🧑 Avatar */}
         <IconButton
           icon={
             <div className="bg-trabzonBlue border border-trabzonBordo text-trabzonBordo rounded-full w-10 h-10 flex items-center justify-center text-sm font-semibold">
@@ -40,6 +40,7 @@ export default function VerticalIconMenu({ activePanel, onTogglePanel }) {
           onClick={() => onTogglePanel("profile")}
         />
 
+        {/* 🔔 Notification */}
         <IconButton
           icon={
             <div className="relative">
@@ -55,17 +56,24 @@ export default function VerticalIconMenu({ activePanel, onTogglePanel }) {
           onClick={() => onTogglePanel("notifications")}
         />
 
+        {/* ⚙️ Settings */}
         <IconButton
           icon={<Settings size={20} />}
           active={activePanel === "settings"}
           onClick={() => onTogglePanel("settings")}
         />
 
+        {/* 🚪 Logout */}
         <button
           onClick={handleLogout}
-          className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition"
+          className="group transition"
         >
-          <LogOut size={20} />
+          <div className="p-2 rounded-full hover:bg-red-100 dark:hover:bg-red-900">
+            <LogOut
+              size={20}
+              className="text-red-600 dark:text-red-400 group-hover:text-red-700 dark:group-hover:text-red-300 transition"
+            />
+          </div>
         </button>
       </div>
 
@@ -80,11 +88,16 @@ function IconButton({ icon, onClick, active }) {
   return (
     <button
       onClick={onClick}
-      className={`transition p-1 rounded-full ${
-        active ? "text-blue-600 font-bold" : "text-gray-600 dark:text-gray-300"
-      } hover:text-blue-600 dark:hover:text-blue-400`}
+      className={`
+        group transition 
+        p-2 rounded-full 
+        ${active ? "bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300" : "text-gray-600 dark:text-gray-300"}
+        hover:bg-blue-100 dark:hover:bg-gray-700
+      `}
     >
-      {icon}
+      <div className="flex items-center justify-center">
+        {icon}
+      </div>
     </button>
   );
 }
