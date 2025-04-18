@@ -4,8 +4,10 @@ import Sidebar from "./Sidebar";
 import Header from "./common/Header";
 import UserPanel from "./user.panel/UserPanel";
 import CookieBanner from "@components/CookieBanner";
+import useGlobalListeners from "@hooks/useGlobalListeners";
 
 export default function Layout() {
+  useGlobalListeners();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
