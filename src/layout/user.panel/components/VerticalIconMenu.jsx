@@ -4,17 +4,13 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { showSuccess, showError } from "@/utils/toastUtils";
 import { useSelector } from "react-redux";
+import UserAvatar from "@layout/user.panel/components/UserAvatar"; 
 
 export default function VerticalIconMenu({ activePanel, onTogglePanel }) {
-  const { logout, user } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   const unreadCount = useSelector((state) => state.notificationBadge.unreadCount);
-
-  const userInitial =
-    user?.displayName?.charAt(0)?.toUpperCase() ||
-    user?.email?.charAt(0)?.toUpperCase() ||
-    "?";
 
   const handleLogout = async () => {
     try {
@@ -27,15 +23,11 @@ export default function VerticalIconMenu({ activePanel, onTogglePanel }) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between min-h-[100dvh] w-16  dark:bg-gray-800 border-r border-gray-300 dark:border-gray-700">
+    <div className="flex flex-col items-center justify-between min-h-[100dvh] w-16 dark:bg-gray-800 border-r border-gray-300 dark:border-gray-700">
       <div className="flex flex-col items-center gap-6 mt-6">
         {/* 🧑 Avatar */}
         <IconButton
-          icon={
-            <div className="bg-trabzonBlue hover:border border-trabzonBordo text-trabzonBordo rounded-full w-10 h-10 flex items-center justify-center text-sm font-semibold">
-              {userInitial}
-            </div>
-          }
+          icon={<UserAvatar size={40} />}
           active={activePanel === "profile"}
           onClick={() => onTogglePanel("profile")}
         />
@@ -101,3 +93,4 @@ function IconButton({ icon, onClick, active }) {
     </button>
   );
 }
+

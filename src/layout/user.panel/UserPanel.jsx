@@ -1,18 +1,12 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "@/contexts/AuthContext";
 import UserContentPanel from "./UserContentPanel";
 import VerticalIconMenu from "./components/VerticalIconMenu";
+import UserAvatar from "@layout/user.panel/components/UserAvatar";
 
 export default function UserPanel() {
   const [isMobile, setIsMobile] = useState(false);
   const [activePanel, setActivePanel] = useState(null);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const { user } = useAuth();
-
-  const userInitial =
-    user?.displayName?.charAt(0)?.toUpperCase() ||
-    user?.email?.charAt(0)?.toUpperCase() ||
-    "?";
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -34,9 +28,9 @@ export default function UserPanel() {
             setIsMobileOpen(true);
             setActivePanel("profile");
           }}
-          className="fixed bottom-4 right-4 z-50 bg-trabzonBlue border border-trabzonBordo text-trabzonBordo rounded-full w-12 h-12 flex items-center justify-center text-base font-semibold shadow-lg hover:scale-105 transition"
+          className="fixed bottom-4 right-4 z-50 bg-white border border-gray-300 dark:border-gray-700 rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:scale-105 transition"
         >
-          {userInitial}
+          <UserAvatar size={28} />
         </button>
 
         {isMobileOpen && (

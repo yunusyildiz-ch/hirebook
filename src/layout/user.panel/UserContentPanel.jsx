@@ -1,7 +1,6 @@
-// UserContentPanel.jsx
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
-import ProfilePanel from "./panels/ProfilePanel";
+import ProfilePanel from "./profile/ProfilePanel";
 import NotificationsPanel from "./panels/NotificationsPanel";
 import SettingsPanel from "./panels/SettingsPanel";
 import VerticalIconMenu from "./components/VerticalIconMenu";
