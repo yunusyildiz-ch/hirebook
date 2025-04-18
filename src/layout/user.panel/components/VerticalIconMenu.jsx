@@ -10,10 +10,7 @@ export default function VerticalIconMenu({ activePanel, onTogglePanel }) {
   const { logout, user } = useAuth();
   const navigate = useNavigate();
 
-  const { list: notifications } = useSelector((state) => state.notifications);
-  const unreadCount = notifications?.filter(
-    (n) => !n.readBy.includes(user?.uid)
-  )?.length || 0;
+  const unreadCount = useSelector((state) => state.notificationBadge.unreadCount);
 
   const userInitial =
     user?.displayName?.charAt(0)?.toUpperCase() ||
@@ -48,7 +45,9 @@ export default function VerticalIconMenu({ activePanel, onTogglePanel }) {
             <div className="relative">
               <Bell size={20} />
               {unreadCount > 0 && (
-                <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500" />
+                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold px-1.5 py-[2px] rounded-full">
+                  {unreadCount > 9 ? "9+" : unreadCount}
+                </span>
               )}
             </div>
           }

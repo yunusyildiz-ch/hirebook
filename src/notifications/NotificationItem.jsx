@@ -1,4 +1,3 @@
-// NotificationItem.jsx
 import { formatDistanceToNow } from "date-fns";
 import { useState } from "react";
 import { X, ArrowRight } from "lucide-react";
@@ -29,6 +28,7 @@ export default function NotificationItem({ notification }) {
 
   const isRead = readBy.includes(user?.uid);
   const isClickable = !!url && url !== "#";
+
   const handleToggleExpand = async () => {
     if (!isRead && user?.uid) {
       try {
@@ -40,8 +40,7 @@ export default function NotificationItem({ notification }) {
         console.error("Mark as read failed:", err);
       }
     }
-  
-    setExpanded((prev) => !prev); // ✅ tıklamada genişlet
+    setExpanded((prev) => !prev);
   };
 
   const handleDismiss = async () => {
@@ -56,7 +55,7 @@ export default function NotificationItem({ notification }) {
         console.error("Dismiss failed:", err);
       }
     } else {
-      setDismissed(true); // zaten varsa direkt gizle
+      setDismissed(true);
     }
   };
 
@@ -65,17 +64,23 @@ export default function NotificationItem({ notification }) {
   return (
     <div
       className={cn(
-        "p-4 rounded-md border shadow-sm cursor-pointer relative transition-all group",
-        type === "success" &&
-          "border-green-300 bg-green-50 text-green-800 dark:bg-green-900 dark:text-green-100",
-        type === "error" &&
-          "border-red-300 bg-red-50 text-red-800 dark:bg-red-900 dark:text-red-100",
-        type === "info" &&
-          "border-blue-300 bg-blue-50 text-blue-800 dark:bg-blue-900 dark:text-blue-100",
-        priority === "high" && "ring-2 ring-red-500",
-        !isRead
-          ? "ring-2 ring-yellow-400 font-semibold"
-          : "opacity-70 hover:opacity-100 transition-all"
+        "p-4 rounded-xl border cursor-pointer relative transition-all group overflow-hidden hover:shadow-sm",
+        {
+          // 🎨 Type-based background
+          "border-green-300 bg-green-50 dark:bg-[#0f2f1a] text-green-800 dark:text-green-100": type === "success",
+          "border-red-300 bg-red-50 dark:bg-[#331010] text-red-800 dark:text-red-100": type === "error",
+          "border-blue-300 bg-blue-50 dark:bg-[#0f2539] text-blue-800 dark:text-blue-100": type === "info",
+
+          // 🔔 Priority highlight
+          "ring-2 ring-red-500": priority === "high",
+
+          // ✅ Unread styling
+          "ring-2 ring-yellow-400 font-semibold hover:bg-yellow-100 dark:hover:bg-[#3a3000]":
+            !isRead,
+
+          // ✅ Read styling
+          "opacity-70 hover:opacity-100": isRead,
+        }
       )}
       onClick={handleToggleExpand}
     >
@@ -105,12 +110,12 @@ export default function NotificationItem({ notification }) {
       </h4>
 
       {expanded && (
-        <p className="text-xs mb-2 text-gray-700 dark:text-gray-200">
+        <p className="text-sm mb-2 leading-relaxed text-gray-700 dark:text-gray-200">
           {message}
         </p>
       )}
 
-      <div className="flex items-center justify-between text-[10px] text-gray-500 dark:text-gray-400 mt-1">
+      <div className="flex items-center justify-between text-[11px] text-gray-500 dark:text-gray-400 mt-1">
         <span>
           {createdAt?.toDate
             ? formatDistanceToNow(createdAt.toDate(), { addSuffix: true })
@@ -118,7 +123,7 @@ export default function NotificationItem({ notification }) {
         </span>
 
         {url && url !== "#" && (
-          <span className="text-blue-500 text-xs font-medium flex items-center gap-1 group-hover:underline">
+          <span className="text-blue-600 text-xs font-medium flex items-center gap-1 group-hover:underline">
             {actionText} <ArrowRight size={12} />
           </span>
         )}
@@ -126,4 +131,3 @@ export default function NotificationItem({ notification }) {
     </div>
   );
 }
-

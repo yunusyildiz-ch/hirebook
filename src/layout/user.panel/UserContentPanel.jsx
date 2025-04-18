@@ -1,3 +1,4 @@
+// UserContentPanel.jsx
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import ProfilePanel from "./panels/ProfilePanel";
@@ -8,7 +9,7 @@ import VerticalIconMenu from "./components/VerticalIconMenu";
 const panelComponents = {
   settings: SettingsPanel,
   notifications: NotificationsPanel,
-  profile: ProfilePanel, // ✅ ekledik
+  profile: ProfilePanel,
 };
 
 export default function UserContentPanel({ type, onClose }) {
@@ -17,7 +18,6 @@ export default function UserContentPanel({ type, onClose }) {
 
   const PanelContent = panelComponents[activeType];
 
-  // Dışarıdan yeni type gelirse güncelle
   useEffect(() => {
     setActiveType(type);
   }, [type]);
@@ -36,7 +36,7 @@ export default function UserContentPanel({ type, onClose }) {
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex justify-end">
       <div
         ref={panelRef}
-        className="flex h-full w-full max-w-[600px] bg-white dark:bg-gray-900 shadow-xl border-l border-gray-200 dark:border-gray-700 animate-slide-in"
+        className="flex h-full w-full max-w-full sm:max-w-[600px] bg-white dark:bg-gray-900 shadow-xl border-l border-gray-200 dark:border-gray-700 animate-slide-in"
       >
         <VerticalIconMenu
           activePanel={activeType}
@@ -44,7 +44,7 @@ export default function UserContentPanel({ type, onClose }) {
           isSidebar
         />
 
-        <div className="flex-1 p-6 sm:p-8 overflow-y-auto">
+        <div className="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-semibold dark:text-white capitalize">
               {activeType}
@@ -67,3 +67,5 @@ export default function UserContentPanel({ type, onClose }) {
     </div>
   );
 }
+
+

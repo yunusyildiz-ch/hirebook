@@ -6,6 +6,7 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { db } from "@/services/firebase/config";
+import { setUnreadCount } from "./notificationBadgeSlice";
 
 // 🎧 Firestore'dan notification'ları dinleme
 export const listenToNotifications = createAsyncThunk(
@@ -25,15 +26,17 @@ export const listenToNotifications = createAsyncThunk(
             return {
               id: doc.id,
               ...data,
-              createdAt: data.createdAt?.toMillis?.() || Date.now(), // ✅ serializable timestamp
+              createdAt: data.createdAt?.toMillis?.() || Date.now(),
             };
           })
           .filter(
             (notif) =>
               (notif.to === "all" || notif.userId === userId) &&
-              !(notif.dismissedBy || []).includes(userId) 
-          )
-        dispatch(setNotifications(notifs));
+              !(notif.dismissedBy || []).includes(userId)
+          );
+          dispatch(setNotifications(notifs));
+          const unread = notifs.filter((n) => !n.readBy.includes(userId)).length;
+          dispatch(setUnreadCount(unread));
       });
 
       return;
