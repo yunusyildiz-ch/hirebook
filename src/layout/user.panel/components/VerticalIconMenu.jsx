@@ -4,12 +4,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { showSuccess, showError } from "@/utils/toastUtils";
 import { useSelector } from "react-redux";
-import UserAvatar from "@layout/user.panel/components/UserAvatar"; 
+import UserAvatar from "@layout/user.panel/components/UserAvatar";
 
 export default function VerticalIconMenu({ activePanel, onTogglePanel }) {
   const { logout } = useAuth();
   const navigate = useNavigate();
-
   const unreadCount = useSelector((state) => state.notificationBadge.unreadCount);
 
   const handleLogout = async () => {
@@ -56,17 +55,10 @@ export default function VerticalIconMenu({ activePanel, onTogglePanel }) {
         />
 
         {/* 🚪 Logout */}
-        <button
+        <IconButton
+          icon={<LogOut size={20} className="text-red-600 dark:text-red-400 group-hover:text-red-700 dark:group-hover:text-red-300 transition" />}
           onClick={handleLogout}
-          className="group transition"
-        >
-          <div className="p-3 rounded-full hover:bg-red-100 dark:hover:bg-red-900">
-            <LogOut
-              size={20}
-              className="text-red-600 dark:text-red-400 group-hover:text-red-700 dark:group-hover:text-red-300 transition"
-            />
-          </div>
-        </button>
+        />
       </div>
 
       <div className="mb-6">
@@ -82,8 +74,10 @@ function IconButton({ icon, onClick, active }) {
       onClick={onClick}
       className={`
         group transition 
-        p-3 rounded-full 
-        ${active ? "bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300" : "text-gray-600 dark:text-gray-300"}
+        p-3 rounded-full border
+        ${active
+          ? "bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300"
+          : "text-gray-600 dark:text-gray-300 border-transparent"}
         hover:bg-gray-100 dark:hover:bg-gray-700
       `}
     >

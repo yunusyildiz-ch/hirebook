@@ -1,14 +1,18 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import NoteList from "../features/notes/components/NoteList";
-import { loadNotes } from "../features/notes/notesThunks";
+import { loadNotes } from "@/features/notes/notesThunks";
 import { useAuth } from "@/contexts/AuthContext";
-import FolderView from "../features/notes/views/FolderView";
-import NoteEditor from "../features/notes/components/NoteEditor";
-import NoteDetail from "../features/notes/components/NoteDetail";
-import { selectAllNotes, selectSelectedNote } from "../features/notes/notesSelectors";
-import { selectActiveTab, selectViewMode } from "../features/notes/notesSelectors";
-import { clearSelectedNote } from "../features/notes/notesSlice";
+import NoteList from "@/features/notes/components/NoteList";
+import NoteEditor from "@/features/notes/components/NoteEditor";
+import NoteDetail from "@/features/notes/components/NoteDetail";
+import FolderView from "@/features/notes/views/FolderView";
+import { clearSelectedNote } from "@/features/notes/notesSlice";
+import {
+  selectActiveTab,
+  selectSelectedNote,
+  selectViewMode,
+  selectAllNotes,
+} from "@/features/notes/notesSelectors";
 
 export default function Notes() {
   const dispatch = useDispatch();
@@ -25,19 +29,25 @@ export default function Notes() {
     }
   }, [dispatch, user?.uid]);
 
-useEffect(() => {
-  if (activeTab === "New" && selectedNote) {
-    dispatch(clearSelectedNote());
-  }
-}, [activeTab, selectedNote]);
+  useEffect(() => {
+    if (activeTab === "New" && selectedNote) {
+      dispatch(clearSelectedNote());
+    }
+  }, [activeTab, selectedNote]);
 
-  if (activeTab === "New") {
-    dispatch(clearSelectedNote());
-    return <NoteEditor />;
-  }
-  if (activeTab === "Folders") return <FolderView />;
-  if (viewMode === "edit" && selectedNote) return <NoteEditor />;
-  if (viewMode === "view" && selectedNote) return <NoteDetail />;
-
-  return <NoteList notes={notes} />;
+  return (
+    <>
+      {activeTab === "New" ? (
+        <NoteEditor />
+      ) : activeTab === "Folders" ? (
+        <FolderView />
+      ) : viewMode === "edit" && selectedNote ? (
+        <NoteEditor />
+      ) : viewMode === "view" && selectedNote ? (
+        <NoteDetail />
+      ) : (
+        <NoteList notes={notes} />
+      )}
+    </>
+  );
 }

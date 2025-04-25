@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Facebook, Twitter, Linkedin, Github } from "lucide-react";
+import { Github } from "lucide-react";
 import LoginModal from "@modals/LoginModal";
 import RegisterModal from "@modals/RegisterModal";
 import QatipLogo from "@assets/QatipLogo";
@@ -9,6 +9,7 @@ import ThemeToggle from "@components/ThemeToggle";
 import { FcGoogle } from "react-icons/fc";
 import { RiAppleFill } from "react-icons/ri";
 import { useGoogleLogin } from "@hooks/useGoogleLogin";
+import { TbBrandBluesky, TbBrandLinkedin, TbBrandGithub } from "react-icons/tb";
 import DownloadSection from "@components/ui/DownloadSection";
 import MobilAppStoreBadges from "@assets/MobilAppStoreBadges";
 import ComingSoonModal from "@modals/ComingSoonModal";
@@ -77,21 +78,29 @@ export default function HomePage() {
           {/* Footer */}
           <footer className="pt-10 text-sm text-gray-500 dark:text-gray-400">
             <div className="flex gap-4 items-center mb-2">
-              <a href="#" aria-label="Facebook" className="hover:text-blue-500">
-                <Facebook size={18} />
-              </a>
-              <a href="#" aria-label="Twitter" className="hover:text-sky-400">
-                <Twitter size={18} />
-              </a>
-              <a href="#" aria-label="LinkedIn" className="hover:text-blue-700">
-                <Linkedin size={18} />
-              </a>
               <a
-                href="#"
+                href="https://github.com/Qatip-App"
                 aria-label="GitHub"
+                target="_blank"
                 className="hover:text-gray-900 dark:hover:text-white"
               >
-                <Github size={18} />
+                <TbBrandGithub size={20} />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/qatip-app/"
+                aria-label="LinkedIn"
+                target="_blank"
+                className="hover:text-blue-700"
+              >
+                <TbBrandLinkedin size={20} />
+              </a>
+              <a
+                href="https://bsky.app/profile/qatip-app.bsky.social"
+                aria-label="Bluesky"
+                target="_blank"
+                className="hover:text-sky-400"
+              >
+                <TbBrandBluesky size={20} />
               </a>
             </div>
             © {new Date().getFullYear()} Qatip App — Built with ❤️

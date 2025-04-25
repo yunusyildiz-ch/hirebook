@@ -2,10 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import { loadNotes } from "./notesThunks";
 
 const initialState = {
+  activeTab: "All",
+  viewMode: "list", // list | view | edit
+  searchTerm: "",   // ✅ NEW
   loading: false,
   error: null,
-  activeTab: "All", // All | Folders | New
-  viewMode: "list", // list | view | edit
 };
 
 const notesUISlice = createSlice({
@@ -17,6 +18,9 @@ const notesUISlice = createSlice({
     },
     setActiveTab(state, action) {
       state.activeTab = action.payload;
+    },
+    setSearchTerm(state, action) {     // ✅ NEW
+      state.searchTerm = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -35,5 +39,5 @@ const notesUISlice = createSlice({
   },
 });
 
-export const { setViewMode, setActiveTab } = notesUISlice.actions;
+export const { setViewMode, setActiveTab, setSearchTerm } = notesUISlice.actions;
 export default notesUISlice.reducer;

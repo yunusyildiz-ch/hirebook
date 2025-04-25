@@ -11,39 +11,41 @@ export default function Layout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Detect screen size for responsiveness
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
-      setIsSidebarOpen(window.innerWidth >= 768); // Close sidebar on mobile
+      setIsSidebarOpen(window.innerWidth >= 768);
     };
-    handleResize(); // Initial check
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
-
   const closeSidebar = () => {
     if (isMobile) setIsSidebarOpen(false);
   };
 
   return (
-    <div className="min-h-screen flex bg-white dark:bg-gray-900 transition-all duration-300">
+    <div className="h-[100svh] w-full flex bg-white dark:bg-gray-900 transition-colors duration-300 overflow-hidden">
+      {/* Sidebar */}
       {isSidebarOpen && <Sidebar onClose={closeSidebar} isMobile={isMobile} />}
 
+      {/* Main Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Unified Sticky Header (includes tab bar if /notes) */}
         <Header onToggleSidebar={toggleSidebar} />
 
-        <main className="flex-1 p-6 overflow-y-auto">
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto p-6">
           <Outlet />
           <CookieBanner />
-        </main>
-           {/* 🍪 Cookie Banner */}
-           
+        </div>
       </div>
+
+      {/* Right User Panel */}
       <UserPanel />
-      
     </div>
   );
 }
+
