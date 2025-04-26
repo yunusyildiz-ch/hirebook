@@ -1,11 +1,10 @@
 import { useDispatch } from "react-redux";
 import { Pencil, Trash2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
-import { setSelectedNote, clearSelectedNote } from "../notesSlice";
-import { setViewMode, setActiveTab } from "../notesUI.slice";
-import { deleteNoteThunk } from "../notesThunks";
+import { setSelectedNote } from "../notesSlice";
+import { setViewMode } from "../notesUI.slice";
 
-export default function NoteCard({ note }) {
+export default function NoteCard({ note, onDelete }) {
   const dispatch = useDispatch();
 
   const handleView = () => {
@@ -19,12 +18,9 @@ export default function NoteCard({ note }) {
     dispatch(setViewMode("edit"));
   };
 
-  const handleDelete = async (e) => {
+  const handleDelete = (e) => {
     e.stopPropagation();
-    await dispatch(deleteNoteThunk(note.id));
-    dispatch(clearSelectedNote());
-    dispatch(setActiveTab("All"));
-    dispatch(setViewMode("list"));
+    onDelete(note);
   };
 
   return (

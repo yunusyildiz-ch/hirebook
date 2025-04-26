@@ -1,5 +1,3 @@
-// src/features/candidates/components/CandidateDetail.jsx
-
 import { useDispatch } from "react-redux";
 import { ArrowLeft, Pencil, Trash2 } from "lucide-react";
 import { setViewMode, clearSelectedCandidate } from "../candidatesUI.slice";
