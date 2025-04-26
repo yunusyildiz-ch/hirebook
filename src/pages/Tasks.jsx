@@ -14,7 +14,6 @@ import {
 import {
   setViewMode,
   clearSelectedTask,
-  setSelectedTask,
 } from "@/features/tasks/tasksUI.slice";
 import {
   startTasksListener,
@@ -91,18 +90,6 @@ export default function Tasks() {
 
   return (
     <>
-      <div className="flex justify-end px-6 pb-4">
-        <button
-          onClick={() => {
-            dispatch(clearSelectedTask());
-            dispatch(setViewMode("edit"));
-          }}
-          className="px-1  bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-        >
-          + New Task
-        </button>
-      </div>
-
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 px-6 pb-6">
         {filteredTasks.map((task) => (
           <TaskCard

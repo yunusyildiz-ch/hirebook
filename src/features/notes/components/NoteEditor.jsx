@@ -1,38 +1,23 @@
-import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState, useRef } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
-import Image from "@tiptap/extension-image";
-import TextStyle from "@tiptap/extension-text-style";
-import Color from "@tiptap/extension-color";
-import Highlight from "@tiptap/extension-highlight";
-import Placeholder from "@tiptap/extension-placeholder";
-import Toolbar from "./Toolbar";
+import { selectSelectedNote, selectPreviousViewMode } from "../notesSelectors";
 import { addNoteThunk, updateNoteThunk } from "../notesThunks";
 import { clearSelectedNote } from "../notesSlice";
 import { setViewMode, setActiveTab } from "../notesUI.slice";
-import { selectSelectedNote } from "../notesSelectors";
-import toast from "react-hot-toast";
+import Toolbar from "./Toolbar";
 
 export default function NoteEditor() {
   const dispatch = useDispatch();
   const selectedNote = useSelector(selectSelectedNote);
+  const previousViewMode = useSelector(selectPreviousViewMode);
+
   const [title, setTitle] = useState("");
   const titleInputRef = useRef(null);
 
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Underline,
-      Image,
-      TextStyle,
-      Color,
-      Highlight,
-      Placeholder.configure({
-        placeholder: "Start writing your note...",
-      }),
-    ],
+    extensions: [StarterKit],
     content: selectedNote?.text || "",
     autofocus: true,
     editable: true,
@@ -48,42 +33,39 @@ export default function NoteEditor() {
         setTitle("");
       }
     }
-
     if (!selectedNote && titleInputRef.current) {
       titleInputRef.current.focus();
     }
   }, [editor, selectedNote]);
 
   const handleSave = async () => {
-    if (!editor) return;
-    const text = editor.getHTML().trim();
+    const text = editor?.getHTML() || "";
     const trimmedTitle = title.trim() || "Untitled Note";
 
-    if (!text || text === "<p></p>") {
-      toast.error("Note content is empty.");
-      return;
-    }
+    if (!text || text === "<p></p>") return;
 
     if (selectedNote) {
-      await dispatch(
-        updateNoteThunk({ id: selectedNote.id, title: trimmedTitle, text })
-      );
-      dispatch(setViewMode("view"));
+      await dispatch(updateNoteThunk({ id: selectedNote.id, title: trimmedTitle, text }));
     } else {
       await dispatch(addNoteThunk({ title: trimmedTitle, text }));
+    }
+
+    if (previousViewMode === "view") {
+      dispatch(setViewMode("view"));
+    } else {
       dispatch(clearSelectedNote());
-      dispatch(setActiveTab("All"));
       dispatch(setViewMode("list"));
+      dispatch(setActiveTab("All"));
     }
   };
 
   const handleCancel = () => {
-    if (selectedNote) {
+    if (previousViewMode === "view") {
       dispatch(setViewMode("view"));
     } else {
-      dispatch(setActiveTab("All"));
       dispatch(clearSelectedNote());
       dispatch(setViewMode("list"));
+      dispatch(setActiveTab("All"));
     }
   };
 
@@ -104,25 +86,23 @@ export default function NoteEditor() {
       {/* Modern Toolbar */}
       <Toolbar editor={editor} />
 
-      {/* Editor area */}
+      {/* Editor */}
       <EditorContent
         editor={editor}
-        tabIndex={0}
-        onClick={() => editor?.commands.focus()}
         className="min-h-[60vh] w-full focus:outline-none px-6 py-4 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-lg shadow-inner cursor-text prose dark:prose-invert max-w-none"
       />
 
-      {/* Action buttons */}
-      <div className="flex justify-end gap-2 mt-4">
+      {/* Actions */}
+      <div className="flex justify-end gap-2">
         <button
           onClick={handleCancel}
-          className="px-4 py-2 text-sm border border-gray-300 dark:border-gray-500 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+          className="px-4 py-2 text-sm border border-gray-300 dark:border-gray-500 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
         >
           Cancel
         </button>
         <button
           onClick={handleSave}
-          className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
         >
           Save
         </button>
@@ -130,3 +110,4 @@ export default function NoteEditor() {
     </div>
   );
 }
+

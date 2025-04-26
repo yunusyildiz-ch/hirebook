@@ -1,18 +1,18 @@
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { loadNotes } from "@/features/notes/notesThunks";
-import { useAuth } from "@/contexts/AuthContext";
-import NoteList from "@/features/notes/components/NoteList";
-import NoteEditor from "@/features/notes/components/NoteEditor";
-import NoteDetail from "@/features/notes/components/NoteDetail";
-import FolderView from "@/features/notes/views/FolderView";
-import { clearSelectedNote } from "@/features/notes/notesSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { loadNotes } from "@notes/notesThunks";
+import { useAuth } from "@contexts/AuthContext";
+import NoteList from "@notes/components/NoteList";
+import NoteEditor from "@notes/components/NoteEditor";
+import NoteDetail from "@notes//components/NoteDetail";
+import FolderView from "@notes//views/FolderView";
 import {
   selectActiveTab,
   selectSelectedNote,
   selectViewMode,
   selectAllNotes,
-} from "@/features/notes/notesSelectors";
+} from "@notes/notesSelectors";
+import { clearSelectedNote } from "@notes/notesSlice";
 
 export default function Notes() {
   const dispatch = useDispatch();
@@ -30,24 +30,22 @@ export default function Notes() {
   }, [dispatch, user?.uid]);
 
   useEffect(() => {
-    if (activeTab === "New" && selectedNote) {
+    if (viewMode === "edit" && !selectedNote) {
       dispatch(clearSelectedNote());
     }
-  }, [activeTab, selectedNote]);
+  }, [viewMode, selectedNote, dispatch]);
 
-  return (
-    <>
-      {activeTab === "New" ? (
-        <NoteEditor />
-      ) : activeTab === "Folders" ? (
-        <FolderView />
-      ) : viewMode === "edit" && selectedNote ? (
-        <NoteEditor />
-      ) : viewMode === "view" && selectedNote ? (
-        <NoteDetail />
-      ) : (
-        <NoteList notes={notes} />
-      )}
-    </>
-  );
+  if (activeTab === "Folders") {
+    return <FolderView />;
+  }
+
+  if (viewMode === "edit") {
+    return <NoteEditor />;
+  }
+
+  if (viewMode === "view" && selectedNote) {
+    return <NoteDetail />;
+  }
+
+  return <NoteList notes={notes} />;
 }

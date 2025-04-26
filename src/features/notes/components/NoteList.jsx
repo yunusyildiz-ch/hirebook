@@ -18,13 +18,13 @@ export default function NoteList() {
   if (!notes.length) {
     return (
       <div className="text-center text-gray-500 dark:text-gray-400 py-10">
-        No notes yet. Click "New" to create your first one!
+        No notes found.
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {notes.map((note) => (
         <NoteCard key={note.id} note={note} />
       ))}

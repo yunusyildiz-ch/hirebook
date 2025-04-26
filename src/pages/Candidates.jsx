@@ -32,6 +32,7 @@ export default function Candidates() {
 
   const [showConfirm, setShowConfirm] = useState(false);
   const [candidateToDelete, setCandidateToDelete] = useState(null);
+  const [creatingNew, setCreatingNew] = useState(false); // ✅ NEW: Creating New mode
 
   useEffect(() => {
     dispatch(loadCandidates());
@@ -49,6 +50,7 @@ export default function Candidates() {
     } else {
       dispatch(addCandidateThunk(candidate));
     }
+    setCreatingNew(false); // ✅ Kaydedince creatingNew'i kapat
   };
 
   const handleDeleteRequest = (candidate) => {
@@ -71,7 +73,8 @@ export default function Candidates() {
     setCandidateToDelete(null);
   };
 
-  if (viewMode === "edit") {
+  // ✅ Ekranda gösterilecek içerik
+  if (creatingNew || viewMode === "edit") {
     return <CandidateEditor candidate={selectedCandidate} onSave={handleSave} />;
   }
 
@@ -95,15 +98,6 @@ export default function Candidates() {
 
   return (
     <>
-      <div className="flex justify-end px-6 pb-4">
-        <button
-          onClick={() => dispatch(setViewMode("edit"))}
-          className="px-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-        >
-          + New Candidate
-        </button>
-      </div>
-
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 px-6 pb-6">
         {filtered.map((candidate) => (
           <CandidateCard
