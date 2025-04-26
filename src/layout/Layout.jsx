@@ -27,12 +27,12 @@ export default function Layout() {
   };
 
   return (
-    <div className="h-[100svh] w-full flex bg-white dark:bg-gray-900 transition-colors duration-300 overflow-hidden">
+    <div className="h-[100svh] w-full flex bg-white dark:bg-gray-900 transition duration-300 overflow-hidden">
       {/* Sidebar */}
       {isSidebarOpen && <Sidebar onClose={closeSidebar} isMobile={isMobile} />}
 
       {/* Main Area */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden bg-gray-100 dark:bg-gray-900 transition duration-300">
         {/* Unified Sticky Header (includes tab bar if /notes) */}
         <Header onToggleSidebar={toggleSidebar} />
 
