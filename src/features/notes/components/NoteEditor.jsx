@@ -7,6 +7,7 @@ import { addNoteThunk, updateNoteThunk } from "../notesThunks";
 import { clearSelectedNote } from "../notesSlice";
 import { setViewMode, setActiveTab } from "../notesUI.slice";
 import Toolbar from "./Toolbar";
+import { showSuccess, showError } from "@/utils/toastUtils";
 
 export default function NoteEditor() {
   const dispatch = useDispatch();
@@ -40,22 +41,31 @@ export default function NoteEditor() {
 
   const handleSave = async () => {
     const text = editor?.getHTML() || "";
-    const trimmedTitle = title.trim() || "Untitled Note";
-
-    if (!text || text === "<p></p>") return;
-
-    if (selectedNote) {
-      await dispatch(updateNoteThunk({ id: selectedNote.id, title: trimmedTitle, text }));
-    } else {
-      await dispatch(addNoteThunk({ title: trimmedTitle, text }));
+    const isTextEmpty = !text || text === "<p></p>";
+    const trimmedTitle = title.trim();
+  
+    // Eğer title da boşsa, text de boşsa
+    if (!trimmedTitle && isTextEmpty) {
+      showError("Note title or content is required.");
+      return;
     }
-
-    if (previousViewMode === "view") {
-      dispatch(setViewMode("view"));
-    } else {
-      dispatch(clearSelectedNote());
-      dispatch(setViewMode("list"));
-      dispatch(setActiveTab("All"));
+  
+    try {
+      if (selectedNote) {
+        await dispatch(updateNoteThunk({ id: selectedNote.id, title: trimmedTitle || "Untitled", text }));
+      } else {
+        await dispatch(addNoteThunk({ title: trimmedTitle || "Untitled", text }));
+      }
+  
+      if (previousViewMode === "view") {
+        dispatch(setViewMode("view"));
+      } else {
+        dispatch(clearSelectedNote());
+        dispatch(setViewMode("list"));
+        dispatch(setActiveTab("All"));
+      }
+    } catch (error) {
+      showError("Failed to save note.");
     }
   };
 

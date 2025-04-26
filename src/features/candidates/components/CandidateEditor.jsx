@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearSelectedCandidate, setViewMode } from "../candidatesUI.slice";
 import { selectPreviousViewMode } from "../candidatesSelectors";
 import { Plus, Save, X } from "lucide-react";
+import { showSuccess, showError } from "@/utils/toastUtils";
 
 export default function CandidateEditor({ candidate = null, onSave }) {
   const dispatch = useDispatch();
@@ -37,21 +38,26 @@ export default function CandidateEditor({ candidate = null, onSave }) {
   };
 
   const handleSave = () => {
-    if (!name.trim() || !position.trim()) return;
-
+    const trimmedName = name.trim();
+  
+    if (!trimmedName) {
+      showError("Candidate's name is required.");
+      return;
+    }
+  
     const baseCandidate = {
-      name: name.trim(),
+      name: trimmedName,
       position: position.trim(),
       status,
       tags: tagList,
     };
-
+  
     if (candidate?.id) {
       onSave({ id: candidate.id, ...baseCandidate });
     } else {
       onSave(baseCandidate);
     }
-
+  
     if (previousViewMode === "view") {
       dispatch(setViewMode("view"));
     } else {

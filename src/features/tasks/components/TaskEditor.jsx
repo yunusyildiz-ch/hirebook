@@ -61,10 +61,10 @@ export default function TaskEditor({ task }) {
 
   const handleSubmit = async () => {
     if (!title.trim()) {
-      showError("Title is required.");
+      showError("Task title is required.");
       return;
     }
-
+  
     const taskData = {
       title,
       description,
@@ -72,16 +72,16 @@ export default function TaskEditor({ task }) {
       tags,
       project,
     };
-
+  
     try {
       if (task?.id) {
         await updateTaskInFirestore(task.id, taskData);
-        showSuccess("Task updated");
+        showSuccess("Task updated successfully.");
       } else {
         await addTaskToFirestore(taskData);
-        showSuccess("Task added");
+        showSuccess("Task added.");
       }
-
+  
       if (previousViewMode === "view") {
         dispatch(setViewMode("view"));
       } else {
