@@ -32,7 +32,7 @@ export default function UserContentPanel({ type, onClose }) {
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex justify-end">
+    <div className="fixed inset-0 bg-black/20 dark:bg-black/50 backdrop-blur-sm z-50 flex justify-end transition-colors duration-300">
       <div
         ref={panelRef}
         className="flex h-full w-full max-w-full sm:max-w-[600px] bg-white dark:bg-gray-900 shadow-xl border-l border-gray-200 dark:border-gray-700 animate-slide-in"
