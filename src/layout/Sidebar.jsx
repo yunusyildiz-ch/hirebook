@@ -53,10 +53,10 @@ export default function Sidebar({ onClose, isMobile }) {
     >
       {/* Logo Area */}
       <div className="flex items-center justify-between h-14 px-2 border-b border-gray-200 dark:border-gray-700 ">
-        <div className="flex items-center gap-2 overflow-hidden ">
+        <div className="flex items-center gap-2 overflow-hidden text-gray-900 dark:text-white transition-colors duration-300 ">
           <QatipLogo className="w-12 h-12 shrink-0 " />
           {!collapsed && !isMobile && (
-            <span className="text-lg font-semibold whitespace-nowrap transition-all duration-300">
+            <span className="text-lg font-semibold whitespace-nowrap text-gray-900 dark:text-white transition-colors duration-300">
               Qatip
             </span>
           )}
