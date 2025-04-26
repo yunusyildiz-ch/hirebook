@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { Pencil, Trash2, Archive } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 import {
   setSelectedTask,
@@ -9,9 +9,7 @@ import {
 const statusColors = {
   "To-do": "bg-yellow-100 text-yellow-800 dark:bg-yellow-200/20 dark:text-yellow-400",
   "In Progress": "bg-blue-100 text-blue-800 dark:bg-blue-200/20 dark:text-blue-400",
-  "In Review": "bg-purple-100 text-purple-800 dark:bg-purple-200/20 dark:text-purple-400",
   "Done": "bg-green-100 text-green-800 dark:bg-green-200/20 dark:text-green-400",
-  "Archived": "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-white",
 };
 
 export default function TaskCard({ task, onDelete }) {
@@ -33,17 +31,6 @@ export default function TaskCard({ task, onDelete }) {
     onDelete(task);
   };
 
-  const handleArchive = (e) => {
-    e.stopPropagation();
-
-    const updatedTask = {
-      ...task,
-      status: "Archived",
-    };
-
-    dispatch(updateTask(updatedTask)); 
-  };
-
   return (
     <div
       onClick={handleView}
@@ -62,12 +49,6 @@ export default function TaskCard({ task, onDelete }) {
           className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600"
         >
           <Trash2 size={16} className="text-red-500" />
-        </button>
-        <button
-          onClick={handleArchive}
-          className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600"
-        >
-          <Archive size={16} />
         </button>
       </div>
 

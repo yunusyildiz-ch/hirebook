@@ -17,14 +17,12 @@ import { selectPreviousViewMode } from "../tasksSelectors";
 const statusOptions = [
   "To-do",
   "In Progress",
-  "In Review",
-  "Done",
-  "Archived",
+  "Done", 
 ];
 
 export default function TaskEditor({ task }) {
   const dispatch = useDispatch();
-  const previousViewMode = useSelector(selectPreviousViewMode); // ⭐️ ekledik
+  const previousViewMode = useSelector(selectPreviousViewMode);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -108,10 +106,12 @@ export default function TaskEditor({ task }) {
 
   return (
     <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md space-y-4 max-w-2xl mx-auto">
+      {/* Title */}
       <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
         {task ? "Edit Task" : "New Task"}
       </h2>
 
+      {/* Title input */}
       <input
         type="text"
         placeholder="Title"
@@ -120,6 +120,7 @@ export default function TaskEditor({ task }) {
         onChange={(e) => setTitle(e.target.value)}
       />
 
+      {/* Description */}
       <textarea
         placeholder="Description"
         className="w-full p-2 rounded border dark:bg-gray-700 dark:text-white"
@@ -128,6 +129,7 @@ export default function TaskEditor({ task }) {
         onChange={(e) => setDescription(e.target.value)}
       />
 
+      {/* Project */}
       <input
         type="text"
         placeholder="Project"
@@ -136,6 +138,7 @@ export default function TaskEditor({ task }) {
         onChange={(e) => setProject(e.target.value)}
       />
 
+      {/* Status */}
       <select
         className="w-full p-2 rounded border dark:bg-gray-700 dark:text-white"
         value={status}
@@ -148,7 +151,7 @@ export default function TaskEditor({ task }) {
         ))}
       </select>
 
-      {/* Tags input */}
+      {/* Tags */}
       <div>
         <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
           Tags
@@ -188,6 +191,7 @@ export default function TaskEditor({ task }) {
         </div>
       </div>
 
+      {/* Action buttons */}
       <div className="flex justify-end gap-2 pt-4">
         <button
           onClick={handleCancel}
