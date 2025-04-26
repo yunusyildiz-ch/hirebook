@@ -87,7 +87,7 @@ export default function Sidebar({ onClose, isMobile }) {
                 <>
                   {link.icon}
                   {!collapsed && (
-                    <span className="transition-all duration-300 relative">
+                    <span className="font-semibold text-gray-900 dark:text-white transition-colors duration-300 relative">
                       {link.label}
                       {isActive && (
                         <span className="absolute -right-3 top-1/2 -translate-y-1/2 w-2 h-2 bg-red-500 dark:bg-red-400 rounded-full" />
