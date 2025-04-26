@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveTab, setViewMode } from "../candidatesUI.slice";
-import { selectActiveTab } from "../candidatesSelectors";
+import { setActiveTab, setViewMode ,clearSelectedCandidate } from "../candidatesUI.slice";
+import { selectActiveTab, selectViewMode as selectCandidateViewMode } from "../candidatesSelectors";
 import { TbUsersPlus } from "react-icons/tb";
 
 const tabs = ["All", "Pending", "Interviewed", "Rejected"];
@@ -9,7 +9,7 @@ const tabs = ["All", "Pending", "Interviewed", "Rejected"];
 export default function CandidatesBar() {
   const dispatch = useDispatch();
   const activeTab = useSelector(selectActiveTab);
-  const [creatingNew, setCreatingNew] = useState(false); // ✅ NEW
+  const viewMode = useSelector(selectCandidateViewMode);
 
   useEffect(() => {
     const savedTab = localStorage.getItem("lastTab_candidates");
@@ -23,13 +23,12 @@ export default function CandidatesBar() {
   const handleTabClick = (tab) => {
     localStorage.setItem("lastTab_candidates", tab);
     dispatch(setActiveTab(tab));
-    setCreatingNew(false); // ✅ Başka taba tıklanınca new mode kapansın
-    dispatch(setViewMode("list")); // ✅ Listeye dön
+    dispatch(setViewMode("list"));
   };
 
   const handleNewCandidate = () => {
+    dispatch(clearSelectedCandidate());
     dispatch(setViewMode("edit"));
-    setCreatingNew(true); // ✅ Yeni candidate oluşturuluyor
   };
 
   return (
@@ -42,7 +41,7 @@ export default function CandidatesBar() {
               key={tab}
               onClick={() => handleTabClick(tab)}
               className={`text-sm font-medium pb-1 transition border-b-2 hover:scale-[1.05] ${
-                activeTab === tab && !creatingNew
+                activeTab === tab && viewMode === "list"
                   ? "text-blue-600 dark:text-blue-400 border-blue-600 dark:border-blue-400"
                   : "border-transparent text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
               }`}
@@ -56,7 +55,7 @@ export default function CandidatesBar() {
         <button
           onClick={handleNewCandidate}
           className={`flex items-center gap-2 text-sm font-medium ${
-            creatingNew
+            viewMode === "edit"
               ? "bg-green-600 hover:bg-green-700"
               : "bg-blue-600 hover:bg-blue-700"
           } text-white p-1 rounded-full transition hover:scale-[1.02]`}

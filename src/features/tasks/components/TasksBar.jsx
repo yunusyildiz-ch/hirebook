@@ -1,7 +1,7 @@
 // src/features/tasks/components/TasksBar.jsx
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveTab, setViewMode } from "../tasksUI.slice";
+import { setActiveTab, setViewMode, clearSelectedTask } from "../tasksUI.slice";
 import { selectActiveTab, selectViewMode as selectTaskViewMode } from "../tasksSelectors";
 import { MdOutlineAddTask } from "react-icons/md";
 
@@ -28,7 +28,8 @@ export default function TasksBar() {
   };
 
   const handleNewTask = () => {
-    dispatch(setViewMode("edit"));
+    dispatch(clearSelectedTask());
+    dispatch(setViewMode("edit")); 
   };
 
   return (
