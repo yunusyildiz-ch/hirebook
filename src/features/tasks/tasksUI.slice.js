@@ -1,7 +1,9 @@
+// features/tasks/tasksUI.slice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   viewMode: "list", // list | view | edit
+  previousViewMode: "list", // ⭐️ eklendi
   activeTab: "All", // All | To-do | In Progress | etc.
   selectedTask: null,
   searchTerm: "",
@@ -12,6 +14,7 @@ const tasksUISlice = createSlice({
   initialState,
   reducers: {
     setViewMode: (state, action) => {
+      state.previousViewMode = state.viewMode; // ⭐️ önceki mod kaydediliyor
       state.viewMode = action.payload;
     },
     setActiveTab: (state, action) => {
@@ -28,6 +31,7 @@ const tasksUISlice = createSlice({
     },
     resetUI: (state) => {
       state.viewMode = "list";
+      state.previousViewMode = "list"; // ⭐️ sıfırlarken de unutulmadı
       state.activeTab = "All";
       state.selectedTask = null;
       state.searchTerm = "";

@@ -30,3 +30,8 @@ export const selectViewMode = createSelector(
   [selectCandidatesUIState],
   (uiState) => uiState.viewMode
 );
+
+export const selectPreviousViewMode = createSelector( // ⭐️ ekledik
+  [selectCandidatesUIState],
+  (uiState) => uiState.previousViewMode
+);

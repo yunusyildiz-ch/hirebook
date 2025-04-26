@@ -1,3 +1,4 @@
+// features/tasks/tasksSelectors.js
 import { createSelector } from "reselect";
 
 // 🔍 Task State
@@ -13,6 +14,11 @@ export const selectTasksUIState = (state) => state.tasksUI;
 export const selectViewMode = createSelector(
   [selectTasksUIState],
   (ui) => ui.viewMode
+);
+
+export const selectPreviousViewMode = createSelector(
+  [selectTasksUIState],
+  (ui) => ui.previousViewMode
 );
 
 export const selectActiveTab = createSelector(

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearSelectedCandidate, setViewMode } from "../candidatesUI.slice";
+import { selectPreviousViewMode } from "../candidatesSelectors";
 import { Plus, Save, X } from "lucide-react";
 
 export default function CandidateEditor({ candidate = null, onSave }) {
   const dispatch = useDispatch();
+  const previousViewMode = useSelector(selectPreviousViewMode);
   const isEdit = Boolean(candidate);
 
   const [name, setName] = useState("");
@@ -13,7 +15,6 @@ export default function CandidateEditor({ candidate = null, onSave }) {
   const [tags, setTags] = useState("");
   const [tagList, setTagList] = useState([]);
 
-  // Fill form (edit mod)
   useEffect(() => {
     if (candidate) {
       setName(candidate.name || "");
@@ -22,31 +23,6 @@ export default function CandidateEditor({ candidate = null, onSave }) {
       setTagList(candidate.tags || []);
     }
   }, [candidate]);
-
-  const handleSave = () => {
-    if (!name.trim() || !position.trim()) return;
-  
-    const baseCandidate = {
-      name: name.trim(),
-      position: position.trim(),
-      status,
-      tags: tagList,
-    };
-  
-    if (candidate?.id) {
-      onSave({ id: candidate.id, ...baseCandidate });
-    } else {
-      onSave(baseCandidate);
-    }
-  
-    dispatch(clearSelectedCandidate());
-    dispatch(setViewMode("list"));
-  };
-
-  const handleCancel = () => {
-    dispatch(clearSelectedCandidate());
-    dispatch(setViewMode("list"));
-  };
 
   const handleAddTag = () => {
     const tag = tags.trim().toLowerCase();
@@ -58,6 +34,39 @@ export default function CandidateEditor({ candidate = null, onSave }) {
 
   const handleRemoveTag = (tagToRemove) => {
     setTagList(tagList.filter((t) => t !== tagToRemove));
+  };
+
+  const handleSave = () => {
+    if (!name.trim() || !position.trim()) return;
+
+    const baseCandidate = {
+      name: name.trim(),
+      position: position.trim(),
+      status,
+      tags: tagList,
+    };
+
+    if (candidate?.id) {
+      onSave({ id: candidate.id, ...baseCandidate });
+    } else {
+      onSave(baseCandidate);
+    }
+
+    if (previousViewMode === "view") {
+      dispatch(setViewMode("view"));
+    } else {
+      dispatch(clearSelectedCandidate());
+      dispatch(setViewMode("list"));
+    }
+  };
+
+  const handleCancel = () => {
+    if (previousViewMode === "view") {
+      dispatch(setViewMode("view"));
+    } else {
+      dispatch(clearSelectedCandidate());
+      dispatch(setViewMode("list"));
+    }
   };
 
   return (
@@ -100,6 +109,7 @@ export default function CandidateEditor({ candidate = null, onSave }) {
             placeholder="Add tag"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleAddTag()}
             className="flex-1 p-2 border rounded dark:bg-gray-700 dark:text-white"
           />
           <button

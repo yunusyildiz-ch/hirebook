@@ -1,13 +1,12 @@
-// src/features/candidates/candidatesUI.slice.js
-
 import { createSlice } from "@reduxjs/toolkit";
 
 // UI-related state for Candidates feature
 const initialState = {
-  activeTab: "All",              // Current active tab
-  searchTerm: "",                // Search input value (used globally now)
-  selectedCandidate: null,       // Currently selected candidate
-  viewMode: "list",              // View mode: list | view | edit
+  activeTab: "All",
+  searchTerm: "",
+  selectedCandidate: null,
+  viewMode: "list",          // list | view | edit
+  previousViewMode: "list", 
 };
 
 const candidatesUISlice = createSlice({
@@ -27,6 +26,7 @@ const candidatesUISlice = createSlice({
       state.selectedCandidate = null;
     },
     setViewMode: (state, action) => {
+      state.previousViewMode = state.viewMode;
       state.viewMode = action.payload;
     },
   },

@@ -1,8 +1,10 @@
+// features/tasks/components/TaskEditor.jsx
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   clearSelectedTask,
   setViewMode,
+  setActiveTab,
 } from "../tasksUI.slice";
 import { showSuccess, showError } from "@/utils/toastUtils";
 import { Save, Plus, X } from "lucide-react";
@@ -10,6 +12,7 @@ import {
   addTaskToFirestore,
   updateTaskInFirestore,
 } from "@/services/tasksService";
+import { selectPreviousViewMode } from "../tasksSelectors";
 
 const statusOptions = [
   "To-do",
@@ -21,6 +24,7 @@ const statusOptions = [
 
 export default function TaskEditor({ task }) {
   const dispatch = useDispatch();
+  const previousViewMode = useSelector(selectPreviousViewMode); // ⭐️ ekledik
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -79,16 +83,27 @@ export default function TaskEditor({ task }) {
         await addTaskToFirestore(taskData);
         showSuccess("Task added");
       }
-      dispatch(clearSelectedTask());
-      dispatch(setViewMode("list"));
+
+      if (previousViewMode === "view") {
+        dispatch(setViewMode("view"));
+      } else {
+        dispatch(clearSelectedTask());
+        dispatch(setViewMode("list"));
+        dispatch(setActiveTab("All"));
+      }
     } catch (error) {
       showError("Failed to save task.");
     }
   };
 
   const handleCancel = () => {
-    dispatch(clearSelectedTask());
-    dispatch(setViewMode("list"));
+    if (previousViewMode === "view") {
+      dispatch(setViewMode("view"));
+    } else {
+      dispatch(clearSelectedTask());
+      dispatch(setViewMode("list"));
+      dispatch(setActiveTab("All"));
+    }
   };
 
   return (
@@ -133,6 +148,7 @@ export default function TaskEditor({ task }) {
         ))}
       </select>
 
+      {/* Tags input */}
       <div>
         <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
           Tags
