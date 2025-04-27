@@ -1,49 +1,83 @@
-import { useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
+import { useEffect, useState } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import { applyActionCode } from "firebase/auth";
+import { auth } from "@/services/firebase/config";
 import { toast } from "react-hot-toast";
+import QatipCatLogo from "@/assets/QatipCatLogo";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function VerifyEmailPage() {
-  const { resendVerificationEmail } = useAuth();
-  const [sending, setSending] = useState(false);
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const [verifying, setVerifying] = useState(true);
+  const [verificationError, setVerificationError] = useState("");
 
-  const handleResend = async () => {
-    setSending(true);
+  useEffect(() => {
+    const oobCode = searchParams.get("oobCode");
+    const mode = searchParams.get("mode");
+
+    if (mode === "verifyEmail" && oobCode) {
+      verifyEmail(oobCode);
+    } else {
+      setVerifying(false);
+      setVerificationError("Invalid verification link.");
+    }
+  }, []);
+
+  const verifyEmail = async (oobCode) => {
     try {
-      await resendVerificationEmail();
-      toast.success("Verification email sent again! 📩");
+      await applyActionCode(auth, oobCode);
+      toast.success("Email verified successfully! 🎉");
+      navigate("/", { replace: true });
     } catch (error) {
-      toast.error("Failed to resend. Try again later.");
+      console.error("Verification error:", error);
+      setVerificationError("Verification failed. Please try again or request a new link.");
     } finally {
-      setSending(false);
+      setVerifying(false);
     }
   };
 
   return (
-    <div className="h-screen flex flex-col justify-center items-center text-center p-4 dark:bg-gray-900 dark:text-white">
-      <h1 className="text-3xl font-bold mb-6">📩 Verify Your Email</h1>
-      <p className="text-gray-700 dark:text-gray-300 mb-4">
-        We have sent a verification link to your email address.
-      </p>
-      <p className="text-gray-600 dark:text-gray-400 mb-8">
-        Please check your inbox and click on the verification link.
-      </p>
+    <div className="h-screen flex flex-col justify-center items-center text-center p-4 relative dark:bg-gray-900 dark:text-white">
 
-      {/* Resend Button */}
-      <button
-        onClick={handleResend}
-        disabled={sending}
-        className={`px-4 py-2 rounded-lg font-semibold ${
-          sending
-            ? "bg-blue-300 cursor-not-allowed"
-            : "bg-blue-600 hover:bg-blue-700"
-        } text-white transition`}
-      >
-        {sending ? "Sending..." : "Resend Verification Email"}
-      </button>
+      {/* Theme Toggle */}
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
 
-      <p className="mt-6 text-gray-400 text-sm">
-        After verifying, refresh the page or login again.
-      </p>
+      {/* Logo */}
+      <div className="mb-8">
+        <QatipCatLogo className="w-16 h-16 text-gray-800 dark:text-white" />
+      </div>
+
+      {/* Content */}
+      {verifying ? (
+        <h1 className="text-2xl font-semibold animate-pulse">Verifying your email...</h1>
+      ) : verificationError ? (
+        <>
+          <h1 className="text-2xl font-bold mb-4 text-red-500">Verification Failed ❌</h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-4">{verificationError}</p>
+          <button
+            onClick={() => navigate("/")}
+            className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Back to Home
+          </button>
+        </>
+      ) : (
+        <>
+          <h1 className="text-2xl font-bold mb-4 text-green-500">Email Verified! 🎉</h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-4">
+            Your email has been successfully verified.
+          </p>
+          <button
+            onClick={() => navigate("/")}
+            className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Go to Home
+          </button>
+        </>
+      )}
     </div>
   );
 }
