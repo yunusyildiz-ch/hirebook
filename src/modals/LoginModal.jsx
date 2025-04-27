@@ -1,8 +1,10 @@
+// src/components/auth/LoginModal.jsx
 import { useState } from "react";
 import ReactDOM from "react-dom";
 import { Mail, Lock, X } from "lucide-react";
 import { useLogin } from "@hooks/useLogin";
-import { validateLoginForm } from "../utils/validators";
+import ForgotPasswordModal from "./ForgotPasswordModal";
+import { validateLoginForm } from "@utils/validators";
 
 const modalRoot = document.getElementById("modal-root") || document.body;
 
@@ -10,6 +12,7 @@ export default function LoginModal({ onClose }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { handleLogin, error, authLoading } = useLogin();
+  const [showForgotModal, setShowForgotModal] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,6 +20,16 @@ export default function LoginModal({ onClose }) {
     if (validationError) return;
     await handleLogin(email, password);
   };
+
+  if (showForgotModal) {
+    // ❗ Eğer forgot password modal açıksa, sadece onu renderla
+    return (
+      <ForgotPasswordModal
+        onClose={() => setShowForgotModal(false)}
+        onBackToLogin={() => setShowForgotModal(false)}
+      />
+    );
+  }
 
   return ReactDOM.createPortal(
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
@@ -76,6 +89,16 @@ export default function LoginModal({ onClose }) {
             {authLoading ? "Signing in..." : "Sign In"}
           </button>
         </form>
+
+        {/* Forgot password link */}
+        <div className="text-sm text-center mt-4">
+          <button
+            onClick={() => setShowForgotModal(true)}
+            className="text-blue-600 dark:text-blue-400 hover:underline"
+          >
+            Forgot Password?
+          </button>
+        </div>
 
         <p className="text-xs text-center text-gray-500 mt-6 dark:text-gray-400">
           By signing in, you agree to our Terms of Service and Privacy Policy.

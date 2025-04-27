@@ -16,6 +16,7 @@ import TermsPage from "@pages/legal/TermsPage";
 import PrivacyPage from "@pages/legal/PrivacyPage";
 import CookiesPage from "@pages/legal/CookiesPage";
 import TestPage from "@pages/TestPage";
+import ResetPasswordPage from "@pages/ResetPasswordPage";
 
 const router = createBrowserRouter([
   // 🏠 Public Home Page (Guest Only)
@@ -62,6 +63,13 @@ const router = createBrowserRouter([
       },
     ],
   },
+
+  // Password Reset Route
+  {
+    path: "/reset-password",
+    element: <ResetPasswordPage />,
+  },
+
   // Legal Pages
   {
     path: "/legal",
