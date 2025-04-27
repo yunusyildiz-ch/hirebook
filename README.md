@@ -124,15 +124,32 @@ qatip/
 
  ## 📸 Screenshots
 
- > *Coming soon...*  
- Screenshots and interface previews will be added after the UI is finalized.
+Here are some previews of the live application:
 
- ## 🌐 Live Demo
+### 🏠 Homepage
+![Homepage Screenshot](./screenshots/homepage.png)
 
- 🔗 *Coming soon...*  
- The app will be deployed and available live on **Netlify** in the final week of development.
+### 👤 Profile Panel
+![Profile Panel Screenshot](./screenshots/profile-panel.png)
+
+### 📝 Notes Page
+![Notes Page Screenshot](./screenshots/notes-page.png)
+
+### 📄 Candidate Management
+![Candidates Screenshot](./screenshots/candidates-page.png)
+
+### 📋 Task Management
+![Tasks Screenshot](./screenshots/tasks-page.png)
+
+
+## 🌐 Live Demo
+
+The application is live and available here:
+
+🔗 [qatip.app](https://qatip.app)
 
  ## 🔧 Future Step
+
  Convert Qatip to a PWA for installable experience (Sprint 6 or Post-Bootcamp)
 
  ## 📖 License
