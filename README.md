@@ -135,12 +135,48 @@ Here are some previews of the live application:
 ### 📝 Notes Page
 ![Notes Page Screenshot](./screenshots/notes-page.png)
 
+### 🆕 New Note Editor
+![New Note Editor Screenshot](./screenshots/new-note-editor.png)
+
 ### 📄 Candidate Management
-![Candidates Screenshot](./screenshots/candidates-page.png)
+![Candidate Management Screenshot](./screenshots/candidates-page.png)
 
 ### 📋 Task Management
-![Tasks Screenshot](./screenshots/tasks-page.png)
+![Task Management Screenshot](./screenshots/tasks-page.png)
 
+### 🔔 Notifications Panel
+![Notifications Panel Screenshot](./screenshots/notifications-panel.png)
+
+### 👤 New User Profile
+![New User Profile Screenshot](./screenshots/new-user-profile.png)
+
+### 📱 Mobile Views
+
+<div align="center">
+  <img src="./screenshots/mobile-sidebar.png" alt="Mobile Sidebar" width="30%" />
+  <img src="./screenshots/mobile-profile.png" alt="Mobile Profile" src="./screenshots/mobile-profile.png" width="30%" />
+  <img src="./screenshots/mobile-candidates.png" alt="Mobile Candidates" width="30%" />
+</div>
+
+---
+
+## 📂 GitHub Repository
+
+<div align="center">
+
+<a href="https://github.com/Qatip-App/" target="_blank">
+  <img src="https://img.shields.io/badge/Qatip%20App-on%20GitHub-181717?style=for-the-badge&logo=github" alt="Qatip App GitHub Badge" />
+</a>
+
+<br /><br />
+
+![Qatip is on GitHub](./screenshots/qatip-github-page.png)
+
+<br />
+
+🔗 [Visit the Qatip App GitHub Profile](https://github.com/Qatip-App/)
+
+</div>
 
 ## 🌐 Live Demo
 
