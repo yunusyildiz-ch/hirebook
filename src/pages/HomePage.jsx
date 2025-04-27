@@ -1,24 +1,30 @@
+// src/pages/HomePage.jsx
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Github } from "lucide-react";
+import { TbBrandGithub, TbBrandLinkedin, TbBrandBluesky } from "react-icons/tb";
+import { FcGoogle } from "react-icons/fc";
+import { RiAppleFill } from "react-icons/ri";
 import LoginModal from "@modals/LoginModal";
 import RegisterModal from "@modals/RegisterModal";
+import ComingSoonModal from "@modals/ComingSoonModal";
+import EmailVerificationModal from "@modals/EmailVerificationModal";
 import QatipLogo from "@assets/QatipLogo";
 import QatipCatLogo from "@assets/QatipCatLogo";
 import ThemeToggle from "@components/ThemeToggle";
-import { FcGoogle } from "react-icons/fc";
-import { RiAppleFill } from "react-icons/ri";
-import { useGoogleLogin } from "@hooks/useGoogleLogin";
-import { TbBrandBluesky, TbBrandLinkedin, TbBrandGithub } from "react-icons/tb";
 import DownloadSection from "@components/ui/DownloadSection";
 import MobilAppStoreBadges from "@assets/MobilAppStoreBadges";
-import ComingSoonModal from "@modals/ComingSoonModal";
 import CookieBanner from "@components/CookieBanner";
+import { useGoogleLogin } from "@hooks/useGoogleLogin";
 
 export default function HomePage() {
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const [showComingSoon, setShowComingSoon] = useState(false);
+  const location = useLocation();
+  const [showVerificationModal, setShowVerificationModal] = useState(
+    location.state?.emailVerificationSent || false
+  );
   const { handleGoogleLogin } = useGoogleLogin();
 
   useEffect(() => {
@@ -200,7 +206,6 @@ export default function HomePage() {
           <MobilAppStoreBadges />
         </div>
       </div>
-      <CookieBanner />
       {/* Modals */}
       {showComingSoon && (
         <ComingSoonModal
@@ -215,6 +220,13 @@ export default function HomePage() {
           onClose={() => setShowRegister(false)}
         />
       )}
+
+      {showVerificationModal && (
+        <EmailVerificationModal
+          onClose={() => setShowVerificationModal(false)}
+        />
+      )}
+      <CookieBanner />
     </motion.div>
   );
 }

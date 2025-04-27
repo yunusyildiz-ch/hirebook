@@ -1,10 +1,7 @@
 import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "./firebase/config";
 
-/**
- * Create user document in Firestore if it doesn't exist
- */
-export const createUserProfile = async (user) => {
+export const createUserProfile = async (user, firstname = "", lastname = "") => {
   try {
     const userRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(userRef);
@@ -13,9 +10,11 @@ export const createUserProfile = async (user) => {
       await setDoc(userRef, {
         uid: user.uid,
         email: user.email,
-        displayName: user.displayName || "",
+        displayName: user.displayName || `${firstname} ${lastname}`,
+        firstname,
+        lastname,
         photoURL: user.photoURL || "",
-        role: "viewer", // default role
+        role: "viewer",
         createdAt: serverTimestamp(),
       });
     }
@@ -25,10 +24,6 @@ export const createUserProfile = async (user) => {
   }
 };
 
-/**
- * Update user's profile data in Firestore
- * Used after updating email, displayName or avatar
- */
 export const updateUserProfile = async (uid, updates) => {
   try {
     const userRef = doc(db, "users", uid);
@@ -41,4 +36,3 @@ export const updateUserProfile = async (uid, updates) => {
     throw error;
   }
 };
-

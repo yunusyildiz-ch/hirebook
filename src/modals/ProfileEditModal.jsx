@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "@/services/firebase/config";
-import { useAuth } from "@/contexts/AuthContext";
+import { db } from "@services/firebase/config";
+import { useAuth } from "@contexts/AuthContext";
 import { toast } from "react-hot-toast";
 
 export default function ProfileEditModal({ onClose }) {

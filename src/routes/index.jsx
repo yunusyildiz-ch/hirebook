@@ -17,6 +17,7 @@ import PrivacyPage from "@pages/legal/PrivacyPage";
 import CookiesPage from "@pages/legal/CookiesPage";
 import TestPage from "@pages/TestPage";
 import ResetPasswordPage from "@pages/ResetPasswordPage";
+import VerifyEmailPage from "@pages/VerifyEmailPage";
 
 const router = createBrowserRouter([
   // 🏠 Public Home Page (Guest Only)
@@ -68,6 +69,11 @@ const router = createBrowserRouter([
   {
     path: "/reset-password",
     element: <ResetPasswordPage />,
+  },
+
+  {
+    path: "/verify-email",
+    element: <VerifyEmailPage />,
   },
 
   // Legal Pages

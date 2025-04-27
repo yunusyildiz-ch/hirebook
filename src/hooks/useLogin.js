@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "react-hot-toast";
-import { validateLoginForm } from "../utils/validators";
-import { getFirebaseErrorMessage } from "../utils/firebaseErrors";
+import { validateLoginForm } from "@/utils/validators";
+import { getFirebaseErrorMessage } from "@/utils/firebaseErrors";
 
 export const useLogin = () => {
   const { login } = useAuth();
@@ -22,7 +22,12 @@ export const useLogin = () => {
 
     setAuthLoading(true);
     try {
-      await login(email, password);
+      const userCredential = await login(email, password);
+
+      if (!userCredential.user.emailVerified) {
+        throw new Error("Please verify your email before logging in.");
+      }
+
       toast.success("Login successful!");
       const redirectPath = location.state?.from?.pathname || "/";
       navigate(redirectPath);

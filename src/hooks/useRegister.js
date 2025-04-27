@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "react-hot-toast";
-import { validateRegisterForm } from "../utils/validators";
-import { getFirebaseErrorMessage } from "../utils/firebaseErrors";
+import { validateRegisterForm } from "@/utils/validators";
+import { getFirebaseErrorMessage } from "@/utils/firebaseErrors";
 
 export const useRegister = () => {
   const { register } = useAuth();
@@ -11,7 +11,7 @@ export const useRegister = () => {
   const [error, setError] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
 
-  const handleRegister = async (email, password, setFormError) => {
+  const handleRegister = async (email, password, firstname, lastname, setFormError) => {
     const validationError = validateRegisterForm(email, password);
     if (validationError) {
       setFormError(validationError);
@@ -21,9 +21,9 @@ export const useRegister = () => {
 
     setAuthLoading(true);
     try {
-      await register(email, password);
-      toast.success("Account created successfully!");
-      navigate("/");
+      await register(email, password, firstname, lastname);
+      toast.success("Account created successfully! Please verify your email 📩");
+      navigate("/", { state: { emailVerificationSent: true } });
     } catch (err) {
       const friendlyMessage = getFirebaseErrorMessage(err.code || err.message);
       setError(friendlyMessage);

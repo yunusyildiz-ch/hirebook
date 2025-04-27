@@ -1,19 +1,17 @@
-// src/contexts/AuthContext.jsx
 import { createContext, useContext, useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  sendEmailVerification,
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "@/services/firebase/config";
 import { createUserProfile, updateUserProfile } from "@/services/userService";
-import { getFirebaseErrorMessage } from "@/utils/firebaseErrors";
 import Loader from "@/components/Loader";
-import { toast } from "react-hot-toast";
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
@@ -21,55 +19,42 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [authLoading, setAuthLoading] = useState(false);
 
-  const register = async (email, password) => {
-    setAuthLoading(true);
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      await createUserProfile(userCredential.user);
-      return userCredential;
-    } catch (error) {
-      throw new Error(getFirebaseErrorMessage(error.code));
-    } finally {
-      setAuthLoading(false);
+  const register = async (email, password, firstname, lastname) => {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    await createUserProfile(userCredential.user, firstname, lastname);
+    await sendEmailVerification(userCredential.user);
+    return userCredential;
+  };
+
+  const resendVerificationEmail = async () => {
+    if (auth.currentUser && !auth.currentUser.emailVerified) {
+      try {
+        await sendEmailVerification(auth.currentUser);
+        return true;
+      } catch (error) {
+        console.error("Failed to resend verification email:", error);
+        throw error;
+      }
+    } else {
+      throw new Error("No user or already verified.");
     }
   };
 
   const login = async (email, password) => {
-    setAuthLoading(true);
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      return userCredential;
-    } catch (error) {
-      throw new Error(getFirebaseErrorMessage(error.code));
-    } finally {
-      setAuthLoading(false);
-    }
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    return userCredential;
   };
 
   const loginWithGoogle = async () => {
-    setAuthLoading(true);
     const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
-      await createUserProfile(result.user);
-      toast.success(`Welcome, ${result.user.displayName || "👋"}!`);
-      return true;
-    } catch (error) {
-      toast.error(getFirebaseErrorMessage(error.code));
-      return false;
-    } finally {
-      setAuthLoading(false);
-    }
+    const result = await signInWithPopup(auth, provider);
+    await createUserProfile(result.user);
+    return result.user;
   };
 
   const logout = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error("Logout Error:", error);
-    }
+    await signOut(auth);
   };
 
   const refreshUser = async () => {
@@ -89,11 +74,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // ✅ Opsiyonel: Google verileriyle Firestore'u senkronize et
+  const isEmailVerified = () => {
+    return auth.currentUser?.emailVerified ?? false;
+  };
+
   const syncWithGoogle = async () => {
     const currentUser = auth.currentUser;
     if (currentUser?.providerData[0]?.providerId === "google.com") {
-      await refreshUser(); // Firebase Auth güncelle
+      await refreshUser();
       await updateUserProfile(currentUser.uid, {
         displayName: currentUser.displayName,
         email: currentUser.email,
@@ -137,10 +125,11 @@ export const AuthProvider = ({ children }) => {
         register,
         logout,
         loginWithGoogle,
-        loading,
-        authLoading,
         refreshUser,
-        syncWithGoogle, // ✅ export edilen fonksiyon
+        syncWithGoogle,
+        isEmailVerified,
+        resendVerificationEmail,
+        loading,
       }}
     >
       {loading ? <Loader message="Authenticating..." /> : children}

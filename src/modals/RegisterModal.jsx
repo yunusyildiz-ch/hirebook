@@ -1,11 +1,13 @@
 import { useState } from "react";
 import ReactDOM from "react-dom";
-import { X, Mail, Lock } from "lucide-react";
+import { X, Mail, Lock, User } from "lucide-react";
 import { useRegister } from "@hooks/useRegister";
 import { validateRegisterForm } from "@/utils/validators";
 import { toast } from "react-hot-toast";
 
 export default function RegisterModal({ onClose }) {
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -21,7 +23,7 @@ export default function RegisterModal({ onClose }) {
       return;
     }
 
-    await handleRegister(email, password, setError);
+    await handleRegister(email, password, firstname, lastname, setError);
   };
 
   return ReactDOM.createPortal(
@@ -41,6 +43,37 @@ export default function RegisterModal({ onClose }) {
         {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Firstname and Lastname side by side */}
+          <div className="flex gap-3">
+            <div className="flex-1">
+              <label className="flex items-center gap-2 mb-1 text-gray-700 dark:text-gray-300">
+                <User size={18} /> First Name
+              </label>
+              <input
+                type="text"
+                className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+                value={firstname}
+                onChange={(e) => setFirstname(e.target.value)}
+                required
+                disabled={authLoading}
+              />
+            </div>
+
+            <div className="flex-1">
+              <label className="flex items-center gap-2 mb-1 text-gray-700 dark:text-gray-300">
+                <User size={18} /> Last Name
+              </label>
+              <input
+                type="text"
+                className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+                value={lastname}
+                onChange={(e) => setLastname(e.target.value)}
+                required
+                disabled={authLoading}
+              />
+            </div>
+          </div>
+
           <div>
             <label className="flex items-center gap-2 mb-1 text-gray-700 dark:text-gray-300">
               <Mail size={18} /> Email
