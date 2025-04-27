@@ -54,9 +54,9 @@ export default function Header({ onToggleSidebar }) {
   };
 
   return (
-    <header className="sticky top-0 z-20 bg-white dark:bg-gray-800 transition-colors duration-300">
+    <header className="sticky top-0 z-20 bg-white dark:bg-gray-800 transition-colors duration-300 dark:border-gray-700 border-b border-gray-200">
       {/* Top area */}
-      <div className="flex items-center justify-between px-6 pt-4 pb-2">
+      <div className="flex items-center justify-between px-2 pt-2 pb-2">
         <div className="flex items-center gap-4">
           <button
             onClick={onToggleSidebar}
