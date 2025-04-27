@@ -1,17 +1,19 @@
-import { useLocation } from "react-router-dom";
-import { Menu, Search } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
+import { LayoutDashboard, StickyNote, Users, CheckSquare, Search } from "lucide-react";
 
 import NotesBar from "@/features/notes/components/NotesBar";
 import CandidatesBar from "@/features/candidates/components/CandidatesBar";
 import TasksBar from "@/features/tasks/components/TasksBar";
+
 import { setSearchTerm as setNotesSearch } from "@/features/notes/notesUI.slice";
 import { setSearchTerm as setCandidatesSearch } from "@/features/candidates/candidatesUI.slice";
 import { setSearchTerm as setTasksSearch } from "@/features/tasks/tasksUI.slice";
 
-export default function Header({ onToggleSidebar }) {
+export default function Header() {
   const location = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
 
@@ -30,15 +32,6 @@ export default function Header({ onToggleSidebar }) {
     else if (path.includes("/tasks")) dispatch(setTasksSearch(value));
   };
 
-  const getTitle = () => {
-    if (path.includes("/notes")) return "Notes";
-    if (path.includes("/candidates")) return "Candidates";
-    if (path.includes("/tasks")) return "Tasks";
-    if (path.includes("/admin/users")) return "User Management";
-    if (path.includes("/admin")) return "Admin Dashboard";
-    return "Dashboard";
-  };
-
   const getPlaceholder = () => {
     if (path.includes("/notes")) return "Search notes...";
     if (path.includes("/candidates")) return "Search candidates...";
@@ -53,25 +46,25 @@ export default function Header({ onToggleSidebar }) {
     return null;
   };
 
+  // Icon Menu Items
+  const menuItems = [
+    { to: "/dashboard", icon: <LayoutDashboard size={22} />, match: (p) => p === "/dashboard" },
+    { to: "/dashboard/notes", icon: <StickyNote size={22} />, match: (p) => p.includes("/notes") },
+    { to: "/dashboard/candidates", icon: <Users size={22} />, match: (p) => p.includes("/candidates") },
+    { to: "/dashboard/tasks", icon: <CheckSquare size={22} />, match: (p) => p.includes("/tasks") },
+  ];
+
   return (
     <header className="sticky top-0 z-20 bg-white dark:bg-gray-800 transition-colors duration-300 dark:border-gray-700 border-b border-gray-200">
-      {/* Top area */}
-      <div className="flex items-center justify-between px-2 pt-2 pb-2">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={onToggleSidebar}
-            className="md:hidden p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300"
-          >
-            <Menu size={20} />
-          </button>
 
-          <h1 className="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-300">
-            {getTitle()}
-          </h1>
-        </div>
+      {/* Desktop Top Area */}
+      <div className="hidden md:flex items-center justify-between px-6 pt-4 pb-2">
+        <h1 className="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-300">
+          {path.includes("/notes") ? "Notes" : path.includes("/candidates") ? "Candidates" : path.includes("/tasks") ? "Tasks" : "Dashboard"}
+        </h1>
 
-        {/* Search Input */}
-        <div className="relative hidden md:block w-64">
+        {/* Search */}
+        <div className="relative w-64">
           <input
             type="text"
             value={search}
@@ -86,8 +79,47 @@ export default function Header({ onToggleSidebar }) {
         </div>
       </div>
 
-      {/* Tabs */}
+      {/* Mobile Top Area */}
+      <div className="flex md:hidden items-center justify-between px-3 py-2 gap-3">
+        {/* Icon Menu */}
+        <div className="flex gap-5 flex-shrink-0">
+          {menuItems.map((item) => {
+            const isActive = item.match(path);
+            return (
+              <button
+                key={item.to}
+                onClick={() => navigate(item.to)}
+                className={`p-2 rounded-full transition-colors duration-300 ${
+                  isActive
+                    ? "bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300"
+                    : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                }`}
+              >
+                {item.icon}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Mobile Search */}
+        <div className="relative w-40">
+          <input
+            type="text"
+            value={search}
+            onChange={handleSearch}
+            placeholder={getPlaceholder()}
+            className="w-full rounded-lg px-3 py-1 bg-gray-100 dark:bg-gray-700 text-sm dark:text-white focus:outline-none transition-colors duration-300"
+          />
+          <Search
+            size={16}
+            className="absolute top-1.5 right-2 text-gray-400 dark:text-gray-300 transition-colors duration-300"
+          />
+        </div>
+      </div>
+
+      {/* Tabs (NotesBar, CandidatesBar, TasksBar) */}
       <div>{renderDynamicContent()}</div>
+
     </header>
   );
 }
