@@ -17,8 +17,10 @@ import PrivacyPage from "@pages/legal/PrivacyPage";
 import CookiesPage from "@pages/legal/CookiesPage";
 import TestPage from "@pages/TestPage";
 import AuthActionHandler from "@pages/AuthActionHandler";
+import VerifyEmailInfoPage from "@pages/VerifyEmailInfoPage";
 
 const router = createBrowserRouter([
+  // 🏠 Public Home Page (Guest Only)
   {
     path: "/",
     element: (
@@ -27,6 +29,8 @@ const router = createBrowserRouter([
       </GuestRoute>
     ),
   },
+
+  // 🔐 Protected Dashboard for Authenticated Users
   {
     path: "/dashboard",
     element: (
@@ -40,6 +44,8 @@ const router = createBrowserRouter([
       { path: "tasks", element: <Tasks /> },
     ],
   },
+
+  // 🛡 Admin-Only Section
   {
     path: "/admin",
     element: (
@@ -52,10 +58,19 @@ const router = createBrowserRouter([
       { path: "users", element: <UserManagement /> },
     ],
   },
+
+  // 🔥 Auth Action Handler (Verify Email, Reset Password, Recover Email)
   {
-    path: "/auth-action", 
+    path: "/auth-action",
     element: <AuthActionHandler />,
   },
+
+  {
+    path: "/verify-email-info",
+    element: <VerifyEmailInfoPage />, // 🔥  Verify -email Info Page
+  },
+
+  // 📜 Legal Pages
   {
     path: "/legal",
     element: <LegalLayout />,
@@ -65,14 +80,18 @@ const router = createBrowserRouter([
       { path: "cookies", element: <CookiesPage /> },
     ],
   },
+
+  // 🚫 Unauthorized
   {
     path: "/unauthorized",
     element: <Unauthorized />,
   },
+
+  // 🧪 Test Cookie Page
   {
     path: "/test-cookie",
     element: <TestPage />,
-  }
+  },
 ]);
 
 export default router;

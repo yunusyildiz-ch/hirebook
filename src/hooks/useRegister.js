@@ -23,7 +23,7 @@ export const useRegister = () => {
     try {
       await register(email, password, firstname, lastname);
       toast.success("Account created successfully! Please verify your email 📩");
-      navigate("/auth-action");
+      navigate("/verify-email-info");
     } catch (err) {
       const friendlyMessage = getFirebaseErrorMessage(err.code || err.message);
       setError(friendlyMessage);

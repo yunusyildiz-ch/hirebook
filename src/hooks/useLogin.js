@@ -25,8 +25,11 @@ export const useLogin = () => {
       const userCredential = await login(email, password);
 
       if (!userCredential.user.emailVerified) {
-        toast.error("Please verify your email 📩");
-        navigate("/auth-action"); 
+        toast(
+          "Please verify your email address. 📩",
+          { icon: "⚠️", style: { background: "#fef3c7", color: "#92400e" } }
+        );
+        navigate("/verify-email-info");
         return;
       }
 

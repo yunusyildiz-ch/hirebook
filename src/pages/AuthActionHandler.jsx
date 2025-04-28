@@ -21,13 +21,22 @@ export default function AuthActionHandler() {
   const mode = searchParams.get("mode");
 
   useEffect(() => {
-    if (!mode || !oobCode) {
-      setStatus("error");
-      setErrorMessage("Invalid or missing action link.");
-      return;
-    }
-
-    handleAction(mode, oobCode);
+    const checkAndHandleAction = async () => {
+      if (!mode || !oobCode) {
+        // Eğer mode veya oobCode yoksa ama kullanıcı zaten login ve verified ise hemen dashboarda gönder
+        if (auth.currentUser && auth.currentUser.emailVerified) {
+          navigate("/dashboard");
+          return;
+        }
+        setStatus("error");
+        setErrorMessage("Invalid or missing action link.");
+        return;
+      }
+  
+      await handleAction(mode, oobCode);
+    };
+  
+    checkAndHandleAction();
   }, [mode, oobCode]);
 
   const handleAction = async (mode, oobCode) => {
