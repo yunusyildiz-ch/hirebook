@@ -1,3 +1,5 @@
+// src/hooks/useRegister.js
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -22,6 +24,10 @@ export const useRegister = () => {
     setAuthLoading(true);
     try {
       await register(email, password, firstname, lastname);
+
+      // 🆕 Cooldown timer başlat (localStorage)
+      localStorage.setItem("verifyCooldownStart", Date.now().toString());
+
       toast.success("Account created successfully! Please verify your email 📩");
       navigate("/verify-email-info");
     } catch (err) {
