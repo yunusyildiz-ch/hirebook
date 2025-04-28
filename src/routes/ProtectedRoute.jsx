@@ -13,7 +13,7 @@ const ProtectedRoute = ({ children }) => {
   }
 
   if (!isEmailVerified()) {
-    return <Navigate to="/auth-action" replace />;
+    return <Navigate to="/verify-email-info" replace />;
   }
 
   return children;
