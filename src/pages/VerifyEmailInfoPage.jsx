@@ -7,23 +7,21 @@ import QatipCatLogo from "@/assets/QatipCatLogo";
 
 const COOLDOWN_SECONDS = 60;
 
+function getInitialCooldown() {
+  const start = localStorage.getItem("verifyCooldownStart");
+  if (start) {
+    const elapsed = Math.floor((Date.now() - parseInt(start, 10)) / 1000);
+    const remaining = COOLDOWN_SECONDS - elapsed;
+    return remaining > 0 ? remaining : 0;
+  }
+  return 0;
+}
+
 export default function VerifyEmailInfoPage() {
   const { resendVerificationEmail } = useAuth();
+  
+  const [cooldown, setCooldown] = useState(getInitialCooldown());
   const [resending, setResending] = useState(false);
-  const [cooldown, setCooldown] = useState(0);
-
-  useEffect(() => {
-    setTimeout(() => {
-      const start = localStorage.getItem("verifyCooldownStart");
-      if (start) {
-        const elapsed = Math.floor((Date.now() - parseInt(start, 10)) / 1000);
-        const remaining = COOLDOWN_SECONDS - elapsed;
-        if (remaining > 0) {
-          setCooldown(remaining);
-        }
-      }
-    }, 0);
-  }, []);
 
   useEffect(() => {
     let timer;
@@ -47,7 +45,7 @@ export default function VerifyEmailInfoPage() {
       await resendVerificationEmail();
       toast.success("Verification email sent again! 📩");
 
-      // ✅ Yeni resend isteğinde tekrar cooldown başlat
+
       localStorage.setItem("verifyCooldownStart", Date.now().toString());
       setCooldown(COOLDOWN_SECONDS);
     } catch (error) {
