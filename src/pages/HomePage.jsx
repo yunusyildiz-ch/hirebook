@@ -8,7 +8,6 @@ import { RiAppleFill } from "react-icons/ri";
 import LoginModal from "@modals/LoginModal";
 import RegisterModal from "@modals/RegisterModal";
 import ComingSoonModal from "@modals/ComingSoonModal";
-import EmailVerificationModal from "@modals/EmailVerificationModal";
 import QatipLogo from "@assets/QatipLogo";
 import QatipCatLogo from "@assets/QatipCatLogo";
 import ThemeToggle from "@components/ThemeToggle";
@@ -22,9 +21,6 @@ export default function HomePage() {
   const [showRegister, setShowRegister] = useState(false);
   const [showComingSoon, setShowComingSoon] = useState(false);
   const location = useLocation();
-  const [showVerificationModal, setShowVerificationModal] = useState(
-    location.state?.emailVerificationSent || false
-  );
   const { handleGoogleLogin } = useGoogleLogin();
 
   useEffect(() => {
@@ -218,12 +214,6 @@ export default function HomePage() {
         <RegisterModal
           isOpen={showRegister}
           onClose={() => setShowRegister(false)}
-        />
-      )}
-
-      {showVerificationModal && (
-        <EmailVerificationModal
-          onClose={() => setShowVerificationModal(false)}
         />
       )}
       <CookieBanner />

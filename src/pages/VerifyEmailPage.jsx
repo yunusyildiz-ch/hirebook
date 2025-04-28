@@ -8,7 +8,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 export default function VerifyEmailPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [status, setStatus] = useState("verifying"); // "verifying" | "success" | "error"
+  const [status, setStatus] = useState("verifying"); // "verifying" | "success" | "error" | "info"
 
   useEffect(() => {
     const oobCode = searchParams.get("oobCode");
@@ -17,7 +17,7 @@ export default function VerifyEmailPage() {
     if (mode === "verifyEmail" && oobCode) {
       verifyEmail(oobCode);
     } else {
-      setStatus("error");
+      setStatus("info"); // 🔥 oobCode yoksa sadece info göster
     }
   }, []);
 
@@ -33,7 +33,7 @@ export default function VerifyEmailPage() {
 
   return (
     <div className="h-screen flex flex-col justify-center items-center text-center p-4 relative dark:bg-gray-900 dark:text-white">
-
+      
       {/* Theme Toggle */}
       <div className="absolute top-4 right-4">
         <ThemeToggle />
@@ -46,13 +46,19 @@ export default function VerifyEmailPage() {
 
       {/* UI */}
       {status === "verifying" && (
-        <h1 className="text-2xl font-semibold animate-pulse">Verifying your email...</h1>
+        <h1 className="text-2xl font-semibold animate-pulse">
+          Verifying your email...
+        </h1>
       )}
 
       {status === "success" && (
         <>
-          <h1 className="text-2xl font-bold mb-4 text-green-500">Email Verified! 🎉</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">Your email has been successfully verified.</p>
+          <h1 className="text-2xl font-bold mb-4 text-green-500">
+            Email Verified! 🎉
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-4">
+            Your email has been successfully verified.
+          </p>
           <button
             onClick={() => navigate("/dashboard/notes")}
             className="mt-4 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
@@ -64,14 +70,32 @@ export default function VerifyEmailPage() {
 
       {status === "error" && (
         <>
-          <h1 className="text-2xl font-bold mb-4 text-red-500">Verification Failed ❌</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">The verification link is invalid or expired.</p>
+          <h1 className="text-2xl font-bold mb-4 text-red-500">
+            Verification Failed ❌
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-4">
+            The verification link is invalid or expired.
+          </p>
           <button
             onClick={() => navigate("/")}
             className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
             Back to Home
           </button>
+        </>
+      )}
+
+      {status === "info" && (
+        <>
+          <h1 className="text-2xl font-bold mb-4 text-blue-500">
+            Check Your Email 📩
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-4">
+            We've sent a verification link to your email address.
+          </p>
+          <p className="text-gray-500 dark:text-gray-400">
+            Please check your inbox and click on the link to verify your account.
+          </p>
         </>
       )}
     </div>
