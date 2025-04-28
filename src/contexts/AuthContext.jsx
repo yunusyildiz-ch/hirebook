@@ -16,6 +16,12 @@ import Loader from "@/components/Loader";
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
+// 🔥 Action Code Settings for Email Verification
+const actionCodeSettings = {
+  url: "https://qatip.app/verify-email",
+  handleCodeInApp: true,
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,15 +29,14 @@ export const AuthProvider = ({ children }) => {
   const register = async (email, password, firstname, lastname) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     await createUserProfile(userCredential.user, firstname, lastname);
-    await sendEmailVerification(userCredential.user);
+    await sendEmailVerification(userCredential.user, actionCodeSettings);
     return userCredential;
   };
 
   const resendVerificationEmail = async () => {
     if (auth.currentUser && !auth.currentUser.emailVerified) {
       try {
-        await sendEmailVerification(auth.currentUser);
-        return true;
+        await sendEmailVerification(auth.currentUser, actionCodeSettings);
       } catch (error) {
         console.error("Failed to resend verification email:", error);
         throw error;
@@ -110,7 +115,6 @@ export const AuthProvider = ({ children }) => {
       } else {
         setUser(null);
       }
-
       setLoading(false);
     });
 

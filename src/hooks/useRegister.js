@@ -18,12 +18,12 @@ export const useRegister = () => {
       toast.error(validationError);
       return;
     }
-  
+
     setAuthLoading(true);
     try {
       await register(email, password, firstname, lastname);
       toast.success("Account created successfully! Please verify your email 📩");
-      navigate("/verify-email"); // 🔥 Değiştirildi burası
+      navigate("/verify-email"); // ✅ Direkt verify-email sayfasına gönderiyoruz
     } catch (err) {
       const friendlyMessage = getFirebaseErrorMessage(err.code || err.message);
       setError(friendlyMessage);

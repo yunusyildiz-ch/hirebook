@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { applyActionCode } from "firebase/auth";
-import { auth } from "@services/firebase/config";
-import { useAuth } from "@contexts/AuthContext";
+import { auth } from "@/services/firebase/config";
+import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "react-hot-toast";
-import QatipCatLogo from "@assets/QatipCatLogo";
-import ThemeToggle from "@components/ThemeToggle";
-import { Loader2 } from "lucide-react"; // 🔥 spinner için
+import QatipCatLogo from "@/assets/QatipCatLogo";
+import ThemeToggle from "@/components/ThemeToggle";
+import { Loader2 } from "lucide-react";
 
 export default function VerifyEmailPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { refreshUser, resendVerificationEmail } = useAuth();
-  const [status, setStatus] = useState("verifying"); // "verifying" | "success" | "error" | "info"
+  const [status, setStatus] = useState("verifying"); // verifying | success | error | info
   const [resending, setResending] = useState(false);
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function VerifyEmailPage() {
       await resendVerificationEmail();
       toast.success("Verification email sent again! 📩");
     } catch (error) {
-      toast.error("Failed to resend verification email. Please try again.");
+      toast.error("Failed to resend verification email.");
     } finally {
       setResending(false);
     }
@@ -55,7 +55,6 @@ export default function VerifyEmailPage() {
 
   return (
     <div className="h-screen flex flex-col justify-center items-center text-center p-6 relative dark:bg-gray-900 dark:text-white">
-
       {/* Theme Toggle */}
       <div className="absolute top-4 right-4">
         <ThemeToggle />
@@ -70,7 +69,9 @@ export default function VerifyEmailPage() {
       {status === "verifying" && (
         <div className="flex flex-col items-center space-y-4">
           <Loader2 className="animate-spin w-10 h-10 text-blue-600" />
-          <h1 className="text-2xl font-semibold animate-pulse">Verifying your email...</h1>
+          <h1 className="text-2xl font-semibold animate-pulse">
+            Verifying your email...
+          </h1>
         </div>
       )}
 
