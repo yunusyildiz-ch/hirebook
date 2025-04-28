@@ -23,9 +23,12 @@ export const useRegister = () => {
     try {
       await register(email, password, firstname, lastname);
 
+      // 🆕 Kullanıcı kaydolur kaydolmaz cooldown başlat
+      localStorage.setItem("verifyCooldownStart", Date.now().toString());
+
       toast.success("Account created successfully! Please verify your email 📩");
+
       navigate("/verify-email-info");
-      
     } catch (err) {
       const friendlyMessage = getFirebaseErrorMessage(err.code || err.message);
       setError(friendlyMessage);

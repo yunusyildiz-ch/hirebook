@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
 import QatipCatLogo from "@/assets/QatipCatLogo";
 
-const COOLDOWN_SECONDS = 60; // Cooldown süresi
+const COOLDOWN_SECONDS = 60;
 
 export default function VerifyEmailInfoPage() {
   const { resendVerificationEmail } = useAuth();
@@ -13,7 +13,15 @@ export default function VerifyEmailInfoPage() {
   const [cooldown, setCooldown] = useState(0);
 
   useEffect(() => {
-    initializeCooldown();
+    // ✅ Sayfa açıldığında cooldown varsa başlat
+    const start = localStorage.getItem("verifyCooldownStart");
+    if (start) {
+      const elapsed = Math.floor((Date.now() - parseInt(start, 10)) / 1000);
+      const remaining = COOLDOWN_SECONDS - elapsed;
+      if (remaining > 0) {
+        setCooldown(remaining);
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -32,33 +40,14 @@ export default function VerifyEmailInfoPage() {
     return () => clearInterval(timer);
   }, [cooldown]);
 
-  const initializeCooldown = () => {
-    const startTime = localStorage.getItem("verifyCooldownStart");
-    if (startTime) {
-      const elapsed = Math.floor((Date.now() - parseInt(startTime, 10)) / 1000);
-      const remaining = COOLDOWN_SECONDS - elapsed;
-      if (remaining > 0) {
-        setCooldown(remaining);
-      } else {
-        localStorage.removeItem("verifyCooldownStart");
-      }
-    }
-  };
-
   const handleResend = async () => {
-    if (cooldown > 0) {
-      toast.error(`Please wait ${cooldown}s before resending.`);
-      return;
-    }
-
     setResending(true);
     try {
       await resendVerificationEmail();
       toast.success("Verification email sent again! 📩");
 
-      // Yeni cooldown başlat
-      const now = Date.now();
-      localStorage.setItem("verifyCooldownStart", now.toString());
+      // ⏰ Başarılı resend sonrası yeni cooldown başlat
+      localStorage.setItem("verifyCooldownStart", Date.now().toString());
       setCooldown(COOLDOWN_SECONDS);
     } catch (error) {
       toast.error("Failed to resend verification email.");
@@ -69,7 +58,6 @@ export default function VerifyEmailInfoPage() {
 
   return (
     <div className="h-screen flex flex-col justify-center items-center text-center p-6 relative dark:bg-gray-900 dark:text-white">
-
       {/* Theme Toggle */}
       <div className="absolute top-4 right-4">
         <ThemeToggle />
@@ -80,20 +68,19 @@ export default function VerifyEmailInfoPage() {
         <QatipCatLogo className="w-20 h-20 text-gray-800 dark:text-white" />
       </div>
 
-      {/* Main Content */}
+      {/* Content */}
       <h1 className="text-2xl font-bold mb-4 text-blue-500">Verify Your Email 📩</h1>
-      <p className="text-gray-600 dark:text-gray-400 mb-6">
-        We have sent a verification link to your email address.
-        <br />
-        Please check your inbox and click on the link to verify your account.
+      <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+        We have sent a verification link to your email address.<br />
+        Please check your inbox and click the link to activate your account.
       </p>
 
       <button
         onClick={handleResend}
         disabled={cooldown > 0 || resending}
         className={`px-6 py-3 font-semibold rounded-lg transition flex items-center justify-center 
-          ${cooldown > 0 || resending
-            ? "bg-gray-400 cursor-not-allowed text-white"
+          ${cooldown > 0 || resending 
+            ? "bg-gray-400 text-white cursor-not-allowed" 
             : "bg-blue-600 hover:bg-blue-700 text-white"}`}
       >
         {resending ? (
