@@ -18,7 +18,7 @@ export const useAuth = () => useContext(AuthContext);
 
 // 🔥 Action Code Settings for Email Verification
 const actionCodeSettings = {
-  url: "https://qatip.app/verify-email",
+  url: "https://qatip.app/auth-action",
   handleCodeInApp: true,
 };
 

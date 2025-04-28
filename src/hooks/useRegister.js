@@ -1,3 +1,10 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "react-hot-toast";
+import { validateRegisterForm } from "@/utils/validators";
+import { getFirebaseErrorMessage } from "@/utils/firebaseErrors";
+
 export const useRegister = () => {
   const { register } = useAuth();
   const navigate = useNavigate();
