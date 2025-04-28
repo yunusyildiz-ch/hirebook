@@ -16,11 +16,9 @@ import TermsPage from "@pages/legal/TermsPage";
 import PrivacyPage from "@pages/legal/PrivacyPage";
 import CookiesPage from "@pages/legal/CookiesPage";
 import TestPage from "@pages/TestPage";
-import ResetPasswordPage from "@pages/ResetPasswordPage";
-import VerifyEmailPage from "@pages/VerifyEmailPage";
+import AuthActionHandler from "@pages/AuthActionHandler";
 
 const router = createBrowserRouter([
-  // 🏠 Public Home Page (Guest Only)
   {
     path: "/",
     element: (
@@ -29,8 +27,6 @@ const router = createBrowserRouter([
       </GuestRoute>
     ),
   },
-
-  // 🔐 Protected Dashboard for Authenticated Users
   {
     path: "/dashboard",
     element: (
@@ -44,8 +40,6 @@ const router = createBrowserRouter([
       { path: "tasks", element: <Tasks /> },
     ],
   },
-
-  // 🛡 Admin-Only Section with Admin Layout
   {
     path: "/admin",
     element: (
@@ -54,29 +48,14 @@ const router = createBrowserRouter([
       </RoleProtectedRoute>
     ),
     children: [
-      {
-        index: true, // 👈 AdminDashboard is the default route when visiting "/admin"
-        element: <AdminDashboard />,
-      },
-      {
-        path: "users",
-        element: <UserManagement />,
-      },
+      { index: true, element: <AdminDashboard /> },
+      { path: "users", element: <UserManagement /> },
     ],
   },
-
-  // Password Reset Route
   {
-    path: "/reset-password",
-    element: <ResetPasswordPage />,
+    path: "/auth-action", 
+    element: <AuthActionHandler />,
   },
-
-  {
-    path: "/verify-email",
-    element: <VerifyEmailPage />,
-  },
-
-  // Legal Pages
   {
     path: "/legal",
     element: <LegalLayout />,
@@ -86,15 +65,13 @@ const router = createBrowserRouter([
       { path: "cookies", element: <CookiesPage /> },
     ],
   },
-
-  // 🚫 Unauthorized Access Page
   {
     path: "/unauthorized",
     element: <Unauthorized />,
   },
   {
-    path:"/test-cookie",
-    element:<TestPage/>,
+    path: "/test-cookie",
+    element: <TestPage />,
   }
 ]);
 

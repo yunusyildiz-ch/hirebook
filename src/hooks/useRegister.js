@@ -1,10 +1,3 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
-import { toast } from "react-hot-toast";
-import { validateRegisterForm } from "@/utils/validators";
-import { getFirebaseErrorMessage } from "@/utils/firebaseErrors";
-
 export const useRegister = () => {
   const { register } = useAuth();
   const navigate = useNavigate();
@@ -23,7 +16,7 @@ export const useRegister = () => {
     try {
       await register(email, password, firstname, lastname);
       toast.success("Account created successfully! Please verify your email 📩");
-      navigate("/verify-email"); // ✅ Direkt verify-email sayfasına gönderiyoruz
+      navigate("/auth-action");
     } catch (err) {
       const friendlyMessage = getFirebaseErrorMessage(err.code || err.message);
       setError(friendlyMessage);

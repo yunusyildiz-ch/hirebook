@@ -25,11 +25,13 @@ export const useLogin = () => {
       const userCredential = await login(email, password);
 
       if (!userCredential.user.emailVerified) {
-        throw new Error("Please verify your email before logging in.");
+        toast.error("Please verify your email 📩");
+        navigate("/auth-action"); 
+        return;
       }
 
-      toast.success("Login successful!");
-      const redirectPath = location.state?.from?.pathname || "/";
+      toast.success("Login successful! 🎉");
+      const redirectPath = location.state?.from?.pathname || "/dashboard";
       navigate(redirectPath);
     } catch (err) {
       const friendlyMessage = getFirebaseErrorMessage(err.code || err.message);

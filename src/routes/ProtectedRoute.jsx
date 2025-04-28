@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
-import Loader from "../components/Loader";
+import { useAuth } from "@/contexts/AuthContext";
+import Loader from "@/components/Loader";
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading, isEmailVerified } = useAuth();
@@ -13,7 +13,7 @@ const ProtectedRoute = ({ children }) => {
   }
 
   if (!isEmailVerified()) {
-    return <Navigate to="/verify-email" replace />;
+    return <Navigate to="/auth-action" replace />;
   }
 
   return children;
