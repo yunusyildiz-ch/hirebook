@@ -13,15 +13,16 @@ export default function VerifyEmailInfoPage() {
   const [cooldown, setCooldown] = useState(0);
 
   useEffect(() => {
-    // ✅ Sayfa açıldığında cooldown varsa başlat
-    const start = localStorage.getItem("verifyCooldownStart");
-    if (start) {
-      const elapsed = Math.floor((Date.now() - parseInt(start, 10)) / 1000);
-      const remaining = COOLDOWN_SECONDS - elapsed;
-      if (remaining > 0) {
-        setCooldown(remaining);
+    setTimeout(() => {
+      const start = localStorage.getItem("verifyCooldownStart");
+      if (start) {
+        const elapsed = Math.floor((Date.now() - parseInt(start, 10)) / 1000);
+        const remaining = COOLDOWN_SECONDS - elapsed;
+        if (remaining > 0) {
+          setCooldown(remaining);
+        }
       }
-    }
+    }, 0);
   }, []);
 
   useEffect(() => {
@@ -46,7 +47,7 @@ export default function VerifyEmailInfoPage() {
       await resendVerificationEmail();
       toast.success("Verification email sent again! 📩");
 
-      // ⏰ Başarılı resend sonrası yeni cooldown başlat
+      // ✅ Yeni resend isteğinde tekrar cooldown başlat
       localStorage.setItem("verifyCooldownStart", Date.now().toString());
       setCooldown(COOLDOWN_SECONDS);
     } catch (error) {
@@ -70,9 +71,10 @@ export default function VerifyEmailInfoPage() {
 
       {/* Content */}
       <h1 className="text-2xl font-bold mb-4 text-blue-500">Verify Your Email 📩</h1>
-      <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
-        We have sent a verification link to your email address.<br />
-        Please check your inbox and click the link to activate your account.
+      <p className="text-gray-600 dark:text-gray-400 mb-6">
+        We have sent a verification link to your email address.
+        <br />
+        Please check your inbox and click on the link to verify your account.
       </p>
 
       <button
@@ -80,7 +82,7 @@ export default function VerifyEmailInfoPage() {
         disabled={cooldown > 0 || resending}
         className={`px-6 py-3 font-semibold rounded-lg transition flex items-center justify-center 
           ${cooldown > 0 || resending 
-            ? "bg-gray-400 text-white cursor-not-allowed" 
+            ? "bg-gray-400 cursor-not-allowed" 
             : "bg-blue-600 hover:bg-blue-700 text-white"}`}
       >
         {resending ? (
