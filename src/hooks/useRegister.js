@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "react-hot-toast";
 import { validateRegisterForm } from "@/utils/validators";
 import { getFirebaseErrorMessage } from "@/utils/firebaseErrors";
+import { startCooldownTimer } from "@/utils/cooldownUtils";
 
 export const useRegister = () => {
   const { register } = useAuth();
@@ -23,10 +24,9 @@ export const useRegister = () => {
     try {
       await register(email, password, firstname, lastname);
 
-      localStorage.setItem("verifyCooldownStart", Date.now().toString());
+      startCooldownTimer(); // Save cooldown start time to localStorage
 
       toast.success("Account created successfully! Please verify your email 📩");
-
       navigate("/verify-email-info");
     } catch (err) {
       const friendlyMessage = getFirebaseErrorMessage(err.code || err.message);
