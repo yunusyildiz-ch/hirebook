@@ -7,7 +7,7 @@ import QatipCatLogo from "@/assets/QatipCatLogo";
 
 const COOLDOWN_SECONDS = 60;
 
-function getInitialCooldown() {
+function calculateCooldown() {
   const start = localStorage.getItem("verifyCooldownStart");
   if (start) {
     const elapsed = Math.floor((Date.now() - parseInt(start, 10)) / 1000);
@@ -19,9 +19,22 @@ function getInitialCooldown() {
 
 export default function VerifyEmailInfoPage() {
   const { resendVerificationEmail } = useAuth();
-  
-  const [cooldown, setCooldown] = useState(getInitialCooldown());
+
+  const [cooldown, setCooldown] = useState(calculateCooldown());
   const [resending, setResending] = useState(false);
+
+  
+  useEffect(() => {
+    if (cooldown === 0) {
+      const timeout = setTimeout(() => {
+        const recalculated = calculateCooldown();
+        if (recalculated > 0) {
+          setCooldown(recalculated);
+        }
+      }, 300); // after 300ms read localStorage
+      return () => clearTimeout(timeout);
+    }
+  }, []);
 
   useEffect(() => {
     let timer;
