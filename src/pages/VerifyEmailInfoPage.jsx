@@ -45,7 +45,6 @@ export default function VerifyEmailInfoPage() {
       await resendVerificationEmail();
       toast.success("Verification email sent again! 📩");
 
-
       localStorage.setItem("verifyCooldownStart", Date.now().toString());
       setCooldown(COOLDOWN_SECONDS);
     } catch (error) {
@@ -54,6 +53,8 @@ export default function VerifyEmailInfoPage() {
       setResending(false);
     }
   };
+
+  const isButtonDisabled = cooldown > 0 || resending;
 
   return (
     <div className="h-screen flex flex-col justify-center items-center text-center p-6 relative dark:bg-gray-900 dark:text-white">
@@ -75,20 +76,25 @@ export default function VerifyEmailInfoPage() {
         Please check your inbox and click on the link to verify your account.
       </p>
 
+      {/* Cooldown Info */}
+      {cooldown > 0 && (
+        <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+          You can resend in {cooldown}s
+        </div>
+      )}
+
       <button
         onClick={handleResend}
-        disabled={cooldown > 0 || resending}
+        disabled={isButtonDisabled}
         className={`px-6 py-3 font-semibold rounded-lg transition flex items-center justify-center 
-          ${cooldown > 0 || resending 
-            ? "bg-gray-400 cursor-not-allowed" 
+          ${isButtonDisabled
+            ? "bg-gray-400 cursor-not-allowed"
             : "bg-blue-600 hover:bg-blue-700 text-white"}`}
       >
         {resending ? (
           <>
             <Loader2 className="animate-spin mr-2 w-5 h-5" /> Sending...
           </>
-        ) : cooldown > 0 ? (
-          `Resend in ${cooldown}s`
         ) : (
           "Resend Verification Email"
         )}
