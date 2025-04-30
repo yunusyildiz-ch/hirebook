@@ -1,12 +1,17 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { applyActionCode, verifyPasswordResetCode, confirmPasswordReset } from "firebase/auth";
+import {
+  applyActionCode,
+  verifyPasswordResetCode,
+  confirmPasswordReset,
+} from "firebase/auth";
 import { auth } from "@/services/firebase/config";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "react-hot-toast";
 import QatipCatLogo from "@assets/QatipCatLogo";
 import ThemeToggle from "@components/ThemeToggle";
 import { Loader2 } from "lucide-react";
+import { getFirebaseErrorMessage } from "@/utils/firebaseErrors"; // ✅ Friendly error messages
 
 export default function AuthActionHandler() {
   const [searchParams] = useSearchParams();
@@ -23,7 +28,6 @@ export default function AuthActionHandler() {
   useEffect(() => {
     const checkAndHandleAction = async () => {
       if (!mode || !oobCode) {
-        // Eğer mode veya oobCode yoksa ama kullanıcı zaten login ve verified ise hemen dashboarda gönder
         if (auth.currentUser && auth.currentUser.emailVerified) {
           navigate("/dashboard");
           return;
@@ -32,10 +36,10 @@ export default function AuthActionHandler() {
         setErrorMessage("Invalid or missing action link.");
         return;
       }
-  
+
       await handleAction(mode, oobCode);
     };
-  
+
     checkAndHandleAction();
   }, [mode, oobCode]);
 
@@ -46,7 +50,7 @@ export default function AuthActionHandler() {
         await refreshUser();
         setStatus("verifySuccess");
       } else if (mode === "resetPassword") {
-        await verifyPasswordResetCode(auth, oobCode); // sadece kod geçerli mi kontrolü
+        await verifyPasswordResetCode(auth, oobCode);
         setStatus("resetReady");
       } else if (mode === "recoverEmail") {
         await applyActionCode(auth, oobCode);
@@ -58,7 +62,7 @@ export default function AuthActionHandler() {
     } catch (error) {
       console.error("AuthAction error:", error);
       setStatus("error");
-      setErrorMessage(error.message || "Something went wrong.");
+      setErrorMessage(getFirebaseErrorMessage(error.code || error.message)); 
     }
   };
 
@@ -73,7 +77,7 @@ export default function AuthActionHandler() {
       setStatus("resetSuccess");
     } catch (error) {
       console.error("Password reset error:", error);
-      toast.error(error.message || "Password reset failed.");
+      toast.error(getFirebaseErrorMessage(error.code || error.message)); 
     }
   };
 
@@ -83,18 +87,14 @@ export default function AuthActionHandler() {
 
   return (
     <div className="h-screen flex flex-col justify-center items-center text-center p-6 relative dark:bg-gray-900 dark:text-white">
-
-      {/* Theme Toggle */}
       <div className="absolute top-4 right-4">
         <ThemeToggle />
       </div>
 
-      {/* Logo */}
       <div className="mb-8">
         <QatipCatLogo className="w-20 h-20 text-gray-800 dark:text-white" />
       </div>
 
-      {/* UI */}
       {status === "loading" && (
         <div className="flex flex-col items-center space-y-4">
           <Loader2 className="animate-spin w-10 h-10 text-blue-600" />
