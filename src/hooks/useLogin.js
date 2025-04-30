@@ -24,10 +24,16 @@ export const useLogin = () => {
     try {
       const userCredential = await login(email, password);
 
+      // ✅ Force refresh to get latest emailVerified status
+      await userCredential.user.reload();
+
       if (!userCredential.user.emailVerified) {
         toast(
           "Please verify your email address. 📩",
-          { icon: "⚠️", style: { background: "#fef3c7", color: "#92400e" } }
+          {
+            icon: "⚠️",
+            style: { background: "#fef3c7", color: "#92400e" },
+          }
         );
         navigate("/verify-email-info");
         return;
