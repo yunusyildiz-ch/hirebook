@@ -1,7 +1,7 @@
 // src/components/auth/RegisterModal.jsx
 import { useState } from "react";
 import ReactDOM from "react-dom";
-import { X, Mail, User } from "lucide-react";
+import { X, Mail, User, Lock } from "lucide-react";
 import { useRegister } from "@hooks/useRegister";
 import { validateRegisterForm } from "@/utils/validators";
 import { toast } from "react-hot-toast";
@@ -89,13 +89,17 @@ export default function RegisterModal({ onClose }) {
               disabled={authLoading}
             />
           </div>
-
-          <PasswordInput
-            label="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            disabled={authLoading}
-          />
+          <div>
+            <label className="flex items-center gap-2 mb-1 text-gray-700 dark:text-gray-300">
+              <Lock size={18} /> Password
+            </label>
+            <PasswordInput
+              label="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={authLoading}
+            />
+          </div>
 
           <button
             type="submit"

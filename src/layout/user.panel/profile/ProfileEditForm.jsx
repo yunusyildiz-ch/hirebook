@@ -6,7 +6,6 @@ import { updateUserProfile } from "@/services/userService";
 import { useAuth } from "@contexts/AuthContext";
 import { validatePassword } from "@/utils/validators";
 import PasswordInput from "@/components/ui/PasswordInput";
-import { Lock } from "lucide-react";
 
 export default function ProfileEditForm({ currentName, currentEmail }) {
   const [name, setName] = useState(currentName || "");
@@ -81,9 +80,8 @@ export default function ProfileEditForm({ currentName, currentEmail }) {
       </div>
 
       <div>
-        <label className="flex items-center gap-2  block font-medium mb-1">
+        <label className="block font-medium mb-1">
           New Password
-          <Lock size={18} />
         </label>
         <PasswordInput
           label=""
