@@ -4,13 +4,14 @@ import { auth } from "@/services/firebase/config";
 import { toast } from "react-hot-toast";
 import { updateUserProfile } from "@/services/userService";
 import { useAuth } from "@contexts/AuthContext";
+import { validatePassword } from "@/utils/validators"; // ✅ Password validation added
 
 export default function ProfileEditForm({ currentName, currentEmail }) {
   const [name, setName] = useState(currentName || "");
   const [email, setEmail] = useState(currentEmail || "");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const { refreshUser } = useAuth(); 
+  const { refreshUser } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,7 +30,15 @@ export default function ProfileEditForm({ currentName, currentEmail }) {
         updates.email = email;
       }
 
+      // ✅ Validate new password before updating
       if (password) {
+        if (!validatePassword(password)) {
+          toast.error(
+            "Password must be at least 8 characters and include 1 uppercase, 1 lowercase, and 1 number."
+          );
+          setLoading(false);
+          return;
+        }
         await updatePassword(auth.currentUser, password);
       }
 
@@ -37,7 +46,7 @@ export default function ProfileEditForm({ currentName, currentEmail }) {
         await updateUserProfile(auth.currentUser.uid, updates);
       }
 
-      await refreshUser(); // ✅ Yeni bilgileri çek
+      await refreshUser();
       toast.success("Profile updated successfully");
     } catch (error) {
       console.error("Profile update failed:", error);
@@ -76,6 +85,7 @@ export default function ProfileEditForm({ currentName, currentEmail }) {
           className="w-full px-3 py-2 rounded border bg-white dark:bg-gray-800"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          placeholder="Leave blank to keep current password"
         />
       </div>
 

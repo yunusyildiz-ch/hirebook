@@ -1,13 +1,22 @@
-// src/utils/validators.js
-
 export const validateEmail = (email) => {
   const regex = /^\S+@\S+\.\S+$/;
   return regex.test(email);
 };
 
+
+// ✅ Generic password validation already exists:
 export const validatePassword = (password) => {
   const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
   return regex.test(password);
+};
+
+// ✅ Reusable validation for password reset form
+export const validateResetPasswordForm = (password) => {
+  if (!password) return "Please enter a new password.";
+  if (!validatePassword(password)) {
+    return "Password must be at least 8 characters long and include at least 1 uppercase letter, 1 lowercase letter, and 1 number.";
+  }
+  return null;
 };
 
 export const validateLoginForm = (email, password) => {

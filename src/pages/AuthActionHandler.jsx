@@ -11,7 +11,8 @@ import { toast } from "react-hot-toast";
 import QatipCatLogo from "@assets/QatipCatLogo";
 import ThemeToggle from "@components/ThemeToggle";
 import { Loader2 } from "lucide-react";
-import { getFirebaseErrorMessage } from "@/utils/firebaseErrors"; // ✅ Friendly error messages
+import { getFirebaseErrorMessage } from "@/utils/firebaseErrors"; 
+import { validateResetPasswordForm} from "@/utils/validators";
 
 export default function AuthActionHandler() {
   const [searchParams] = useSearchParams();
@@ -67,17 +68,19 @@ export default function AuthActionHandler() {
   };
 
   const handlePasswordReset = async () => {
-    if (!newPassword) {
-      toast.error("Please enter a new password.");
+    const validationError = validateResetPasswordForm(newPassword);
+    if (validationError) {
+      toast.error(validationError);
       return;
     }
+  
     try {
       await confirmPasswordReset(auth, oobCode, newPassword);
       toast.success("Password has been reset successfully! 🎉");
       setStatus("resetSuccess");
     } catch (error) {
       console.error("Password reset error:", error);
-      toast.error(getFirebaseErrorMessage(error.code || error.message)); 
+      toast.error(getFirebaseErrorMessage(error.code || error.message));
     }
   };
 
