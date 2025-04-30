@@ -11,15 +11,16 @@ import { toast } from "react-hot-toast";
 import QatipCatLogo from "@assets/QatipCatLogo";
 import ThemeToggle from "@components/ThemeToggle";
 import { Loader2 } from "lucide-react";
-import { getFirebaseErrorMessage } from "@/utils/firebaseErrors"; 
-import { validateResetPasswordForm} from "@/utils/validators";
+import { getFirebaseErrorMessage } from "@/utils/firebaseErrors";
+import { validateResetPasswordForm } from "@/utils/validators";
+import PasswordInput from "@/components/ui/PasswordInput"; 
 
 export default function AuthActionHandler() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { refreshUser } = useAuth();
 
-  const [status, setStatus] = useState("loading"); // loading | verifySuccess | resetReady | resetSuccess | error
+  const [status, setStatus] = useState("loading");
   const [errorMessage, setErrorMessage] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
@@ -29,7 +30,7 @@ export default function AuthActionHandler() {
   useEffect(() => {
     const checkAndHandleAction = async () => {
       if (!mode || !oobCode) {
-        if (auth.currentUser && auth.currentUser.emailVerified) {
+        if (auth.currentUser?.emailVerified) {
           navigate("/dashboard");
           return;
         }
@@ -63,7 +64,7 @@ export default function AuthActionHandler() {
     } catch (error) {
       console.error("AuthAction error:", error);
       setStatus("error");
-      setErrorMessage(getFirebaseErrorMessage(error.code || error.message)); 
+      setErrorMessage(getFirebaseErrorMessage(error.code || error.message));
     }
   };
 
@@ -73,7 +74,7 @@ export default function AuthActionHandler() {
       toast.error(validationError);
       return;
     }
-  
+
     try {
       await confirmPasswordReset(auth, oobCode, newPassword);
       toast.success("Password has been reset successfully! 🎉");
@@ -123,16 +124,17 @@ export default function AuthActionHandler() {
       {status === "resetReady" && (
         <div className="w-full max-w-sm">
           <h1 className="text-2xl font-bold mb-4 text-blue-500">Reset Your Password 🔒</h1>
-          <input
-            type="password"
-            placeholder="Enter new password"
+
+          <PasswordInput
+            label="New Password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            className="w-full p-3 mb-4 rounded border dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            placeholder="Enter new password"
           />
+
           <button
             onClick={handlePasswordReset}
-            className="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition"
+            className="w-full px-6 py-3 mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition"
           >
             Set New Password
           </button>

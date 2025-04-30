@@ -4,7 +4,8 @@ import { auth } from "@/services/firebase/config";
 import { toast } from "react-hot-toast";
 import { updateUserProfile } from "@/services/userService";
 import { useAuth } from "@contexts/AuthContext";
-import { validatePassword } from "@/utils/validators"; // ✅ Password validation added
+import { validatePassword } from "@/utils/validators";
+import PasswordInput from "@/components/ui/PasswordInput";
 
 export default function ProfileEditForm({ currentName, currentEmail }) {
   const [name, setName] = useState(currentName || "");
@@ -80,12 +81,11 @@ export default function ProfileEditForm({ currentName, currentEmail }) {
 
       <div>
         <label className="block font-medium mb-1">New Password</label>
-        <input
-          type="password"
-          className="w-full px-3 py-2 rounded border bg-white dark:bg-gray-800"
+        <PasswordInput
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Leave blank to keep current password"
+          disabled={loading}
         />
       </div>
 

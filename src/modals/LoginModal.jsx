@@ -1,10 +1,10 @@
-// src/components/auth/LoginModal.jsx
 import { useState } from "react";
 import ReactDOM from "react-dom";
 import { Mail, Lock, X } from "lucide-react";
 import { useLogin } from "@hooks/useLogin";
 import ForgotPasswordModal from "./ForgotPasswordModal";
 import { validateLoginForm } from "@utils/validators";
+import PasswordInput from "@/components/ui/PasswordInput";
 
 const modalRoot = document.getElementById("modal-root") || document.body;
 
@@ -22,7 +22,7 @@ export default function LoginModal({ onClose }) {
   };
 
   if (showForgotModal) {
-    // ❗ Eğer forgot password modal açıksa, sadece onu renderla
+    // ❗ Only render forgot password modal if it's active
     return (
       <ForgotPasswordModal
         onClose={() => setShowForgotModal(false)}
@@ -67,12 +67,9 @@ export default function LoginModal({ onClose }) {
             <label className="flex items-center gap-2 mb-1 text-gray-700 dark:text-gray-300">
               <Lock size={18} /> Password
             </label>
-            <input
-              type="password"
-              className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+            <PasswordInput
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
               disabled={authLoading}
             />
           </div>
@@ -108,3 +105,4 @@ export default function LoginModal({ onClose }) {
     modalRoot
   );
 }
+
