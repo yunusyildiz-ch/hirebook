@@ -92,7 +92,7 @@ export default function LoginModal({ onClose }) {
         <div className="text-sm text-center mt-4">
           <button
             onClick={() => setShowForgotModal(true)}
-            className="text-blue-600 dark:text-blue-400 hover:underline"
+            className="font-bold text-blue-600 dark:text-blue-400 hover:underline"
           >
             Forgot Password?
           </button>
