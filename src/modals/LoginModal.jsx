@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ReactDOM from "react-dom";
-import { Mail, Lock, X } from "lucide-react";
+import { Mail, X,Lock } from "lucide-react";
 import { useLogin } from "@hooks/useLogin";
 import ForgotPasswordModal from "./ForgotPasswordModal";
 import { validateLoginForm } from "@utils/validators";
@@ -65,7 +65,8 @@ export default function LoginModal({ onClose }) {
 
           <div>
             <label className="flex items-center gap-2 mb-1 text-gray-700 dark:text-gray-300">
-              <Lock size={18} /> Password
+              <Lock size={18} />
+              Password
             </label>
             <PasswordInput
               value={password}
@@ -105,4 +106,3 @@ export default function LoginModal({ onClose }) {
     modalRoot
   );
 }
-
