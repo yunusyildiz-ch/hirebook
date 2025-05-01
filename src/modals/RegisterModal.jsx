@@ -91,7 +91,6 @@ export default function RegisterModal({ onClose }) {
           <div>
             <PasswordInput
               label="Password"
-              showStrength={true}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={authLoading}
