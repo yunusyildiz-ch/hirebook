@@ -1,4 +1,3 @@
-// src/components/auth/RegisterModal.jsx
 import { useState } from "react";
 import ReactDOM from "react-dom";
 import { X, Mail, User, Lock } from "lucide-react";
@@ -90,11 +89,9 @@ export default function RegisterModal({ onClose }) {
             />
           </div>
           <div>
-            <label className="flex items-center gap-2 mb-1 text-gray-700 dark:text-gray-300">
-              <Lock size={18} /> Password
-            </label>
             <PasswordInput
               label="Password"
+              showStrength={true}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={authLoading}

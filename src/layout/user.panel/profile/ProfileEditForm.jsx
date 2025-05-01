@@ -80,11 +80,11 @@ export default function ProfileEditForm({ currentName, currentEmail }) {
       </div>
 
       <div>
-        <label className="block font-medium mb-1">
-          New Password
-        </label>
         <PasswordInput
-          label=""
+          showIcon={false}
+          showStrength={true}
+          label="New Password"
+          labelClassName="font-medium mb-1"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Leave blank to keep current password"

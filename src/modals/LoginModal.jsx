@@ -64,14 +64,11 @@ export default function LoginModal({ onClose }) {
           </div>
 
           <div>
-            <label className="flex items-center gap-2 mb-1 text-gray-700 dark:text-gray-300">
-              <Lock size={18} />
-              Password
-            </label>
             <PasswordInput
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={authLoading}
+              showStrength={false}
             />
           </div>
 
