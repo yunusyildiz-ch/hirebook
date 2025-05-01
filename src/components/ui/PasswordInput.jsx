@@ -13,7 +13,7 @@ export default function PasswordInput({
   required = false,
   className = "",
   showIcon = true,
-  showStrength = false,
+  showStrength = true,
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const [strength, setStrength] = useState("empty");

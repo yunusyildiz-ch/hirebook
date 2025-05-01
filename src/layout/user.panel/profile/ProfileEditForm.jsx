@@ -82,7 +82,6 @@ export default function ProfileEditForm({ currentName, currentEmail }) {
       <div>
         <PasswordInput
           showIcon={false}
-          showStrength={true}
           label="New Password"
           labelClassName="font-medium mb-1"
           value={password}
