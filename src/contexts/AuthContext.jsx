@@ -16,8 +16,8 @@ import {
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "@/services/firebase/config";
 import { createUserProfile, updateUserProfile } from "@/services/userService";
-import { saveCookiePreferences } from "@/services/cookieService";
-import { getConsentStatus } from "@utils/cookieUtils";
+import { saveCookiePreferences, getCookiePreferences } from "@/services/cookieService";
+import { getConsentStatus, setConsentStatus } from "@/utils/cookieUtils";
 import Loader from "@/components/Loader";
 
 const AuthContext = createContext();
@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     await signOut(auth);
-    localStorage.removeItem("cookieConsent");
+    localStorage.removeItem("cookieConsent"); // 🔐 local clean-up
   };
 
   const refreshUser = async () => {
@@ -117,11 +117,18 @@ export const AuthProvider = ({ children }) => {
             setUser(currentUser);
           }
 
-          // ✅ Cookie tercihlerini localStorage'tan al ve Firestore'a senkronize et
-          const storedConsent = getConsentStatus();
-          if (storedConsent) {
-            await saveCookiePreferences(currentUser.uid, storedConsent);
+          // ✅ Cookie sync: localStorage <=> Firestore
+          const localConsent = getConsentStatus();
+          const remoteConsent = await getCookiePreferences(currentUser.uid);
+
+          if (!localConsent && remoteConsent) {
+            setConsentStatus(remoteConsent); // 🔁 Firestore → local
           }
+
+          if (localConsent && !remoteConsent) {
+            await saveCookiePreferences(currentUser.uid, localConsent); // 🔁 local → Firestore
+          }
+
         } catch (error) {
           console.error("Error during user/profile/cookie setup:", error);
           setUser(currentUser);
