@@ -1,4 +1,9 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -11,12 +16,14 @@ import {
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "@/services/firebase/config";
 import { createUserProfile, updateUserProfile } from "@/services/userService";
+import { saveCookiePreferences } from "@/services/cookieService";
+import { getConsentStatus } from "@utils/cookieUtils";
 import Loader from "@/components/Loader";
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
-// 🔥 Action Code Settings for Email Verification
+// 🔥 Email verification redirect ayarı
 const actionCodeSettings = {
   url: "https://qatip.app/auth-action",
   handleCodeInApp: true,
@@ -60,6 +67,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     await signOut(auth);
+    localStorage.removeItem("cookieConsent");
   };
 
   const refreshUser = async () => {
@@ -108,13 +116,20 @@ export const AuthProvider = ({ children }) => {
           } else {
             setUser(currentUser);
           }
+
+          // ✅ Cookie tercihlerini localStorage'tan al ve Firestore'a senkronize et
+          const storedConsent = getConsentStatus();
+          if (storedConsent) {
+            await saveCookiePreferences(currentUser.uid, storedConsent);
+          }
         } catch (error) {
-          console.error("Error fetching user profile:", error);
+          console.error("Error during user/profile/cookie setup:", error);
           setUser(currentUser);
         }
       } else {
         setUser(null);
       }
+
       setLoading(false);
     });
 
