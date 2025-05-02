@@ -1,58 +1,39 @@
-import { useEffect, useState } from "react";
-import { getConsentStatus, setConsentStatus } from "../utils/cookieUtils";
+import { useContext } from "react";
+import { AuthContext } from "@contexts/AuthContext";
+import { saveCookiePreferences } from "@services/cookieService";
 
-/**
- * Custom hook for managing cookie consent preferences
- */
+// Senin var olan hook içinde:
 export const useCookieConsent = () => {
-  const [consent, setConsent] = useState(null);
+  const { currentUser } = useContext(AuthContext);
 
-  // Load stored preferences on initial render
-  useEffect(() => {
-    const stored = getConsentStatus();
-    if (stored) setConsent(stored);
-  }, []);
+  const updatePreferences = async (prefs) => {
+    localStorage.setItem("cookieConsent", JSON.stringify(prefs));
+    if (currentUser) {
+      await saveCookiePreferences(currentUser.uid, prefs);
+    }
+  };
 
-  // Accept all cookie categories
   const acceptAll = () => {
-    const preferences = {
+    const prefs = {
       necessary: true,
       analytics: true,
       marketing: true,
       functionality: true,
       social: true,
     };
-    setConsentStatus(preferences);
-    setConsent(preferences);
+    updatePreferences(prefs);
   };
 
-  // Reject all optional categories (necessary always true)
   const rejectAll = () => {
-    const preferences = {
+    const prefs = {
       necessary: true,
       analytics: false,
       marketing: false,
       functionality: false,
       social: false,
     };
-    setConsentStatus(preferences);
-    setConsent(preferences);
+    updatePreferences(prefs);
   };
 
-  // Set custom preferences (used by the CookieModal)
-  const updatePreferences = (preferences) => {
-    const fullPreferences = {
-      necessary: true,
-      ...preferences,
-    };
-    setConsentStatus(fullPreferences);
-    setConsent(fullPreferences);
-  };
-
-  return {
-    consent,
-    acceptAll,
-    rejectAll,
-    updatePreferences,
-  };
+  return { updatePreferences, acceptAll, rejectAll };
 };
