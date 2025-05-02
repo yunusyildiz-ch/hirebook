@@ -1,15 +1,13 @@
-import { useContext } from "react";
-import { AuthContext } from "@contexts/AuthContext";
+import { useAuth } from "@contexts/AuthContext";
 import { saveCookiePreferences } from "@services/cookieService";
 
-// Senin var olan hook içinde:
 export const useCookieConsent = () => {
-  const { currentUser } = useContext(AuthContext);
+  const { user } = useAuth();
 
   const updatePreferences = async (prefs) => {
     localStorage.setItem("cookieConsent", JSON.stringify(prefs));
-    if (currentUser) {
-      await saveCookiePreferences(currentUser.uid, prefs);
+    if (user) {
+      await saveCookiePreferences(user.uid, prefs);
     }
   };
 
