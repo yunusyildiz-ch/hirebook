@@ -44,11 +44,13 @@ export default function AvatarEditorModal({ file, onClose, onSave, onDelete, cur
         maxWidthOrHeight: 512,
         useWebWorker: true,
       });
-      onSave(compressed);
+  
+      // ✅ wait until upload completed
+      await onSave(compressed);
     } catch (err) {
       console.error("❌ Avatar crop failed:", err);
     } finally {
-      setLoading(false);
+      setLoading(false); // ✅ gerçekten en sona alındı
     }
   };
 
