@@ -1,7 +1,6 @@
-// src/layout/user.panel/profile/ProfilePanel.jsx
 import { useAuth } from "@/contexts/AuthContext";
 import ProfileEditForm from "./ProfileEditForm";
-import AvatarUploader from "./AvatarUploader";
+import AvatarUploader from "../components/AvatarUploader";
 import { useEffect, useState } from "react";
 
 export default function ProfilePanel() {
