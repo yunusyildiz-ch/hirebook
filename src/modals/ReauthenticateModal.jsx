@@ -18,7 +18,6 @@ export default function ReauthenticateModal({ isOpen, onClose, onSuccess }) {
       setLoading(true);
       const credential = EmailAuthProvider.credential(user.email, password);
       await reauthenticateWithCredential(user, credential);
-      toast.success("Re-authenticated successfully");
       onClose();
       onSuccess(); // 🧨 proceed with destructive action
     } catch (error) {
