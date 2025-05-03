@@ -12,6 +12,7 @@ import {
   sendEmailVerification,
   GoogleAuthProvider,
   signInWithPopup,
+  updateProfile
 } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "@/services/firebase/config";
@@ -35,8 +36,15 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (email, password, firstname, lastname) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  
+    // 🔥 Display name Firebase Auth nesnesine eklenmeli
+    await updateProfile(userCredential.user, {
+      displayName: `${firstname} ${lastname}`,
+    });
+  
     await createUserProfile(userCredential.user, firstname, lastname);
     await sendEmailVerification(userCredential.user, actionCodeSettings);
+  
     return userCredential;
   };
 

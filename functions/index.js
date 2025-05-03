@@ -66,7 +66,14 @@ export const sendGeneralNotification = functions.https.onRequest((req, res) => {
  */
 export const sendWelcomeNotification = functions.auth.user().onCreate(async (user) => {
   try {
-    const { uid, displayName = "Qatip User", email } = user;
+    const { uid, email } = user;
+
+    // 👤 Firestore'dan firstname'i çek
+    const userDoc = await db.collection("users").doc(uid).get();
+    const userData = userDoc.exists ? userDoc.data() : null;
+
+    const firstname = userData?.firstname || null;
+    const displayName = firstname || user.displayName || "Qatip User";
 
     await db.collection("notifications").add({
       title: "🎉 Welcome to Qatip!",
@@ -83,8 +90,8 @@ export const sendWelcomeNotification = functions.auth.user().onCreate(async (use
       createdAt: Timestamp.now(),
     });
 
-    console.log(`✅ Welcome notification sent to ${email || uid}`);
+    console.log(`✅ Welcome notification sent to: ${email || uid}`);
   } catch (error) {
-    console.error("❌ Error sending welcome notification", error);
+    console.error("❌ Error sending welcome notification:", error);
   }
 });

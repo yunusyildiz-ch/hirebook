@@ -99,7 +99,7 @@ export default function AvatarEditorModal({ file, onClose, onSave, onDelete, cur
           <div className="flex gap-2">
             <button
               onClick={onClose}
-              className="px-4 py-2 text-gray-600 hover:text-gray-800 dark:hover:text-white transition"
+              className="px-4 py-2 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition"
             >
               Cancel
             </button>
