@@ -68,6 +68,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     await signOut(auth);
     localStorage.removeItem("cookieConsent"); // 🔐 local clean-up
+    localStorage.removeItem("verifyCooldownStart"); 
   };
 
   const refreshUser = async () => {
