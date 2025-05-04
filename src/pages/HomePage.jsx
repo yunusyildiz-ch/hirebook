@@ -22,6 +22,8 @@ export default function HomePage() {
   const [showVerifyModal, setShowVerifyModal] = useState(false);
   const [registeredEmail, setRegisteredEmail] = useState("");
   const [showComingSoon, setShowComingSoon] = useState(false);
+  const [showResetModal, setShowResetModal] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
 
   const location = useLocation();
   const { handleGoogleLogin } = useGoogleLogin();
@@ -35,10 +37,10 @@ export default function HomePage() {
     const handleStorage = (event) => {
       if (event.key === "closeParentTab" && event.newValue === "true") {
         localStorage.removeItem("closeParentTab");
-        window.close(); 
+        window.close();
       }
     };
-  
+
     window.addEventListener("storage", handleStorage);
     return () => window.removeEventListener("storage", handleStorage);
   }, []);
@@ -171,9 +173,18 @@ export default function HomePage() {
 
           <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
             By signing up, you agree to our{" "}
-            <a href="/legal/terms" className="underline">Terms of Service</a> and{" "}
-            <a href="/legal/privacy" className="underline">Privacy Policy</a>, including{" "}
-            <a href="/legal/cookies" className="underline">Cookie Use</a>.
+            <a href="/legal/terms" className="underline">
+              Terms of Service
+            </a>{" "}
+            and{" "}
+            <a href="/legal/privacy" className="underline">
+              Privacy Policy
+            </a>
+            , including{" "}
+            <a href="/legal/cookies" className="underline">
+              Cookie Use
+            </a>
+            .
           </p>
 
           <div className="text-center mt-4">
@@ -200,7 +211,16 @@ export default function HomePage() {
           onClose={() => setShowComingSoon(false)}
         />
       )}
-      {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
+      {showLogin && (
+        <LoginModal
+          onClose={() => setShowLogin(false)}
+          onResetRequested={(email) => {
+            setShowLogin(false);
+            setResetEmail(email);
+            setShowResetModal(true);
+          }}
+        />
+      )}
       {showRegister && (
         <RegisterModal
           isOpen={showRegister}
@@ -216,6 +236,14 @@ export default function HomePage() {
           isOpen={showVerifyModal}
           email={registeredEmail}
           onClose={() => setShowVerifyModal(false)}
+        />
+      )}
+
+      {showResetModal && (
+        <ResetPasswordNoticeModal
+          isOpen={showResetModal}
+          email={resetEmail}
+          onClose={() => setShowResetModal(false)}
         />
       )}
       <CookieBanner />

@@ -25,9 +25,13 @@ export default function LoginModal({ onClose }) {
     // ❗ Only render forgot password modal if it's active
     return (
       <ForgotPasswordModal
-        onClose={() => setShowForgotModal(false)}
-        onBackToLogin={() => setShowForgotModal(false)}
-      />
+      onClose={() => setShowForgotModal(false)}
+      onBackToLogin={() => setShowForgotModal(false)}
+      onSent={(email) => {
+        setShowForgotModal(false);
+        onResetRequested(email); 
+      }}
+    />
     );
   }
 

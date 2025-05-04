@@ -48,29 +48,31 @@ export default function AuthActionHandler() {
         await refreshUser();
         localStorage.removeItem("verifyCooldownStart");
 
-        // ✅ Orijinal sekmeye sinyal gönder
+        // ✅ Parent sekmeye kapatma sinyali
         localStorage.setItem("closeParentTab", "true");
 
         // ✅ Kullanıcıya mesaj göster
         setStatus("verifySuccess");
 
-        // ✅ 2.5 saniye sonra dashboard'a yönlendir
+        // ✅ Yönlendirme
         setTimeout(() => {
           navigate("/dashboard");
         }, 2000);
 
-        return;
       } else if (mode === "resetPassword") {
         await verifyPasswordResetCode(auth, oobCode);
         setStatus("resetReady");
+
       } else if (mode === "recoverEmail") {
         await applyActionCode(auth, oobCode);
         setStatus("verifySuccess");
         setTimeout(() => navigate("/dashboard"), 2500);
+
       } else {
         setStatus("error");
         setErrorMessage("Unsupported operation.");
       }
+
     } catch (error) {
       console.error("AuthAction error:", error);
       setStatus("error");
@@ -88,8 +90,14 @@ export default function AuthActionHandler() {
     try {
       await confirmPasswordReset(auth, oobCode, newPassword);
       toast.success("Password has been reset successfully! 🎉");
+
+      // ✅ Parent sekmeye kapatma sinyali
+      localStorage.setItem("closeParentTab", "true");
+
+      // ✅ Mesaj göster → yönlendirme
       setStatus("resetSuccess");
       setTimeout(() => navigate("/"), 2500);
+
     } catch (error) {
       toast.error(getFirebaseErrorMessage(error.code || error.message));
     }

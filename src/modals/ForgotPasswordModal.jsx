@@ -6,7 +6,7 @@ import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/services/firebase/config";
 import { toast } from "react-hot-toast";
 
-export default function ForgotPasswordModal({ onClose, onBackToLogin }) {
+export default function ForgotPasswordModal({ onClose, onBackToLogin, onSent }) {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   
@@ -22,9 +22,9 @@ export default function ForgotPasswordModal({ onClose, onBackToLogin }) {
     setLoading(true);
     try {
       await sendPasswordResetEmail(auth, email);
-      toast.success("Password reset email sent! Check your inbox.");
-      onClose();
-    } catch (error) {
+      toast.success("Password reset email sent! 📩");
+      onSent(email);
+    } catch (error){
       toast.error("Failed to send reset email. Please try again.");
       console.error(error);
     } finally {
