@@ -16,7 +16,7 @@ export default function SettingsPanel() {
       {/* Language */}
       <div>
         <h3 className="font-medium mb-1">🌐 Language</h3>
-        <select className="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+        <select className="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-1 focus:border-transparent focus:ring-primary transition">
           <option value="en">English</option>
           <option value="fr">Français</option>
           <option value="tr">Türkçe</option>
