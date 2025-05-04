@@ -62,7 +62,7 @@ export default function LoginModal({ onClose, onResetRequested }) {
               type="email"
               name="email"
               autoComplete="email"
-              className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+              className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-primary focus:ring-1 transition"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
