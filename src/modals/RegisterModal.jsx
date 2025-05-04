@@ -1,17 +1,18 @@
 import { useState } from "react";
 import ReactDOM from "react-dom";
-import { X, Mail, User, Lock } from "lucide-react";
+import { X, Mail, User } from "lucide-react";
 import { useRegister } from "@hooks/useRegister";
 import { validateRegisterForm } from "@/utils/validators";
 import { toast } from "react-hot-toast";
 import PasswordInput from "@/components/ui/PasswordInput";
 
-export default function RegisterModal({ onClose }) {
+export default function RegisterModal({ onClose, onRegistered }) {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
   const { handleRegister, authLoading } = useRegister();
 
   const handleSubmit = async (e) => {
@@ -24,7 +25,18 @@ export default function RegisterModal({ onClose }) {
       return;
     }
 
-    await handleRegister(email, password, firstname, lastname, setError);
+    const success = await handleRegister(
+      email,
+      password,
+      firstname,
+      lastname,
+      setError
+    );
+
+    if (success) {
+      onClose(); // Modalı kapat
+      onRegistered(email); // Yukarıya email gönder
+    }
   };
 
   return ReactDOM.createPortal(
@@ -44,7 +56,6 @@ export default function RegisterModal({ onClose }) {
         {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Firstname and Lastname side by side */}
           <div className="flex gap-3">
             <div className="flex-1">
               <label className="flex items-center gap-2 mb-1 text-gray-700 dark:text-gray-300">
@@ -52,7 +63,7 @@ export default function RegisterModal({ onClose }) {
               </label>
               <input
                 type="text"
-                className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white  focus:outline-none focus:ring-primary focus:ring-1 transition"
+                className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-primary focus:ring-1 transition"
                 value={firstname}
                 onChange={(e) => setFirstname(e.target.value)}
                 required
@@ -88,6 +99,7 @@ export default function RegisterModal({ onClose }) {
               disabled={authLoading}
             />
           </div>
+
           <div>
             <PasswordInput
               label="Password"

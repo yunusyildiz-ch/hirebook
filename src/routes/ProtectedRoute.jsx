@@ -1,6 +1,7 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import Loader from "@/components/Loader";
+import { toast } from "react-hot-toast";
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading, isEmailVerified } = useAuth();
@@ -13,7 +14,8 @@ const ProtectedRoute = ({ children }) => {
   }
 
   if (!isEmailVerified()) {
-    return <Navigate to="/verify-email-info" replace />;
+    toast.error("Please verify your email to access the dashboard.");
+    return <Navigate to="/" replace />;
   }
 
   return children;

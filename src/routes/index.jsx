@@ -17,7 +17,6 @@ import PrivacyPage from "@pages/legal/PrivacyPage";
 import CookiesPage from "@pages/legal/CookiesPage";
 import TestPage from "@pages/TestPage";
 import AuthActionHandler from "@pages/AuthActionHandler";
-import VerifyEmailInfoPage from "@pages/VerifyEmailInfoPage";
 
 const router = createBrowserRouter([
   // 🏠 Public Home Page (Guest Only)
@@ -63,11 +62,6 @@ const router = createBrowserRouter([
   {
     path: "/auth-action",
     element: <AuthActionHandler />,
-  },
-
-  {
-    path: "/verify-email-info",
-    element: <VerifyEmailInfoPage />, // 🔥  Verify -email Info Page
   },
 
   // 📜 Legal Pages

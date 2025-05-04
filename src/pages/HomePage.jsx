@@ -1,4 +1,3 @@
-// src/pages/HomePage.jsx
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -7,6 +6,7 @@ import { FcGoogle } from "react-icons/fc";
 import { RiAppleFill } from "react-icons/ri";
 import LoginModal from "@modals/LoginModal";
 import RegisterModal from "@modals/RegisterModal";
+import VerifyEmailNoticeModal from "@modals/VerifyEmailNoticeModal";
 import ComingSoonModal from "@modals/ComingSoonModal";
 import QatipLogo from "@assets/QatipLogo";
 import QatipCatLogo from "@assets/QatipCatLogo";
@@ -19,7 +19,10 @@ import { useGoogleLogin } from "@hooks/useGoogleLogin";
 export default function HomePage() {
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
+  const [showVerifyModal, setShowVerifyModal] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState("");
   const [showComingSoon, setShowComingSoon] = useState(false);
+
   const location = useLocation();
   const { handleGoogleLogin } = useGoogleLogin();
 
@@ -74,10 +77,8 @@ export default function HomePage() {
             <li>🌙 Light/Dark Mode Support</li>
           </ul>
 
-          {/* Download Section */}
           <DownloadSection onComingSoon={() => setShowComingSoon(true)} />
 
-          {/* Footer */}
           <footer className="pt-10 text-sm text-gray-500 dark:text-gray-400">
             <div className="flex gap-4 items-center mb-2">
               <a
@@ -158,33 +159,9 @@ export default function HomePage() {
 
           <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
             By signing up, you agree to our{" "}
-            <a
-              href="/legal/terms"
-              className="underline text-primary hover:text-navyBlue dark:hover:text-blue-400  dark:hover:text-blue-400 transition-colors"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Terms of Service
-            </a>{" "}
-            and{" "}
-            <a
-              href="/legal/privacy"
-              className="underline text-primary hover:text-navyBlue dark:hover:text-blue-400 transition-colors"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Privacy Policy
-            </a>
-            , including{" "}
-            <a
-              href="/legal/cookies"
-              className="underline text-primary hover:text-navyBlue dark:hover:text-blue-400 transition-colors"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Cookie Use
-            </a>
-            .
+            <a href="/legal/terms" className="underline">Terms of Service</a> and{" "}
+            <a href="/legal/privacy" className="underline">Privacy Policy</a>, including{" "}
+            <a href="/legal/cookies" className="underline">Cookie Use</a>.
           </p>
 
           <div className="text-center mt-4">
@@ -199,9 +176,11 @@ export default function HomePage() {
               Sign In
             </button>
           </div>
+
           <MobilAppStoreBadges />
         </div>
       </div>
+
       {/* Modals */}
       {showComingSoon && (
         <ComingSoonModal
@@ -214,6 +193,17 @@ export default function HomePage() {
         <RegisterModal
           isOpen={showRegister}
           onClose={() => setShowRegister(false)}
+          onRegistered={(email) => {
+            setRegisteredEmail(email);
+            setShowVerifyModal(true);
+          }}
+        />
+      )}
+      {showVerifyModal && (
+        <VerifyEmailNoticeModal
+          isOpen={showVerifyModal}
+          email={registeredEmail}
+          onClose={() => setShowVerifyModal(false)}
         />
       )}
       <CookieBanner />
