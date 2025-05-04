@@ -1,4 +1,3 @@
-// src/components/auth/ForgotPasswordModal.jsx
 import { useState } from "react";
 import ReactDOM from "react-dom";
 import { X, Mail, ArrowLeft } from "lucide-react";
@@ -9,7 +8,6 @@ import { toast } from "react-hot-toast";
 export default function ForgotPasswordModal({ onClose, onBackToLogin, onSent }) {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  
   const modalRoot = document.getElementById("modal-root") || document.body;
 
   const handleSubmit = async (e) => {
@@ -22,9 +20,11 @@ export default function ForgotPasswordModal({ onClose, onBackToLogin, onSent }) 
     setLoading(true);
     try {
       await sendPasswordResetEmail(auth, email);
+      toast.dismiss(); // clear existing toasts
       toast.success("Password reset email sent! 📩");
       onSent(email);
-    } catch (error){
+    } catch (error) {
+      toast.dismiss();
       toast.error("Failed to send reset email. Please try again.");
       console.error(error);
     } finally {
@@ -35,25 +35,15 @@ export default function ForgotPasswordModal({ onClose, onBackToLogin, onSent }) 
   return ReactDOM.createPortal(
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
       <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-xl w-full max-w-md relative">
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 text-gray-600 dark:text-gray-300 hover:text-red-500"
-        >
+        <button onClick={onClose} className="absolute top-3 right-3 text-gray-600 dark:text-gray-300 hover:text-red-500">
           <X size={20} />
         </button>
 
-        {/* Back to Login */}
-        <button
-          onClick={onBackToLogin}
-          className="flex items-center gap-2 mb-4 text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600"
-        >
+        <button onClick={onBackToLogin} className="flex items-center gap-2 mb-4 text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600">
           <ArrowLeft size={18} /> Back to Sign In
         </button>
 
-        <h2 className="text-2xl font-bold text-center mb-6 dark:text-white">
-          Forgot Password 🔑
-        </h2>
+        <h2 className="text-2xl font-bold text-center mb-6 dark:text-white">Forgot Password 🔑</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -62,7 +52,7 @@ export default function ForgotPasswordModal({ onClose, onBackToLogin, onSent }) 
             </label>
             <input
               type="email"
-              className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:border-transparent focus:ring-1 focus:ring-primary"
+              className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -74,9 +64,7 @@ export default function ForgotPasswordModal({ onClose, onBackToLogin, onSent }) 
             type="submit"
             disabled={loading}
             className={`w-full text-white p-2 rounded-lg transition ${
-              loading
-                ? "bg-blue-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
+              loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
             }`}
           >
             {loading ? "Sending..." : "Send Reset Link"}

@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { X, MailCheck } from "lucide-react";
 import QatipCatLogo from "@/assets/QatipCatLogo";
@@ -18,9 +17,7 @@ export default function ResetPasswordNoticeModal({ isOpen, email, onClose }) {
 
         <QatipCatLogo className="w-16 h-16 mx-auto text-gray-800 dark:text-white mb-4" />
         <MailCheck className="w-12 h-12 text-green-600 mx-auto mb-2" />
-        <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-          Check Your Email 📩
-        </h2>
+        <h2 className="text-xl font-bold text-gray-800 dark:text-white">Check Your Email 📩</h2>
         <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
           A password reset link has been sent to:
         </p>
