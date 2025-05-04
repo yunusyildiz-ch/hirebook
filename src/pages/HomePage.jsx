@@ -32,16 +32,15 @@ export default function HomePage() {
   }, [showLogin, showRegister]);
 
   useEffect(() => {
-    const handleEmailVerified = (event) => {
-      if (event.data?.type === "emailVerified") {
-        setShowVerifyModal(false); 
-        toast.success("Your email has been verified!");
-        window.location.href = "/dashboard"; 
+    const handleStorage = (event) => {
+      if (event.key === "closeParentTab" && event.newValue === "true") {
+        localStorage.removeItem("closeParentTab");
+        window.close(); 
       }
     };
   
-    window.addEventListener("message", handleEmailVerified);
-    return () => window.removeEventListener("message", handleEmailVerified);
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
   }, []);
 
   return (

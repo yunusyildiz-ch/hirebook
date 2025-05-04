@@ -1,3 +1,4 @@
+// src/pages/AuthActionHandler.jsx
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import {
@@ -30,10 +31,6 @@ export default function AuthActionHandler() {
   useEffect(() => {
     const checkAndHandleAction = async () => {
       if (!mode || !oobCode) {
-        if (auth.currentUser?.emailVerified) {
-          navigate("/dashboard");
-          return;
-        }
         setStatus("error");
         setErrorMessage("Invalid or missing action link.");
         return;
@@ -51,27 +48,20 @@ export default function AuthActionHandler() {
         await applyActionCode(auth, oobCode);
         await refreshUser();
         localStorage.removeItem("verifyCooldownStart");
-        setStatus("verifySuccess");
 
-        // ✅ Yeni sekme, ana sekmeye haber versin ve kendini kapatsın
-        if (window.opener) {
-          window.opener.postMessage({ type: "emailVerified" }, "*");
-          window.close();
-          return;
-        }
+        // ✅ Orijinal sekmeye sinyal gönder
+        localStorage.setItem("closeParentTab", "true");
 
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 2500);
+        // ✅ Yeni sekme açık kalsın ve dashboard'a gitsin
+        navigate("/dashboard");
+        return;
       } else if (mode === "resetPassword") {
         await verifyPasswordResetCode(auth, oobCode);
         setStatus("resetReady");
       } else if (mode === "recoverEmail") {
         await applyActionCode(auth, oobCode);
         setStatus("verifySuccess");
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 2500);
+        setTimeout(() => navigate("/dashboard"), 2500);
       } else {
         setStatus("error");
         setErrorMessage("Unsupported operation.");
@@ -94,12 +84,8 @@ export default function AuthActionHandler() {
       await confirmPasswordReset(auth, oobCode, newPassword);
       toast.success("Password has been reset successfully! 🎉");
       setStatus("resetSuccess");
-
-      setTimeout(() => {
-        navigate("/");
-      }, 2500);
+      setTimeout(() => navigate("/"), 2500);
     } catch (error) {
-      console.error("Password reset error:", error);
       toast.error(getFirebaseErrorMessage(error.code || error.message));
     }
   };
@@ -109,7 +95,6 @@ export default function AuthActionHandler() {
       <div className="absolute top-4 right-4">
         <ThemeToggle />
       </div>
-
       <div className="mb-8">
         <QatipCatLogo className="w-20 h-20 text-gray-800 dark:text-white" />
       </div>
@@ -117,29 +102,21 @@ export default function AuthActionHandler() {
       {status === "loading" && (
         <div className="flex flex-col items-center space-y-4">
           <Loader2 className="animate-spin w-10 h-10 text-blue-600" />
-          <h1 className="text-2xl font-semibold animate-pulse">
-            Processing your request...
-          </h1>
+          <h1 className="text-2xl font-semibold animate-pulse">Processing your request...</h1>
         </div>
       )}
 
       {status === "verifySuccess" && (
         <div className="flex flex-col items-center space-y-4">
-          <h1 className="text-2xl font-bold text-green-500">
-            Email Verified! 🎉
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            You’re being redirected to your dashboard...
-          </p>
+          <h1 className="text-2xl font-bold text-green-500">Email Verified! 🎉</h1>
+          <p className="text-gray-600 dark:text-gray-400">You’re being redirected to your dashboard...</p>
           <Loader2 className="animate-spin w-6 h-6 text-green-600" />
         </div>
       )}
 
       {status === "resetReady" && (
         <div className="w-full max-w-sm">
-          <h1 className="text-2xl font-bold mb-4 text-blue-500">
-            Reset Your Password 🔒
-          </h1>
+          <h1 className="text-2xl font-bold mb-4 text-blue-500">Reset Your Password 🔒</h1>
           <PasswordInput
             label="New Password"
             value={newPassword}
@@ -157,21 +134,15 @@ export default function AuthActionHandler() {
 
       {status === "resetSuccess" && (
         <div className="flex flex-col items-center space-y-4">
-          <h1 className="text-2xl font-bold text-green-500">
-            Password Reset Successful! 🎉
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Redirecting you to the login page...
-          </p>
+          <h1 className="text-2xl font-bold text-green-500">Password Reset Successful! 🎉</h1>
+          <p className="text-gray-600 dark:text-gray-400">Redirecting you to the login page...</p>
           <Loader2 className="animate-spin w-6 h-6 text-green-600" />
         </div>
       )}
 
       {status === "error" && (
         <>
-          <h1 className="text-2xl font-bold mb-4 text-red-500">
-            Something Went Wrong ❌
-          </h1>
+          <h1 className="text-2xl font-bold mb-4 text-red-500">Something Went Wrong ❌</h1>
           <p className="text-gray-600 dark:text-gray-400 mb-6">{errorMessage}</p>
           <button
             onClick={() => navigate("/")}
