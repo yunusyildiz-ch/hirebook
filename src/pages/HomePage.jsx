@@ -15,6 +15,7 @@ import DownloadSection from "@components/ui/DownloadSection";
 import MobilAppStoreBadges from "@assets/MobilAppStoreBadges";
 import CookieBanner from "@components/CookieBanner";
 import { useGoogleLogin } from "@hooks/useGoogleLogin";
+import ResetPasswordNoticeModal from "../modals/ResetPasswordNoticeModal";
 
 export default function HomePage() {
   const [showLogin, setShowLogin] = useState(false);

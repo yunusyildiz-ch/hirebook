@@ -66,7 +66,7 @@ export default function AuthActionHandler() {
       } else if (mode === "recoverEmail") {
         await applyActionCode(auth, oobCode);
         setStatus("verifySuccess");
-        setTimeout(() => navigate("/dashboard"), 2500);
+        setTimeout(() => navigate("/dashboard"), 2300);
 
       } else {
         setStatus("error");
@@ -96,7 +96,7 @@ export default function AuthActionHandler() {
 
       // ✅ Mesaj göster → yönlendirme
       setStatus("resetSuccess");
-      setTimeout(() => navigate("/dashboard"), 2500);
+      setTimeout(() => navigate("/"), 2500);
 
     } catch (error) {
       toast.error(getFirebaseErrorMessage(error.code || error.message));
