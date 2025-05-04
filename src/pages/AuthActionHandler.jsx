@@ -1,4 +1,3 @@
-// src/pages/AuthActionHandler.jsx
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import {
@@ -52,8 +51,14 @@ export default function AuthActionHandler() {
         // ✅ Orijinal sekmeye sinyal gönder
         localStorage.setItem("closeParentTab", "true");
 
-        // ✅ Yeni sekme açık kalsın ve dashboard'a gitsin
-        navigate("/dashboard");
+        // ✅ Kullanıcıya mesaj göster
+        setStatus("verifySuccess");
+
+        // ✅ 2.5 saniye sonra dashboard'a yönlendir
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 2000);
+
         return;
       } else if (mode === "resetPassword") {
         await verifyPasswordResetCode(auth, oobCode);
@@ -102,21 +107,29 @@ export default function AuthActionHandler() {
       {status === "loading" && (
         <div className="flex flex-col items-center space-y-4">
           <Loader2 className="animate-spin w-10 h-10 text-blue-600" />
-          <h1 className="text-2xl font-semibold animate-pulse">Processing your request...</h1>
+          <h1 className="text-2xl font-semibold animate-pulse">
+            Processing your request...
+          </h1>
         </div>
       )}
 
       {status === "verifySuccess" && (
         <div className="flex flex-col items-center space-y-4">
-          <h1 className="text-2xl font-bold text-green-500">Email Verified! 🎉</h1>
-          <p className="text-gray-600 dark:text-gray-400">You’re being redirected to your dashboard...</p>
+          <h1 className="text-2xl font-bold text-green-500">
+            Email Verified! 🎉
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            You’re being redirected to your dashboard...
+          </p>
           <Loader2 className="animate-spin w-6 h-6 text-green-600" />
         </div>
       )}
 
       {status === "resetReady" && (
         <div className="w-full max-w-sm">
-          <h1 className="text-2xl font-bold mb-4 text-blue-500">Reset Your Password 🔒</h1>
+          <h1 className="text-2xl font-bold mb-4 text-blue-500">
+            Reset Your Password 🔒
+          </h1>
           <PasswordInput
             label="New Password"
             value={newPassword}
@@ -134,16 +147,24 @@ export default function AuthActionHandler() {
 
       {status === "resetSuccess" && (
         <div className="flex flex-col items-center space-y-4">
-          <h1 className="text-2xl font-bold text-green-500">Password Reset Successful! 🎉</h1>
-          <p className="text-gray-600 dark:text-gray-400">Redirecting you to the login page...</p>
+          <h1 className="text-2xl font-bold text-green-500">
+            Password Reset Successful! 🎉
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Redirecting you to the login page...
+          </p>
           <Loader2 className="animate-spin w-6 h-6 text-green-600" />
         </div>
       )}
 
       {status === "error" && (
         <>
-          <h1 className="text-2xl font-bold mb-4 text-red-500">Something Went Wrong ❌</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">{errorMessage}</p>
+          <h1 className="text-2xl font-bold mb-4 text-red-500">
+            Something Went Wrong ❌
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
+            {errorMessage}
+          </p>
           <button
             onClick={() => navigate("/")}
             className="px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white font-semibold rounded-lg transition"
