@@ -52,7 +52,14 @@ export default function AuthActionHandler() {
         await refreshUser();
         localStorage.removeItem("verifyCooldownStart");
         setStatus("verifySuccess");
-        
+
+        // ✅ Yeni sekme, ana sekmeye haber versin ve kendini kapatsın
+        if (window.opener) {
+          window.opener.postMessage({ type: "emailVerified" }, "*");
+          window.close();
+          return;
+        }
+
         setTimeout(() => {
           navigate("/dashboard");
         }, 2500);
@@ -62,7 +69,6 @@ export default function AuthActionHandler() {
       } else if (mode === "recoverEmail") {
         await applyActionCode(auth, oobCode);
         setStatus("verifySuccess");
-
         setTimeout(() => {
           navigate("/dashboard");
         }, 2500);
@@ -111,13 +117,17 @@ export default function AuthActionHandler() {
       {status === "loading" && (
         <div className="flex flex-col items-center space-y-4">
           <Loader2 className="animate-spin w-10 h-10 text-blue-600" />
-          <h1 className="text-2xl font-semibold animate-pulse">Processing your request...</h1>
+          <h1 className="text-2xl font-semibold animate-pulse">
+            Processing your request...
+          </h1>
         </div>
       )}
 
       {status === "verifySuccess" && (
         <div className="flex flex-col items-center space-y-4">
-          <h1 className="text-2xl font-bold text-green-500">Email Verified! 🎉</h1>
+          <h1 className="text-2xl font-bold text-green-500">
+            Email Verified! 🎉
+          </h1>
           <p className="text-gray-600 dark:text-gray-400">
             You’re being redirected to your dashboard...
           </p>
@@ -127,7 +137,9 @@ export default function AuthActionHandler() {
 
       {status === "resetReady" && (
         <div className="w-full max-w-sm">
-          <h1 className="text-2xl font-bold mb-4 text-blue-500">Reset Your Password 🔒</h1>
+          <h1 className="text-2xl font-bold mb-4 text-blue-500">
+            Reset Your Password 🔒
+          </h1>
           <PasswordInput
             label="New Password"
             value={newPassword}
@@ -145,7 +157,9 @@ export default function AuthActionHandler() {
 
       {status === "resetSuccess" && (
         <div className="flex flex-col items-center space-y-4">
-          <h1 className="text-2xl font-bold text-green-500">Password Reset Successful! 🎉</h1>
+          <h1 className="text-2xl font-bold text-green-500">
+            Password Reset Successful! 🎉
+          </h1>
           <p className="text-gray-600 dark:text-gray-400">
             Redirecting you to the login page...
           </p>
@@ -155,7 +169,9 @@ export default function AuthActionHandler() {
 
       {status === "error" && (
         <>
-          <h1 className="text-2xl font-bold mb-4 text-red-500">Something Went Wrong ❌</h1>
+          <h1 className="text-2xl font-bold mb-4 text-red-500">
+            Something Went Wrong ❌
+          </h1>
           <p className="text-gray-600 dark:text-gray-400 mb-6">{errorMessage}</p>
           <button
             onClick={() => navigate("/")}

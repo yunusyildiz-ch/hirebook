@@ -31,6 +31,19 @@ export default function HomePage() {
       showLogin || showRegister ? "hidden" : "auto";
   }, [showLogin, showRegister]);
 
+  useEffect(() => {
+    const handleEmailVerified = (event) => {
+      if (event.data?.type === "emailVerified") {
+        setShowVerifyModal(false); 
+        toast.success("Your email has been verified!");
+        window.location.href = "/dashboard"; 
+      }
+    };
+  
+    window.addEventListener("message", handleEmailVerified);
+    return () => window.removeEventListener("message", handleEmailVerified);
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
