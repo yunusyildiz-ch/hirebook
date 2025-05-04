@@ -96,7 +96,7 @@ export default function AuthActionHandler() {
 
       // ✅ Mesaj göster → yönlendirme
       setStatus("resetSuccess");
-      setTimeout(() => navigate("/"), 2500);
+      setTimeout(() => navigate("/dashboard"), 2500);
 
     } catch (error) {
       toast.error(getFirebaseErrorMessage(error.code || error.message));
