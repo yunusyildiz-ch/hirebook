@@ -34,8 +34,8 @@ export default function RegisterModal({ onClose, onRegistered }) {
     );
 
     if (success) {
-      onClose(); // Modalı kapat
-      onRegistered(email); // Yukarıya email gönder
+      onClose();
+      onRegistered(email);
     }
   };
 
@@ -55,7 +55,7 @@ export default function RegisterModal({ onClose, onRegistered }) {
 
         {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" autoComplete="on">
           <div className="flex gap-3">
             <div className="flex-1">
               <label className="flex items-center gap-2 mb-1 text-gray-700 dark:text-gray-300">
@@ -63,6 +63,7 @@ export default function RegisterModal({ onClose, onRegistered }) {
               </label>
               <input
                 type="text"
+                name="firstname"
                 autoComplete="given-name"
                 className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-primary focus:ring-1 transition"
                 value={firstname}
@@ -78,6 +79,7 @@ export default function RegisterModal({ onClose, onRegistered }) {
               </label>
               <input
                 type="text"
+                name="lastname"
                 autoComplete="family-name"
                 className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-primary focus:ring-1 transition"
                 value={lastname}
@@ -94,6 +96,7 @@ export default function RegisterModal({ onClose, onRegistered }) {
             </label>
             <input
               type="email"
+              name="email"
               autoComplete="email"
               className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-primary focus:ring-1 transition"
               value={email}
@@ -106,6 +109,8 @@ export default function RegisterModal({ onClose, onRegistered }) {
           <div>
             <PasswordInput
               label="Password"
+              name="password"
+              autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={authLoading}
