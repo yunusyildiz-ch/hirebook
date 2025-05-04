@@ -52,7 +52,7 @@ export default function Sidebar({ onClose, isMobile }) {
       } flex flex-col bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out`}
     >
       {/* Logo Area */}
-      <a href="./"className="hover:bg-gray-100" ><div className="flex items-center justify-between h-14 px-2  transition-colors duration-300 ">
+      <a href="./"className="hover:bg-gray-100 dark:hover:bg-gray-700" ><div className="flex items-center justify-between h-14 px-2  transition-colors duration-300 ">
         <div className="flex items-center gap-2 overflow-hidden text-gray-900 dark:text-white transition-colors duration-300 ">
           <QatipLogo className="w-12 h-12 shrink-0 " />
           {!collapsed && !isMobile && (
