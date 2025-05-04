@@ -13,7 +13,7 @@ import ThemeToggle from "@components/ThemeToggle";
 import { Loader2 } from "lucide-react";
 import { getFirebaseErrorMessage } from "@/utils/firebaseErrors";
 import { validateResetPasswordForm } from "@/utils/validators";
-import PasswordInput from "@/components/ui/PasswordInput"; 
+import PasswordInput from "@/components/ui/PasswordInput";
 
 export default function AuthActionHandler() {
   const [searchParams] = useSearchParams();
@@ -50,13 +50,22 @@ export default function AuthActionHandler() {
       if (mode === "verifyEmail") {
         await applyActionCode(auth, oobCode);
         await refreshUser();
+        localStorage.removeItem("verifyCooldownStart");
         setStatus("verifySuccess");
+        
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 2500);
       } else if (mode === "resetPassword") {
         await verifyPasswordResetCode(auth, oobCode);
         setStatus("resetReady");
       } else if (mode === "recoverEmail") {
         await applyActionCode(auth, oobCode);
         setStatus("verifySuccess");
+
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 2500);
       } else {
         setStatus("error");
         setErrorMessage("Unsupported operation.");
@@ -79,14 +88,14 @@ export default function AuthActionHandler() {
       await confirmPasswordReset(auth, oobCode, newPassword);
       toast.success("Password has been reset successfully! 🎉");
       setStatus("resetSuccess");
+
+      setTimeout(() => {
+        navigate("/");
+      }, 2500);
     } catch (error) {
       console.error("Password reset error:", error);
       toast.error(getFirebaseErrorMessage(error.code || error.message));
     }
-  };
-
-  const handleGoHome = () => {
-    navigate("/");
   };
 
   return (
@@ -107,31 +116,24 @@ export default function AuthActionHandler() {
       )}
 
       {status === "verifySuccess" && (
-        <>
-          <h1 className="text-2xl font-bold mb-4 text-green-500">Action Successful! 🎉</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
-            Your email has been verified or recovered successfully.
+        <div className="flex flex-col items-center space-y-4">
+          <h1 className="text-2xl font-bold text-green-500">Email Verified! 🎉</h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            You’re being redirected to your dashboard...
           </p>
-          <button
-            onClick={handleGoHome}
-            className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition"
-          >
-            Go to Home
-          </button>
-        </>
+          <Loader2 className="animate-spin w-6 h-6 text-green-600" />
+        </div>
       )}
 
       {status === "resetReady" && (
         <div className="w-full max-w-sm">
           <h1 className="text-2xl font-bold mb-4 text-blue-500">Reset Your Password 🔒</h1>
-
           <PasswordInput
             label="New Password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             placeholder="Enter new password"
           />
-
           <button
             onClick={handlePasswordReset}
             className="w-full px-6 py-3 mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition"
@@ -142,18 +144,13 @@ export default function AuthActionHandler() {
       )}
 
       {status === "resetSuccess" && (
-        <>
-          <h1 className="text-2xl font-bold mb-4 text-green-500">Password Reset Successful! 🎉</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
-            You can now login with your new password.
+        <div className="flex flex-col items-center space-y-4">
+          <h1 className="text-2xl font-bold text-green-500">Password Reset Successful! 🎉</h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Redirecting you to the login page...
           </p>
-          <button
-            onClick={handleGoHome}
-            className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition"
-          >
-            Go to Home
-          </button>
-        </>
+          <Loader2 className="animate-spin w-6 h-6 text-green-600" />
+        </div>
       )}
 
       {status === "error" && (
@@ -161,7 +158,7 @@ export default function AuthActionHandler() {
           <h1 className="text-2xl font-bold mb-4 text-red-500">Something Went Wrong ❌</h1>
           <p className="text-gray-600 dark:text-gray-400 mb-6">{errorMessage}</p>
           <button
-            onClick={handleGoHome}
+            onClick={() => navigate("/")}
             className="px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white font-semibold rounded-lg transition"
           >
             Back to Home

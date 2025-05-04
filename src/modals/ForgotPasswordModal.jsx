@@ -62,7 +62,7 @@ export default function ForgotPasswordModal({ onClose, onBackToLogin }) {
             </label>
             <input
               type="email"
-              className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+              className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:border-transparent focus:ring-1 focus:ring-primary"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
