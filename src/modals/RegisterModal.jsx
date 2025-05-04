@@ -63,6 +63,7 @@ export default function RegisterModal({ onClose, onRegistered }) {
               </label>
               <input
                 type="text"
+                autoComplete="given-name"
                 className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-primary focus:ring-1 transition"
                 value={firstname}
                 onChange={(e) => setFirstname(e.target.value)}
@@ -77,6 +78,7 @@ export default function RegisterModal({ onClose, onRegistered }) {
               </label>
               <input
                 type="text"
+                autoComplete="family-name"
                 className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-primary focus:ring-1 transition"
                 value={lastname}
                 onChange={(e) => setLastname(e.target.value)}
@@ -92,6 +94,7 @@ export default function RegisterModal({ onClose, onRegistered }) {
             </label>
             <input
               type="email"
+              autoComplete="email"
               className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-primary focus:ring-1 transition"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
