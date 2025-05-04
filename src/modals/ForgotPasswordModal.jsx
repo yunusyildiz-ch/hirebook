@@ -52,6 +52,8 @@ export default function ForgotPasswordModal({ onClose, onBackToLogin, onSent }) 
             </label>
             <input
               type="email"
+              name="email"
+              autoComplete="email"
               className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
