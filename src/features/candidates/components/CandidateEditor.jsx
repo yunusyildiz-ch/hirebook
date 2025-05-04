@@ -16,6 +16,12 @@ export default function CandidateEditor({ candidate = null, onSave }) {
   const [tags, setTags] = useState("");
   const [tagList, setTagList] = useState([]);
 
+  const borderStatus = {
+    pending: "border-yellow-500 focus:ring-yellow-500",
+    interviewed: "border-blue-500 focus:ring-blue-500",
+    rejected: "border-red-500 focus:ring-red-500",
+  }[status.toLowerCase()];
+
   useEffect(() => {
     if (candidate) {
       setName(candidate.name || "");
@@ -87,19 +93,19 @@ export default function CandidateEditor({ candidate = null, onSave }) {
           placeholder="Full Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white"
+          className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-primary focus:border-transparent focus:ring-1 transition"
         />
         <input
           type="text"
           placeholder="Position"
           value={position}
           onChange={(e) => setPosition(e.target.value)}
-          className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white"
+          className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-primary focus:border-transparent focus:ring-1 transition"
         />
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white"
+          className = {` w-full p-2 border rounded dark:bg-gray-700 dark:text-white ${borderStatus} focus:outline-none focus:border-transparent focus:ring-1 transition`}
         >
           <option value="Pending">Pending</option>
           <option value="Interviewed">Interviewed</option>
@@ -116,7 +122,7 @@ export default function CandidateEditor({ candidate = null, onSave }) {
             value={tags}
             onChange={(e) => setTags(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleAddTag()}
-            className="flex-1 p-2 border rounded dark:bg-gray-700 dark:text-white"
+            className="flex-1 p-2 border rounded dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-primary focus:border-transparent focus:ring-1 transition"
           />
           <button
             onClick={handleAddTag}

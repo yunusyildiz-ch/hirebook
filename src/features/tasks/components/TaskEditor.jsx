@@ -31,6 +31,12 @@ export default function TaskEditor({ task }) {
   const [tags, setTags] = useState([]);
   const [newTag, setNewTag] = useState("");
 
+  const borderStatus = {
+    "to-do": "border-yellow-500 focus:ring-yellow-500",
+    "in progress": "border-blue-500 focus:ring-blue-500",
+    done: "border-green-500 focus:ring-green-500",
+  }[status.toLowerCase()] || "border-gray-400 focus:ring-gray-400";
+
   useEffect(() => {
     if (task) {
       setTitle(task.title || "");
@@ -115,7 +121,7 @@ export default function TaskEditor({ task }) {
       <input
         type="text"
         placeholder="Title"
-        className="w-full p-2 rounded border dark:bg-gray-700 dark:text-white"
+        className="w-full p-2 rounded border dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-primary focus:border-transparent focus:ring-1 transition"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
@@ -123,7 +129,7 @@ export default function TaskEditor({ task }) {
       {/* Description */}
       <textarea
         placeholder="Description"
-        className="w-full p-2 rounded border dark:bg-gray-700 dark:text-white"
+        className="w-full p-2 rounded border dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-primary focus:border-transparent focus:ring-1 transition"
         rows={4}
         value={description}
         onChange={(e) => setDescription(e.target.value)}
@@ -133,14 +139,14 @@ export default function TaskEditor({ task }) {
       <input
         type="text"
         placeholder="Project"
-        className="w-full p-2 rounded border dark:bg-gray-700 dark:text-white"
+        className="w-full p-2 rounded border dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-primary focus:border-transparent focus:ring-1 transition"
         value={project}
         onChange={(e) => setProject(e.target.value)}
       />
 
       {/* Status */}
       <select
-        className="w-full p-2 rounded border dark:bg-gray-700 dark:text-white"
+        className={`w-full p-2 rounded border dark:bg-gray-700 dark:text-white ${borderStatus} focus:outline-none focus:border-transparent focus:ring-1 transition`}
         value={status}
         onChange={(e) => setStatus(e.target.value)}
       >
@@ -160,7 +166,7 @@ export default function TaskEditor({ task }) {
           <input
             type="text"
             placeholder="Add tag..."
-            className="flex-1 p-2 rounded border dark:bg-gray-700 dark:text-white"
+            className="flex-1 p-2 rounded border dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-primary focus:border-transparent focus:ring-1 transition"
             value={newTag}
             onChange={(e) => setNewTag(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleAddTag()}
@@ -177,7 +183,7 @@ export default function TaskEditor({ task }) {
           {tags.map((tag, i) => (
             <span
               key={i}
-              className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white px-2 py-0.5 rounded-full text-sm flex items-center gap-1"
+              className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white px-2 py-0.5 rounded-full text-sm flex items-center gap-1 "
             >
               #{tag}
               <button

@@ -25,8 +25,8 @@ export default function PasswordInput({
   const toggleVisibility = () => setShowPassword((prev) => !prev);
 
   const colorClass = {
-    empty: "focus:ring-gray-300",
-    weak: "border-red-500 focus:ring-red-500",
+    empty: "border-gray-200 focus:ring-primary",
+    weak: "border-ring-red focus:ring-red-500",
     medium: "border-yellow-500 focus:ring-yellow-500",
     strong: "border-green-500 focus:ring-green-500",
   }[strength];
@@ -60,8 +60,8 @@ export default function PasswordInput({
           placeholder={placeholder}
           required={required}
           disabled={disabled}
-          className={`w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white 
-          ${colorClass} focus:outline-none focus:border-transparent focus:ring-2 transition`}
+          className={`w-full p-2 rounded border  dark:bg-gray-700 dark:text-white 
+          ${colorClass} focus:outline-none focus:border-transparent focus:ring-1 transition`}
         />
         <button
           type="button"

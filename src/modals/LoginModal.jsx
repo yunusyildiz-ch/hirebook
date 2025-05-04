@@ -55,7 +55,7 @@ export default function LoginModal({ onClose }) {
             </label>
             <input
               type="email"
-              className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+              className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-primary focus:border-transparent focus:ring-1 transition"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required

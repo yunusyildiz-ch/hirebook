@@ -94,7 +94,7 @@ export default function ProfileEditForm({ currentName, currentEmail }) {
           <label className="block font-medium mb-1">Full Name</label>
           <input
             type="text"
-            className="w-full px-3 py-2 rounded border bg-white dark:bg-gray-800"
+            className="w-full px-3 py-2 rounded border bg-white dark:bg-gray-800 focus:outline-none focus:ring-primary focus:border-transparent focus:ring-1 transition"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -104,7 +104,7 @@ export default function ProfileEditForm({ currentName, currentEmail }) {
           <label className="block font-medium mb-1">Email</label>
           <input
             type="email"
-            className="w-full px-3 py-2 rounded border bg-white dark:bg-gray-800"
+            className="w-full px-3 py-2 rounded border bg-white dark:bg-gray-800 focus:outline-none focus:ring-primary focus:border-transparent focus:ring-1 transition"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />

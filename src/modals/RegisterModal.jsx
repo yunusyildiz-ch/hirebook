@@ -52,7 +52,7 @@ export default function RegisterModal({ onClose }) {
               </label>
               <input
                 type="text"
-                className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+                className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white  focus:outline-none focus:ring-primary focus:ring-1 transition"
                 value={firstname}
                 onChange={(e) => setFirstname(e.target.value)}
                 required
@@ -66,7 +66,7 @@ export default function RegisterModal({ onClose }) {
               </label>
               <input
                 type="text"
-                className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+                className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-primary focus:ring-1 transition"
                 value={lastname}
                 onChange={(e) => setLastname(e.target.value)}
                 required
@@ -81,7 +81,7 @@ export default function RegisterModal({ onClose }) {
             </label>
             <input
               type="email"
-              className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+              className="w-full p-2 rounded border dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-primary focus:ring-1 transition"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
