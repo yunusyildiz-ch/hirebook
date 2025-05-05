@@ -1,6 +1,6 @@
-import ThemeToggle from "@/components/ThemeToggle";
 import { useState } from "react";
-import CookieModal from "@/modals/CookieModal";
+import CookieModal from "@modals/CookieModal";
+import ThemeSelector from "@components/ThemeSelector";
 
 export default function SettingsPanel() {
   const [showCookieModal, setShowCookieModal] = useState(false);
@@ -10,7 +10,10 @@ export default function SettingsPanel() {
       {/* Theme */}
       <div>
         <h3 className="font-medium mb-1">🌓 Theme</h3>
-        <ThemeToggle />
+        <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+          Default appearance follows your device settings. You can manually switch between light and dark mode below.
+        </p>
+        <ThemeSelector />
       </div>
 
       {/* Language */}
@@ -37,7 +40,6 @@ export default function SettingsPanel() {
         </button>
       </div>
 
-      {/* Cookie Modal */}
       {showCookieModal && (
         <CookieModal onClose={() => setShowCookieModal(false)} />
       )}

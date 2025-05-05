@@ -5,6 +5,8 @@ export default {
   theme: {
     extend: {
       colors: {
+        skyBlue: "#489be8",
+        skyBorder: "#1a82e2",
         trabzonBlue: "#38b6ff",
         trabzonBordo: "#8A1538",
         current: "currentColor",
