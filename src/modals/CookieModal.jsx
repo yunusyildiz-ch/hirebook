@@ -25,7 +25,7 @@ export default function CookieModal({ onClose }) {
     <button
       onClick={() => setEnabled(!enabled)}
       className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 focus:outline-none ${
-        enabled ? "bg-blue-600" : "bg-gray-300 dark:bg-gray-600"
+        enabled ? "bg-skyBorder" : "bg-gray-300 dark:bg-gray-600"
       }`}
     >
       <span
@@ -114,7 +114,7 @@ export default function CookieModal({ onClose }) {
           </button>
           <button
             onClick={handleSave}
-            className="text-sm px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
+            className="text-sm px-4 py-2 rounded-lg bg-skyBorder text-white hover:bg-skyBlue transition"
           >
             Save Preferences
           </button>
