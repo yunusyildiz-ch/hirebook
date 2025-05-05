@@ -81,14 +81,14 @@ export default function CookieBanner() {
 
                 <button
                   onClick={handleAccept}
-                  className="w-full sm:w-auto flex items-center justify-center gap-1 bg-green-600 text-white px-3 py-1.5 rounded-lg text-sm hover:bg-green-700 transition"
+                  className="w-full sm:w-auto flex items-center justify-center gap-1 bg-greenPrimary text-white px-3 py-1.5 rounded-lg text-sm hover:bg-greenHover transition"
                 >
                   <CheckCircle size={16} /> Accept All
                 </button>
 
                 <button
                   onClick={() => setShowModal(true)}
-                  className="w-full sm:w-auto flex items-center justify-center gap-1 bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm hover:bg-blue-700 transition"
+                  className="w-full sm:w-auto flex items-center justify-center gap-1 bg-skyBlue text-white px-3 py-1.5 rounded-lg text-sm hover:bg-skyBorder transition"
                 >
                   <Settings2 size={16} /> Preferences
                 </button>
