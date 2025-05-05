@@ -66,7 +66,7 @@ export default function ForgotPasswordModal({ onClose, onBackToLogin, onSent }) 
             type="submit"
             disabled={loading}
             className={`w-full text-white p-2 rounded-lg transition ${
-              loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+              loading ? "bg-blue-400 cursor-not-allowed" : "bg-skyBlue hover:bg-skyBorder"
             }`}
           >
             {loading ? "Sending..." : "Send Reset Link"}

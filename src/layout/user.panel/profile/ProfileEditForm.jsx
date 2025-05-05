@@ -125,7 +125,7 @@ export default function ProfileEditForm({ currentName, currentEmail }) {
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
+          className="bg-skyBlue border border-skyBorder hover:bg-skyBorder hover:border-skyBlue text-white py-1 px-2 "
         >
           {loading ? "Saving..." : "Update Profile"}
         </button>

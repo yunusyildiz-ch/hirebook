@@ -57,8 +57,8 @@ export default function TasksBar() {
           onClick={handleNewTask}
           className={`flex items-center gap-2 text-sm font-medium p-1 rounded-full transition hover:scale-[1.02] ${
             viewMode === "edit"
-              ? "bg-green-500 hover:bg-green-600 text-white border-green-500 border"
-              : "bg-blue-600 hover:bg-blue-700 text-white"
+              ? "bg-greenPrimary hover:greenHover text-white border-greenPrimary border"
+              : "bg-skyBlue border border-skyBorder hover:bg-skyBorder text-white"
           }`}
         >
           <MdOutlineAddTask size={22} />

@@ -126,7 +126,7 @@ export default function CandidateEditor({ candidate = null, onSave }) {
           />
           <button
             onClick={handleAddTag}
-            className="px-3 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 transition"
+            className="px-3 py-2 rounded text-white bg-skyBlue border border-skyBorder hover:bg-skyBorder hover:border-skyBlue transition"
           >
             <Plus size={16} />
           </button>
@@ -152,13 +152,13 @@ export default function CandidateEditor({ candidate = null, onSave }) {
       <div className="flex justify-end gap-2 mt-4">
         <button
           onClick={handleCancel}
-          className="px-4 py-2 text-sm border border-gray-300 dark:border-gray-500 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+          className="px-4 py-2 text-sm border border-gray-300 dark:border-gray-500  hover:bg-gray-200 dark:hover:bg-gray-700 transition"
         >
           Cancel
         </button>
         <button
           onClick={handleSave}
-          className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+          className="px-4 py-2 text-sm bg-skyBlue border border-skyBorder hover:bg-skyBorder hover:border-skyBlue text-white  transition"
         >
           <Save size={16} className="inline mr-1" />
           Save

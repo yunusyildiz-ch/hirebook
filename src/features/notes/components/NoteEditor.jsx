@@ -106,13 +106,13 @@ export default function NoteEditor() {
       <div className="flex justify-end gap-2">
         <button
           onClick={handleCancel}
-          className="px-4 py-2 text-sm border border-gray-300 dark:border-gray-500 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+          className="px-4 py-2 text-sm border border-gray-300 dark:border-gray-500  hover:bg-gray-200 dark:hover:bg-gray-700"
         >
           Cancel
         </button>
         <button
           onClick={handleSave}
-          className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+          className="px-4 py-2 text-sm  text-white bg-skyBlue border border-skyBorder hover:bg-skyBorder hover:border-skyBlue"
         >
           Save
         </button>

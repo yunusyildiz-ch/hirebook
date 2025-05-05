@@ -83,7 +83,7 @@ export default function LoginModal({ onClose, onResetRequested }) {
             type="submit"
             disabled={authLoading}
             className={`w-full text-white p-2 rounded-lg transition ${
-              authLoading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+              authLoading ? "bg-blue-400 cursor-not-allowed" : "bg-skyBlue hover:bg-skyBorder"
             }`}
           >
             {authLoading ? "Signing in..." : "Sign In"}

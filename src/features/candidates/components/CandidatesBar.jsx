@@ -56,8 +56,8 @@ export default function CandidatesBar() {
           onClick={handleNewCandidate}
           className={`flex items-center gap-2 text-sm font-medium ${
             viewMode === "edit"
-              ? "bg-green-600 hover:bg-green-700"
-              : "bg-blue-600 hover:bg-blue-700"
+              ? "bg-greenPrimary hover:greenHover text-white border-greenPrimary border"
+              : "bg-skyBlue border border-skyBorder hover:bg-skyBorder text-white"
           } text-white p-1 rounded-full transition hover:scale-[1.02]`}
         >
           <TbUsersPlus size={22} />
