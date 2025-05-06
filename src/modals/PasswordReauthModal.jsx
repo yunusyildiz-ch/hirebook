@@ -1,4 +1,3 @@
-// 📁 src/components/modals/PasswordReauthModal.jsx
 import { useState } from "react";
 import { reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 import { auth } from "@services/firebase/config";

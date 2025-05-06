@@ -34,7 +34,7 @@ export default function SettingsPanel() {
         </p>
         <button
           onClick={() => setShowCookieModal(true)}
-          className="text-sm px-2 py-1  bg-skyBlue border border-skyBorder hover:bg-skyBorder hover:border-skyBlue text-white  transition"
+          className="text-sm px-2 py-1 rounded bg-skyBlue border border-skyBorder hover:bg-skyBorder hover:border-skyBlue text-white  transition"
         >
           Manage Preferences
         </button>

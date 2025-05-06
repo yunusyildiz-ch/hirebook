@@ -1,4 +1,3 @@
-// 📁 src/services/accountService.js
 import { deleteUser } from "firebase/auth";
 import {
   deleteDoc,

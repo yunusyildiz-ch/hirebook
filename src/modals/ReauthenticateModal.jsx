@@ -49,7 +49,7 @@ export default function ReauthenticateModal({ isOpen, onClose, onSuccess }) {
         <div className="flex justify-end gap-2 pt-2">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+            className="px-4 py-1 rounded border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
             disabled={loading}
           >
             Cancel
@@ -57,7 +57,7 @@ export default function ReauthenticateModal({ isOpen, onClose, onSuccess }) {
           <button
             onClick={handleReauth}
             disabled={loading || !password}
-            className="px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white transition"
+            className="px-4 py-1 border border-skyBorder rounded bg-skyBlue hover:bg-skyBorder text-white transition cursor-pointer"
           >
             {loading ? "Verifying..." : "Confirm"}
           </button>
