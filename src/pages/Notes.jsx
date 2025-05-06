@@ -53,12 +53,14 @@ export default function Notes() {
     setShowConfirm(false);
   };
 
-  if (activeTab === "Folders") {
-    return <FolderView />;
-  }
-
+  // ✅ New note açıldığında her tab'da edit gösterilir
   if (viewMode === "edit") {
     return <NoteEditor />;
+  }
+
+  // ✅ Sadece edit değilse FolderView gösterilir
+  if (activeTab === "Folders") {
+    return <FolderView />;
   }
 
   if (viewMode === "view" && selectedNote) {
