@@ -105,9 +105,9 @@ function AvatarIconButton({ isActive, onClick }) {
       className={`
         transition rounded-full border
         ${isActive
-          ? "bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300"
+          ? "bg-skyBlue  text-blue-600 dark:text-blue-300"
           : "text-gray-600 dark:text-gray-300 border-transparent"}
-        hover:bg-gray-100 dark:hover:bg-gray-700
+        hover:bg-skyBorder 
        p-1
       `}
     >
