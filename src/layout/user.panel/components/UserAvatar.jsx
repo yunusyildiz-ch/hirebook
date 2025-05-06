@@ -2,7 +2,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 export default function UserAvatar({ size = 96 }) {
   const { user } = useAuth();
-  const photoURL = user?.photoURL || "/avatar-placeholder.png";
+  const photoURL = user?.photoURL || "/cat_logo.png";
   const dimension = `${size}px`;
 
   return (

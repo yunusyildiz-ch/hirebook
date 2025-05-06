@@ -24,10 +24,9 @@ export default function VerticalIconMenu({ activePanel, onTogglePanel }) {
   return (
     <div className="flex flex-col items-center justify-between min-h-[100dvh] w-16 dark:bg-gray-800 border-r border-gray-300 dark:border-gray-700">
       <div className="flex flex-col items-center gap-6 mt-6">
-        {/* 🧑 Avatar */}
-        <IconButton
-          icon={<UserAvatar size={40} />}
-          active={activePanel === "profile"}
+        {/* 🧑 Avatar (özel buton) */}
+        <AvatarIconButton
+          isActive={activePanel === "profile"}
           onClick={() => onTogglePanel("profile")}
         />
 
@@ -56,7 +55,12 @@ export default function VerticalIconMenu({ activePanel, onTogglePanel }) {
 
         {/* 🚪 Logout */}
         <IconButton
-          icon={<LogOut size={20} className="text-red-600 dark:text-red-400 group-hover:text-red-700 dark:group-hover:text-red-300 transition" />}
+          icon={
+            <LogOut
+              size={20}
+              className="text-red-600 dark:text-red-400 group-hover:text-red-700 dark:group-hover:text-red-300 transition"
+            />
+          }
           onClick={handleLogout}
         />
       </div>
@@ -68,6 +72,9 @@ export default function VerticalIconMenu({ activePanel, onTogglePanel }) {
   );
 }
 
+/**
+ * 🧩 Normal ikon butonu
+ */
 function IconButton({ icon, onClick, active }) {
   return (
     <button
@@ -84,6 +91,27 @@ function IconButton({ icon, onClick, active }) {
       <div className="flex items-center justify-center">
         {icon}
       </div>
+    </button>
+  );
+}
+
+/**
+ * 🧑 Avatar ikon butonu → özel stillendirilebilir
+ */
+function AvatarIconButton({ isActive, onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`
+        transition rounded-full border
+        ${isActive
+          ? "bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300"
+          : "text-gray-600 dark:text-gray-300 border-transparent"}
+        hover:bg-gray-100 dark:hover:bg-gray-700
+       p-1
+      `}
+    >
+      <UserAvatar size={52} />
     </button>
   );
 }
