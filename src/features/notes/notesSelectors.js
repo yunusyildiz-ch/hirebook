@@ -8,9 +8,6 @@ export const selectSelectedNote = (state) => state.notes.selectedNote;
 export const selectSelectedNoteId = (state) =>
   state.notes.selectedNote?.id || null;
 
-export const selectNotesByFolder = (folderId) => (state) =>
-  state.notes.notes.filter((note) => note.folderId === folderId);
-
 // -------- UI STATE -------- //
 export const selectNotesUIState = (state) => state.notesUI;
 

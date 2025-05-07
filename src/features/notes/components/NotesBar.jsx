@@ -5,7 +5,7 @@ import { setActiveTab, setViewMode } from "../notesUI.slice";
 import { selectActiveTab, selectViewMode as selectNoteViewMode } from "../notesSelectors";
 import { TbFilePlus } from "react-icons/tb";
 
-const tabs = ["All", "Folders"];
+const tabs = ["All"];
 
 export default function NotesBar() {
   const dispatch = useDispatch();
@@ -28,12 +28,12 @@ export default function NotesBar() {
   };
 
   const handleNewNote = () => {
-    dispatch(clearSelectedNote());  
-    dispatch(setViewMode("edit")); 
+    dispatch(clearSelectedNote());
+    dispatch(setViewMode("edit"));
   };
 
   return (
-    <div className="w-full px-6 bg-white transition-colors duration-300  dark:border-gray-700 border-b border-gray-200 dark:bg-gray-800 ">
+    <div className="w-full px-6 bg-white transition-colors duration-300 dark:border-gray-700 border-b border-gray-200 dark:bg-gray-800">
       <div className="flex items-center justify-between max-w-7xl mx-auto py-3 flex-wrap gap-6">
         {/* Tabs */}
         <div className="flex gap-6">

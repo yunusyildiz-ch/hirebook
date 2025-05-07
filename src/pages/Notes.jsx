@@ -5,7 +5,6 @@ import { useAuth } from "@contexts/AuthContext";
 import NoteList from "@notes/components/NoteList";
 import NoteEditor from "@notes/components/NoteEditor";
 import NoteDetail from "@notes/components/NoteDetail";
-import FolderView from "@notes/views/FolderView";
 import ConfirmModal from "@modals/ConfirmModal";
 import {
   selectActiveTab,
@@ -53,14 +52,8 @@ export default function Notes() {
     setShowConfirm(false);
   };
 
-  // ✅ New note açıldığında her tab'da edit gösterilir
   if (viewMode === "edit") {
     return <NoteEditor />;
-  }
-
-  // ✅ Sadece edit değilse FolderView gösterilir
-  if (activeTab === "Folders") {
-    return <FolderView />;
   }
 
   if (viewMode === "view" && selectedNote) {
