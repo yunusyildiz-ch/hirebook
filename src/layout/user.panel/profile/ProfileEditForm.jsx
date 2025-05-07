@@ -10,6 +10,7 @@ import { useAuth } from "@contexts/AuthContext";
 import ConfirmModal from "@modals/ConfirmModal";
 import ReauthenticateModal from "@modals/ReauthenticateModal";
 import UpdatePasswordModal from "@modals/UpdatePasswordModal";
+import InfoModal from "@modals/InfoModal"; 
 import { deleteAccountCompletely } from "@services/accountService";
 import { useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
@@ -25,6 +26,7 @@ export default function ProfileEditForm({ currentName, currentEmail }) {
 
   const [showResetPasswordModal, setShowResetPasswordModal] = useState(false);
   const [showPasswordUpdateModal, setShowPasswordUpdateModal] = useState(false);
+  const [showInfoModal, setShowInfoModal] = useState(false); // ✅ InfoModal State
 
   const { refreshUser, logout, user } = useAuth();
   const navigate = useNavigate();
@@ -59,6 +61,14 @@ export default function ProfileEditForm({ currentName, currentEmail }) {
       toast.error("Failed to update profile");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResetPassword = () => {
+    if (isGoogleUser) {
+      setShowInfoModal(true);
+    } else {
+      setShowResetPasswordModal(true);
     }
   };
 
@@ -106,7 +116,7 @@ export default function ProfileEditForm({ currentName, currentEmail }) {
   <div className="pt-2">
     <button
       type="button"
-      onClick={() => setShowResetPasswordModal(true)}
+      onClick={handleResetPassword}
       className="text-gray-500 hover:text-skyBlue hover:underline text-sm transition"
     >
       🔁 Reset Password
@@ -183,6 +193,15 @@ export default function ProfileEditForm({ currentName, currentEmail }) {
       <UpdatePasswordModal
         isOpen={showPasswordUpdateModal}
         onClose={() => setShowPasswordUpdateModal(false)}
+      />
+
+      {/* Info Modal for Google Users */}
+      <InfoModal
+        isOpen={showInfoModal}
+        title="Reset Password Unavailable"
+        message="You signed in with your Google account. To change your password, visit your Google Account settings."
+        icon={<FcGoogle size={24} />}
+        onClose={() => setShowInfoModal(false)}
       />
     </>
   );
