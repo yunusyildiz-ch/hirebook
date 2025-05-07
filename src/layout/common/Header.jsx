@@ -1,15 +1,24 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
-import { LayoutDashboard, StickyNote, Users, CheckSquare, Search } from "lucide-react";
+import {
+  LayoutDashboard,
+  StickyNote,
+  Users,
+  CheckSquare,
+  Folder,
+  Search,
+} from "lucide-react";
 
 import NotesBar from "@/features/notes/components/NotesBar";
 import CandidatesBar from "@/features/candidates/components/CandidatesBar";
 import TasksBar from "@/features/tasks/components/TasksBar";
+import FoldersBar from "@/features/folders/components/FoldersBar";
 
 import { setSearchTerm as setNotesSearch } from "@/features/notes/notesUI.slice";
 import { setSearchTerm as setCandidatesSearch } from "@/features/candidates/candidatesUI.slice";
 import { setSearchTerm as setTasksSearch } from "@/features/tasks/tasksUI.slice";
+import { setSearchTerm as setFoldersSearch } from "@/features/folders/foldersUI.slice";
 
 export default function Header() {
   const location = useLocation();
@@ -30,12 +39,14 @@ export default function Header() {
     if (path.includes("/notes")) dispatch(setNotesSearch(value));
     else if (path.includes("/candidates")) dispatch(setCandidatesSearch(value));
     else if (path.includes("/tasks")) dispatch(setTasksSearch(value));
+    else if (path.includes("/folders")) dispatch(setFoldersSearch(value));
   };
 
   const getPlaceholder = () => {
     if (path.includes("/notes")) return "Search notes...";
     if (path.includes("/candidates")) return "Search candidates...";
     if (path.includes("/tasks")) return "Search tasks...";
+    if (path.includes("/folders")) return "Search folders...";
     return "Search...";
   };
 
@@ -43,6 +54,7 @@ export default function Header() {
     if (path.includes("/notes")) return <NotesBar />;
     if (path.includes("/candidates")) return <CandidatesBar />;
     if (path.includes("/tasks")) return <TasksBar />;
+    if (path.includes("/folders")) return <FoldersBar />;
     return null;
   };
 
@@ -52,15 +64,23 @@ export default function Header() {
     { to: "/dashboard/notes", icon: <StickyNote size={22} />, match: (p) => p.includes("/notes") },
     { to: "/dashboard/candidates", icon: <Users size={22} />, match: (p) => p.includes("/candidates") },
     { to: "/dashboard/tasks", icon: <CheckSquare size={22} />, match: (p) => p.includes("/tasks") },
+    { to: "/dashboard/folders", icon: <Folder size={22} />, match: (p) => p.includes("/folders") },
   ];
 
   return (
     <header className="sticky top-0 z-20 bg-white dark:bg-gray-800 transition-colors duration-300 dark:border-gray-700 border-b border-gray-200">
-
       {/* Desktop Top Area */}
       <div className="hidden md:flex items-center justify-between px-6 pt-4 pb-2">
         <h1 className="text-xl font-semibold text-gray-900 dark:text-white transition-colors duration-300">
-          {path.includes("/notes") ? "Notes" : path.includes("/candidates") ? "Candidates" : path.includes("/tasks") ? "Tasks" : "Dashboard"}
+          {path.includes("/notes")
+            ? "Notes"
+            : path.includes("/candidates")
+            ? "Candidates"
+            : path.includes("/tasks")
+            ? "Tasks"
+            : path.includes("/folders")
+            ? "Folders"
+            : "Dashboard"}
         </h1>
 
         {/* Search */}
@@ -117,9 +137,8 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Tabs (NotesBar, CandidatesBar, TasksBar) */}
+      {/* Tabs (NotesBar, CandidatesBar, TasksBar, FoldersBar) */}
       <div>{renderDynamicContent()}</div>
-
     </header>
   );
 }

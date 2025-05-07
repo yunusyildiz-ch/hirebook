@@ -4,6 +4,7 @@ import AdminLayout from "@/layout/admin/AdminLayout";
 import Notes from "@pages/Notes";
 import Candidates from "@pages/Candidates";
 import Tasks from "@pages/Tasks";
+import Folders from "@pages/Folders"
 import ProtectedRoute from "./ProtectedRoute";
 import GuestRoute from "./GuestRoute";
 import RoleProtectedRoute from "./RoleProtectedRoute";
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
       { path: "notes", element: <Notes /> },
       { path: "candidates", element: <Candidates /> },
       { path: "tasks", element: <Tasks /> },
+      { path: "folders", element: <Folders /> },
     ],
   },
 

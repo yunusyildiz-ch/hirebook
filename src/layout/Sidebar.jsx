@@ -5,6 +5,7 @@ import {
   Users,
   StickyNote,
   CheckSquare,
+  Folder,
   ShieldCheck,
   ChevronLeft,
   ChevronRight,
@@ -36,6 +37,8 @@ export default function Sidebar({ onClose, isMobile }) {
     { to: "/dashboard/notes", label: "Notes", icon: <StickyNote size={18} /> },
     { to: "/dashboard/candidates", label: "Candidates", icon: <Users size={18} /> },
     { to: "/dashboard/tasks", label: "Tasks", icon: <CheckSquare size={18} /> },
+    // ✅ Yeni Eklenen Folders Linki
+    { to: "/dashboard/folders", label: "Folders", icon: <Folder size={18} /> },
   ];
 
   const adminLinks = role === "admin"
@@ -52,26 +55,27 @@ export default function Sidebar({ onClose, isMobile }) {
       } flex flex-col bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out`}
     >
       {/* Logo Area */}
-      <a href="./"className="hover:bg-gray-100 dark:hover:bg-gray-700" ><div className="flex items-center justify-between h-14 px-2  transition-colors duration-300 ">
-        <div className="flex items-center gap-2 overflow-hidden text-gray-900 dark:text-white transition-colors duration-300 ">
-          <QatipLogo className="w-12 h-12 shrink-0 " />
-          {!collapsed && !isMobile && (
-            <span className="text-lg font-semibold whitespace-nowrap text-gray-900 dark:text-white transition-colors duration-300">
-              Qatip
-            </span>
+      <a href="./" className="hover:bg-gray-100 dark:hover:bg-gray-700">
+        <div className="flex items-center justify-between h-14 px-2 transition-colors duration-300">
+          <div className="flex items-center gap-2 overflow-hidden text-gray-900 dark:text-white transition-colors duration-300">
+            <QatipLogo className="w-12 h-12 shrink-0" />
+            {!collapsed && !isMobile && (
+              <span className="text-lg font-semibold whitespace-nowrap text-gray-900 dark:text-white transition-colors duration-300">
+                Qatip
+              </span>
+            )}
+          </div>
+
+          {isMobile && (
+            <button
+              onClick={onClose}
+              className="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white"
+            >
+              <X size={20} />
+            </button>
           )}
         </div>
-
-        {isMobile && (
-          <button
-            onClick={onClose}
-            className="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white"
-          >
-            <X size={20} />
-          </button>
-        )}
-      </div></a>
-      
+      </a>
 
       {/* Scrollable Links */}
       <div className="flex flex-col flex-grow overflow-y-auto">
