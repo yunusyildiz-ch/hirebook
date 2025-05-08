@@ -4,29 +4,19 @@ service cloud.firestore {
 
     // 🔔 Bildirimler (notifications)
     match /notifications/{notificationId} {
-
-      // 👀 Okuma izni → Giriş yapılmışsa ve:
-      // - userId alanı yoksa (genel bildirim)
-      // - ya da kullanıcı kendi bildirimini okuyorsa
       allow read: if request.auth != null &&
         (!("userId" in resource.data) || request.auth.uid == resource.data.userId);
 
-      // 🛠️ Oluşturma izni sadece admin tokenına sahip olanlara açık
       allow create: if request.auth != null && request.auth.token.admin == true;
 
-      // 🔄 Güncelleme izni → readBy veya dismissedBy listesine kullanıcı kendi UID'sini ekliyorsa
-      allow update: if request.auth !=null &&
+      allow update: if request.auth != null &&
       (
-        // ✅ readBy güncellemesi (bildirim okundu)
         (
           request.resource.data.readBy.size() == resource.data.readBy.size() + 1 &&
           request.resource.data.readBy.hasAll(resource.data.readBy) &&
           request.resource.data.readBy.hasOnly(resource.data.readBy.concat([request.auth.uid]))
         )
-
         ||
-
-        // ❌ Bildirim gizleme (dismissedBy)
         (
           request.resource.data.dismissedBy.size() == resource.data.dismissedBy.size() + 1 &&
           request.resource.data.dismissedBy.hasAll(resource.data.dismissedBy) &&
@@ -34,22 +24,17 @@ service cloud.firestore {
         )
       );
 
-      // 🗑️ Silme → Sadece bildirimin sahibi silebilir
       allow delete: if request.auth != null && request.auth.uid == resource.data.userId;
     }
 
-    // 👤 Kullanıcı profilleri
+    // 👤 Kullanıcı Profilleri
     match /users/{userId} {
-      // Kullanıcı sadece kendi profilini okuyabilir ve güncelleyebilir
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
 
     // 📝 Notlar (notes)
     match /notes/{noteId} {
-      // Oluşturma sırasında userId alanı kendisine ait olmalı
       allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
-
-      // Okuma, güncelleme, silme sadece sahibine açık
       allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
     }
 
@@ -65,22 +50,21 @@ service cloud.firestore {
       allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
     }
 
-    // 🔄 Folders (klasörler)
+    // 🔄 Klasörler (folders)
     match /folders/{folderId} {
-    // Klasör oluşturma izni: Giriş yapılmışsa ve kullanıcıya aitse
+      // Kullanıcıya ait klasör oluşturma izni
       allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
 
-    // Okuma, güncelleme, silme: Sadece klasör sahibine izin ver
+      // Sadece kullanıcının kendi klasörlerini okuma, güncelleme ve silme izni
       allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
-}
+    }
 
-    // 🍪 Çerez izinleri
+    // 🍪 Çerez İzinleri (cookie preferences)
     match /cookiePreferences/{userId} {
-      // Sadece kendi çerez tercihlerini okuyabilir/yazabilir
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
 
-    // 🚫 Diğer tüm belgeler varsayılan olarak kapalı
+    // 🚫 Varsayılan Kural: Erişim Yok
     match /{document=**} {
       allow read, write: if false;
     }

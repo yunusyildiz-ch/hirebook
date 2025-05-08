@@ -5,6 +5,7 @@ import {
   deleteFolder,
   subscribeToFolders,
 } from "@/services/foldersService";
+import { setFolders } from "./foldersSlice"; 
 import { showSuccess, showError } from "@/utils/toastUtils";
 
 // 📌 Utility for consistent error handling
@@ -17,15 +18,22 @@ const handleThunkError = (error, rejectWithValue, fallbackMessage) => {
 // 🔄 Load Folders (with real-time subscription)
 export const loadFolders = createAsyncThunk(
   "folders/loadFolders",
-  async (userId, { rejectWithValue }) => {
+  async (userId, { dispatch, rejectWithValue }) => {
+    if (!userId) {
+      console.warn("Cannot load folders: No user ID provided");
+      return []; 
+    }
+
     try {
       return await new Promise((resolve) => {
         const unsubscribe = subscribeToFolders(userId, (folders) => {
-          resolve(folders); // Note: we ignore unsubscribe for now
+          console.log("Loaded folders:", folders); // 🔥 Debugging line
+          dispatch(setFolders(folders)); // ✅ Redux'a kaydet
+          resolve(folders);
         });
       });
     } catch (error) {
-      return handleThunkError(error, rejectWithValue, "Failed to load folders");
+      return rejectWithValue("Failed to load folders");
     }
   }
 );

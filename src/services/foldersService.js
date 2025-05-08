@@ -1,14 +1,14 @@
 import { db } from "@/services/firebase/config";
-import { collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "firebase/firestore";
+import { collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, where } from "firebase/firestore";
 
 // 📂 Klasör koleksiyonu referansı
 const foldersRef = collection(db, "folders");
 
 // ➕ Add Folder
 export const addFolder = async (folder) => {
-    if (!folder.userId) throw new Error("User ID is required");
-    return await addDoc(collection(db, "folders"), folder);
-  };
+  if (!folder.userId) throw new Error("User ID is required");
+  return await addDoc(foldersRef, folder);
+};
 
 // ✏️ Update Folder
 export const updateFolder = async (id, updates) => {
@@ -22,10 +22,27 @@ export const deleteFolder = async (id) => {
   return await deleteDoc(folderDoc);
 };
 
-// 🔄 Subscribe to Folders
+// 🔄 Subscribe to Folders (filtered by userId)
 export const subscribeToFolders = (userId, callback) => {
-  return onSnapshot(foldersRef, (snapshot) => {
-    const folders = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    callback(folders);
-  });
+  if (!userId) {
+    console.warn("User ID is not available for folder subscription");
+    return () => {};
+  }
+
+  // 🔥 Kullanıcıya ait klasörleri almak için query oluşturma
+  const userFoldersQuery = query(foldersRef, where("userId", "==", userId));
+
+  return onSnapshot(
+    userFoldersQuery,
+    (snapshot) => {
+      const folders = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      callback(folders);
+    },
+    (error) => {
+      console.error("Error loading folders:", error);
+    }
+  );
 };

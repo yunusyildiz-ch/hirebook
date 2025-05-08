@@ -11,3 +11,30 @@ body {
 .logo-text {
   @apply text-2xl font-bold tracking-wide;
 }
+
+/* FolderCard Styles
+.folder-card {
+  @apply group relative p-4 bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-all duration-300 border border-gray-200 dark:border-gray-700;
+}
+
+.folder-card:hover .actions {
+  @apply opacity-100;
+} */
+
+
+/* folders: [
+  {
+    id: "abc123",
+    title: "Work Projects",
+    color: "blue",
+    userId: "user123",
+    createdAt: "2025-05-07T12:00:00Z",
+  },
+  {
+    id: "def456",
+    title: "Personal",
+    color: "red",
+    userId: "user123",
+    createdAt: "2025-05-07T14:30:00Z",
+  }
+] */
