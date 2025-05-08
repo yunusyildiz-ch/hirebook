@@ -65,6 +65,15 @@ service cloud.firestore {
       allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
     }
 
+    // 🔄 Folders (klasörler)
+    match /folders/{folderId} {
+    // Klasör oluşturma izni: Giriş yapılmışsa ve kullanıcıya aitse
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+
+    // Okuma, güncelleme, silme: Sadece klasör sahibine izin ver
+      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
+}
+
     // 🍪 Çerez izinleri
     match /cookiePreferences/{userId} {
       // Sadece kendi çerez tercihlerini okuyabilir/yazabilir
