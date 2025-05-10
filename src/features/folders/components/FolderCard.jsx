@@ -23,7 +23,7 @@ export default function FolderCard({ folder }) {
         <div className="flex items-center gap-3">
           <FolderIcon color={folder.color} />
           <div className="flex flex-col">
-            <span className="text-lg font-semibold text-gray-800 dark:text-white">
+            <span className="text-md  text-gray-800 dark:text-white">
               {folder.title}
             </span>
             <span className="text-xs text-gray-500 dark:text-gray-400">

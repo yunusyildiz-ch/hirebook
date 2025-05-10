@@ -1,7 +1,7 @@
-import { TbFolder } from "react-icons/tb";
+import { BsFillFolderFill } from "react-icons/bs";
 
-export default function FolderIcon({ color = "blue" }) {
+export default function FolderIcon({ color = "#2196f3" }) {
   return (
-    <TbFolder size={40} className={`text-${color}-500`} />
+    <BsFillFolderFill size={40} style={{ color }} />  
   );
 }

@@ -4,22 +4,31 @@ import { addFolderThunk } from "../foldersThunks";
 import { toast } from "react-hot-toast";
 import { auth } from "@/services/firebase/config";
 
+// 📌 Klasik klasör renkleri
+const folderColors = [
+  { name: "Blue", hex: "#2196f3" },
+  { name: "Green", hex: "#4caf50" },
+  { name: "Yellow", hex: "#ffeb3b" },
+  { name: "Red", hex: "#f44336" },
+  { name: "Gray", hex: "#9e9e9e" },
+];
+
 export default function NewFolderModal({ isOpen, onClose }) {
   const dispatch = useDispatch();
   const [folderName, setFolderName] = useState("");
-  const [color, setColor] = useState("#2196f3"); // Default blue color
+  const [selectedColor, setSelectedColor] = useState(folderColors[0].hex); // Default: Blue
 
   const handleAddFolder = async () => {
     if (!folderName.trim()) {
       toast.error("Folder name cannot be empty.");
       return;
     }
-  
+
     try {
       const userId = auth.currentUser?.uid;
       if (!userId) throw new Error("User not authenticated");
-  
-      await dispatch(addFolderThunk({ title: folderName, color, userId }));
+
+      await dispatch(addFolderThunk({ title: folderName, color: selectedColor, userId }));
       onClose();
     } catch (error) {
       toast.error(error.message || "Error creating folder");
@@ -42,20 +51,31 @@ export default function NewFolderModal({ isOpen, onClose }) {
         />
 
         <label className="text-sm">Choose Folder Color:</label>
-        <input
-          type="color"
-          value={color}
-          onChange={(e) => setColor(e.target.value)}
-          className="w-full h-10 p-0 border rounded-md cursor-pointer"
-        />
+        <div className="flex gap-2 mb-4">
+          {folderColors.map((color) => (
+            <div
+              key={color.name}
+              onClick={() => setSelectedColor(color.hex)}
+              className={`w-8 h-8 rounded-full cursor-pointer border-2 ${
+                selectedColor === color.hex
+                  ? "border-blue-500 shadow-md"
+                  : "border-gray-300"
+              }`}
+              style={{ backgroundColor: color.hex }}
+            />
+          ))}
+        </div>
 
         <div className="flex justify-end gap-2">
-          <button onClick={onClose} className="px-4 py-2 text-gray-600 dark:text-gray-300">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md"
+          >
             Cancel
           </button>
           <button
             onClick={handleAddFolder}
-            className="px-4 py-2 bg-skyBlue text-white rounded-md"
+            className="px-4 py-2 bg-skyBlue text-white rounded-md hover:bg-blue-600"
           >
             Create
           </button>
