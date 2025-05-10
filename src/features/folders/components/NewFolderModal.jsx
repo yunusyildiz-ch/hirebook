@@ -4,19 +4,20 @@ import { addFolderThunk } from "../foldersThunks";
 import { toast } from "react-hot-toast";
 import { auth } from "@/services/firebase/config";
 
-// 📌 Klasik klasör renkleri
+// 📌 Folders Colors
 const folderColors = [
+  { name: "Gray", hex: "#9e9e9e" },
   { name: "Blue", hex: "#2196f3" },
   { name: "Green", hex: "#4caf50" },
   { name: "Yellow", hex: "#ffeb3b" },
   { name: "Red", hex: "#f44336" },
-  { name: "Gray", hex: "#9e9e9e" },
+  
 ];
 
 export default function NewFolderModal({ isOpen, onClose }) {
   const dispatch = useDispatch();
   const [folderName, setFolderName] = useState("");
-  const [selectedColor, setSelectedColor] = useState(folderColors[0].hex); // Default: Blue
+  const [selectedColor, setSelectedColor] = useState(folderColors[0].hex); // default: gray
 
   const handleAddFolder = async () => {
     if (!folderName.trim()) {
