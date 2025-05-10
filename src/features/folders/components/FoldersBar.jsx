@@ -1,17 +1,17 @@
+// 📂 src/features/folders/components/FoldersBar.jsx
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearSelectedFolder } from "../foldersSlice";
-import { setActiveFolderTab, setFolderViewMode } from "../foldersUI.slice";
-import { selectActiveFolderTab, selectFolderViewMode } from "../foldersSelectors";
+import { setActiveFolderTab } from "../foldersUI.slice";
+import { selectActiveFolderTab } from "../foldersSelectors";
 import { TbFolderPlus } from "react-icons/tb";
 import NewFolderModal from "./NewFolderModal";
+import FolderViewToggle from "./FolderViewToggle";
 
 const tabs = ["All"];
 
 export default function FoldersBar() {
   const dispatch = useDispatch();
   const activeTab = useSelector(selectActiveFolderTab);
-  const viewMode = useSelector(selectFolderViewMode);
   const [showNewFolderModal, setShowNewFolderModal] = useState(false);
 
   useEffect(() => {
@@ -26,7 +26,6 @@ export default function FoldersBar() {
   const handleTabClick = (tab) => {
     localStorage.setItem("lastTab_folders", tab);
     dispatch(setActiveFolderTab(tab));
-    dispatch(setFolderViewMode("list"));
   };
 
   const handleNewFolder = () => {
@@ -44,7 +43,7 @@ export default function FoldersBar() {
                 key={tab}
                 onClick={() => handleTabClick(tab)}
                 className={`text-sm font-medium pb-1 transition border-b-2 hover:scale-[1.05] ${
-                  activeTab === tab && viewMode === "list"
+                  activeTab === tab
                     ? "text-blue-600 dark:text-blue-400 border-blue-600 dark:border-blue-400"
                     : "border-transparent text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
                 }`}
@@ -54,17 +53,15 @@ export default function FoldersBar() {
             ))}
           </div>
 
+          <FolderViewToggle />
+
           {/* + New Folder Button */}
-        <button
-          onClick={handleNewFolder}
-          className={`flex items-center gap-2 text-sm font-medium p-1 rounded-full transition hover:scale-[1.02] ${
-            viewMode === "edit"
-              ? "bg-greenPrimary hover:bg-greenHover text-white border-greenPrimary border"
-              : "bg-skyBlue border border-skyBorder hover:bg-skyBorder text-white"
-          }`}
-        >
-          <TbFolderPlus size={22} />
-        </button>
+          <button
+            onClick={handleNewFolder}
+            className="flex items-center gap-2 text-sm font-medium p-1 rounded-full transition hover:scale-[1.02] bg-skyBlue border border-skyBorder text-white"
+          >
+            <TbFolderPlus size={22} />
+          </button>
         </div>
       </div>
 

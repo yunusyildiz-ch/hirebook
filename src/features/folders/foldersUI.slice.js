@@ -1,26 +1,45 @@
+// 📂 src/features/folders/foldersUI.slice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   activeTab: "All",
-  viewMode: "list", // list | edit
-  searchTerm: "", 
+  viewMode: "grid",  // Default olarak grid görünümü
+  searchTerm: "",
 };
 
 const foldersUISlice = createSlice({
   name: "foldersUI",
   initialState,
   reducers: {
-    setFolderViewMode(state, action) {
-      state.viewMode = action.payload;
+    // 📂 Grid görünümünü ayarla
+    setGridView(state) {
+      state.viewMode = "grid";
     },
+    // 📋 Liste görünümünü ayarla
+    setListView(state) {
+      state.viewMode = "list";
+    },
+    // 🔖 Aktif sekmeyi ayarla
     setActiveFolderTab(state, action) {
       state.activeTab = action.payload;
     },
-    setSearchTerm(state, action) {  
+    // 🔍 Arama terimini ayarla
+    setSearchTerm(state, action) {
       state.searchTerm = action.payload;
     },
   },
 });
 
-export const { setFolderViewMode, setActiveFolderTab, setSearchTerm } = foldersUISlice.actions;
+export const {
+  setGridView,
+  setListView,
+  setActiveFolderTab,
+  setSearchTerm,
+} = foldersUISlice.actions;
+
 export default foldersUISlice.reducer;
+
+// 🌟 Seçiciler (Selectors)
+export const selectActiveFolderTab = (state) => state.foldersUI.activeTab;
+export const selectFolderViewMode = (state) => state.foldersUI.viewMode;
+export const selectSearchTerm = (state) => state.foldersUI.searchTerm;

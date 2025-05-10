@@ -103,5 +103,5 @@ export default {
     "top-1/2",
     "-translate-y-1/2",
   ],
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [require("@tailwindcss/typography"), require('@tailwindcss/line-clamp'),],
 };
