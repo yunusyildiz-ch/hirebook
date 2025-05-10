@@ -1,4 +1,3 @@
-// 📂 src/features/folders/components/FolderCard.jsx
 import { TbDotsVertical } from "react-icons/tb";
 import { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -50,16 +49,23 @@ export default function FolderCard({ folder }) {
         <TbDotsVertical size={18} />
       </button>
 
-      <div className={`flex items-center gap-2 ${viewMode === "list" ? "flex-1" : "flex-col items-center text-center"}`}>
+      <div
+        className={`flex items-center gap-2 ${
+          viewMode === "list" ? "flex-1" : "flex-col items-center text-center"
+        }`}
+      >
         <FolderIcon color={folder.color} />
         <div className={`flex flex-col ${viewMode === "grid" ? "items-center" : ""}`}>
+          {/* Dosya Adı (Responsive ve Kısaltılmış) */}
           <span
-            className={`text-md text-gray-800 dark:text-white truncate ${
-              viewMode === "list" ? "max-w-[300px]" : "max-w-[100px] text-center"
+            className={`text-md text-gray-800 dark:text-white overflow-hidden text-ellipsis break-words ${
+              viewMode === "list" 
+                ? "max-w-[300px]" 
+                : "max-w-[80px] sm:max-w-[100px] md:max-w-[150px] lg:max-w-[200px] text-center"
             }`}
             title={folder.title}
           >
-            {folder.title}
+            {folder.title.length > 15 ? folder.title.slice(0, 15) + "..." : folder.title}
           </span>
           <span className="text-xs text-gray-500 dark:text-gray-400">
             {new Date(folder.createdAt).toLocaleDateString()}
