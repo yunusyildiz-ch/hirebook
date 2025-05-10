@@ -4,7 +4,7 @@ import { clearSelectedFolder } from "../foldersSlice";
 import { setActiveFolderTab, setFolderViewMode } from "../foldersUI.slice";
 import { selectActiveFolderTab, selectFolderViewMode } from "../foldersSelectors";
 import { TbFolderPlus } from "react-icons/tb";
-import FolderModal from "./FolderModal";
+import NewFolderModal from "./NewFolderModal";
 
 const tabs = ["All"];
 
@@ -12,7 +12,7 @@ export default function FoldersBar() {
   const dispatch = useDispatch();
   const activeTab = useSelector(selectActiveFolderTab);
   const viewMode = useSelector(selectFolderViewMode);
-  const [showFolderModal, setShowFolderModal] = useState(false);
+  const [showNewFolderModal, setShowNewFolderModal] = useState(false);
 
   useEffect(() => {
     const savedTab = localStorage.getItem("lastTab_folders");
@@ -30,7 +30,7 @@ export default function FoldersBar() {
   };
 
   const handleNewFolder = () => {
-    setShowFolderModal(true);
+    setShowNewFolderModal(true);
   };
 
   return (
@@ -69,8 +69,8 @@ export default function FoldersBar() {
       </div>
 
       {/* Folder Modal */}
-      {showFolderModal && (
-        <FolderModal isOpen={showFolderModal} onClose={() => setShowFolderModal(false)} />
+      {showNewFolderModal && (
+        <NewFolderModal isOpen={showNewFolderModal} onClose={() => setShowNewFolderModal(false)} />
       )}
     </>
   );

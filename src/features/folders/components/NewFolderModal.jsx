@@ -4,7 +4,7 @@ import { addFolderThunk } from "../foldersThunks";
 import { toast } from "react-hot-toast";
 import { auth } from "@/services/firebase/config";
 
-export default function FolderModal({ isOpen, onClose }) {
+export default function NewFolderModal({ isOpen, onClose }) {
   const dispatch = useDispatch();
   const [folderName, setFolderName] = useState("");
   const [color, setColor] = useState("#2196f3"); // Default blue color
