@@ -24,10 +24,10 @@ export default function FolderCard({ folder }) {
   };
 
   const handleSelect = () => {
-    dispatch(setSelectedFolder(folder.id));
+    dispatch(setSelectedFolder(folder));
   };
-
-  const isSelected = selectedFolder === folder.id;
+  
+  const isSelected = selectedFolder?.id === folder.id; 
 
   return (
     <div
@@ -43,7 +43,7 @@ export default function FolderCard({ folder }) {
       <button
         className={`absolute ${
           viewMode === "list" ? "top-1/2 -translate-y-1/2 right-2" : "top-2 right-2"
-        } p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 z-10`}
+        } p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 z-10`}
         onClick={(e) => toggleMenu(e)}
       >
         <TbDotsVertical size={18} />

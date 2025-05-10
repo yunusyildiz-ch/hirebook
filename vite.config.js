@@ -32,6 +32,7 @@ export default defineConfig({
       "@notes" : path.resolve(__dirname,"./src/features/notes"),
       "@candidates" : path.resolve(__dirname,"./src/features/candidates"),
       "@tasks" : path.resolve(__dirname,"./src/features/tasks"),
+      "@folders" : path.resolve(__dirname,"./src/features/folders"),
     },
   },
 });
