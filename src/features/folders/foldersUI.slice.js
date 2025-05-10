@@ -5,27 +5,31 @@ const initialState = {
   activeTab: "All",
   viewMode: "grid",  // Default olarak grid görünümü
   searchTerm: "",
+  loading: false,
+  error: null,
 };
 
 const foldersUISlice = createSlice({
   name: "foldersUI",
   initialState,
   reducers: {
-    // 📂 Grid görünümünü ayarla
     setGridView(state) {
       state.viewMode = "grid";
     },
-    // 📋 Liste görünümünü ayarla
     setListView(state) {
       state.viewMode = "list";
     },
-    // 🔖 Aktif sekmeyi ayarla
     setActiveFolderTab(state, action) {
       state.activeTab = action.payload;
     },
-    // 🔍 Arama terimini ayarla
     setSearchTerm(state, action) {
       state.searchTerm = action.payload;
+    },
+    setLoading(state, action) {
+      state.loading = action.payload;
+    },
+    setError(state, action) {
+      state.error = action.payload;
     },
   },
 });
@@ -35,11 +39,8 @@ export const {
   setListView,
   setActiveFolderTab,
   setSearchTerm,
+  setLoading,
+  setError,
 } = foldersUISlice.actions;
 
 export default foldersUISlice.reducer;
-
-// 🌟 Seçiciler (Selectors)
-export const selectActiveFolderTab = (state) => state.foldersUI.activeTab;
-export const selectFolderViewMode = (state) => state.foldersUI.viewMode;
-export const selectSearchTerm = (state) => state.foldersUI.searchTerm;

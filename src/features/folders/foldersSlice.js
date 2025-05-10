@@ -1,3 +1,4 @@
+// 📂 src/features/folders/foldersSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -15,11 +16,14 @@ const foldersSlice = createSlice({
     addFolder: (state, action) => {
       state.folders.push(action.payload);
     },
+    setSelectedFolder: (state, action) => {
+      state.selectedFolder = action.payload;
+    },
     clearSelectedFolder: (state) => {
       state.selectedFolder = null;
     },
   },
 });
 
-export const { setFolders, addFolder, clearSelectedFolder } = foldersSlice.actions;
+export const { setFolders, addFolder, setSelectedFolder, clearSelectedFolder } = foldersSlice.actions;
 export default foldersSlice.reducer;

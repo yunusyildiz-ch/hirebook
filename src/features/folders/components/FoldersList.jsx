@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import FolderCard from "./FolderCard";
-import { selectAllFolders } from "../foldersSelectors";
-import { selectFolderViewMode } from "../foldersUI.slice";
+import { selectAllFolders, selectFolderViewMode } from "../foldersSelectors";
+
 
 export default function FoldersList() {
   const folders = useSelector(selectAllFolders);
