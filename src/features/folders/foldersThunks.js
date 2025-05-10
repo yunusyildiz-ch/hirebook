@@ -46,15 +46,20 @@ export const addFolderThunk = createAsyncThunk(
 // ✏️ Update Folder
 export const updateFolderThunk = createAsyncThunk(
   "folders/updateFolder",
-  async ({ id, title }, { rejectWithValue }) => {
+  async ({ id, title, color }, { rejectWithValue }) => {
     try {
-      await updateFolder(id, { title });
-      return { id, title };
+      const updates = {};
+      if (title !== undefined) updates.title = title;
+      if (color !== undefined) updates.color = color;
+
+      await updateFolder(id, updates);
+      return { id, ...updates };
     } catch (error) {
       return handleThunkError(error, rejectWithValue, "Failed to update folder");
     }
   }
 );
+
 
 // 🗑️ Delete Folder
 export const deleteFolderThunk = createAsyncThunk(

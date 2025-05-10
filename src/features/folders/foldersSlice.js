@@ -1,11 +1,13 @@
+// foldersSlice.js
+
 import { createSlice } from "@reduxjs/toolkit";
-import { updateFolderThunk } from "./foldersThunks";
 
 const initialState = {
   folders: [],
   selectedFolder: null,
   renameModalOpen: false,
-  colorModalOpen: false,
+  colorModalOpen: false,  // ✅ Renk modalı açık mı?
+  deleteModalOpen: false, // ✅ Silme modalı açık mı?
 };
 
 const foldersSlice = createSlice({
@@ -15,16 +17,8 @@ const foldersSlice = createSlice({
     setFolders: (state, action) => {
       state.folders = action.payload;
     },
-    addFolder: (state, action) => {
-      state.folders.push(action.payload);
-    },
     setSelectedFolder: (state, action) => {
-      if (action.payload && action.payload.id) {
-        state.selectedFolder = action.payload;
-      }
-    },
-    clearSelectedFolder: (state) => {
-      state.selectedFolder = null;
+      state.selectedFolder = action.payload;
     },
     setRenameModalOpen: (state, action) => {
       state.renameModalOpen = action.payload;
@@ -32,24 +26,21 @@ const foldersSlice = createSlice({
     setColorModalOpen: (state, action) => {
       state.colorModalOpen = action.payload;
     },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(updateFolderThunk.fulfilled, (state, action) => {
-      const index = state.folders.findIndex((f) => f.id === action.payload.id);
-      if (index !== -1) {
-        state.folders[index] = { ...state.folders[index], ...action.payload };
-      }
-    });
+    setDeleteModalOpen: (state, action) => {
+      state.deleteModalOpen = action.payload;
+    },
   },
 });
 
 export const {
   setFolders,
-  addFolder,
   setSelectedFolder,
-  clearSelectedFolder,
   setRenameModalOpen,
   setColorModalOpen,
+  setDeleteModalOpen,
 } = foldersSlice.actions;
 
 export default foldersSlice.reducer;
+
+
+

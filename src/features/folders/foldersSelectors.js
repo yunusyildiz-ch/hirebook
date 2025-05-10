@@ -14,3 +14,4 @@ export const selectFoldersError = (state) => state.foldersUI.error;
 // -------- MODAL STATE -------- //
 export const selectRenameModalOpen = (state) => state.folders.renameModalOpen;
 export const selectColorModalOpen = (state) => state.folders.colorModalOpen;
+export const selectDeleteModalOpen = (state) => state.folders.deleteModalOpen; // ✅ Yeni selector

@@ -34,21 +34,21 @@ export const updateFolder = async (id, updates) => {
   try {
     const folderDoc = doc(db, "folders", id);
 
-    // Doğru veri yapısını kontrol et
-    if (!updates || typeof updates !== "object") {
-      throw new Error("Invalid update data");
-    }
+    // Geçersiz verileri kaldır
+    const sanitizedUpdates = Object.fromEntries(
+      Object.entries(updates).filter(([_, value]) => value !== undefined)
+    );
 
-    // Firestore güncelleme işlemi
     await updateDoc(folderDoc, {
-      ...updates,
+      ...sanitizedUpdates,
       updatedAt: serverTimestamp(),
     });
   } catch (error) {
-    console.error("Error in Firestore update:", error); 
+    console.error("Error updating folder:", error);
     throw new Error("Failed to update folder");
   }
 };
+
 
 // 🗑️ Delete Folder
 export const deleteFolder = async (id) => {
@@ -61,7 +61,7 @@ export const deleteFolder = async (id) => {
   }
 };
 
-// 🔄 Subscribe to Folders
+// 🔄 Subscribe to Folders (Real-time updates)
 export const subscribeToFolders = (userId, callback) => {
   if (!userId) {
     console.warn("User ID is not available for folder subscription");
@@ -70,22 +70,25 @@ export const subscribeToFolders = (userId, callback) => {
 
   const userFoldersQuery = query(foldersRef, where("userId", "==", userId));
 
-  return onSnapshot(
-    userFoldersQuery,
-    (snapshot) => {
-      const folders = snapshot.docs.map((doc) => {
-        const data = doc.data();
-        return {
-          id: doc.id,
-          ...data,
-          createdAt: data.createdAt?.toDate?.().toISOString() || null,
-          updatedAt: data.updatedAt?.toDate?.().toISOString() || null,
-        };
-      });
-      callback(folders);
-    },
-    (error) => {
-      console.error("Realtime Sync Error:", error.message); 
-    }
-  );
+  return onSnapshot(userFoldersQuery, (snapshot) => {
+    const folders = snapshot.docs.map((doc) => {
+      const data = doc.data();
+
+      // Zaman damgasını güvenli bir şekilde dönüştür
+      const safeDate = (timestamp) =>
+        timestamp && typeof timestamp.toDate === "function"
+          ? timestamp.toDate().toISOString()
+          : null;
+
+      return {
+        id: doc.id,
+        ...data,
+        createdAt: safeDate(data.createdAt),
+        updatedAt: safeDate(data.updatedAt),
+      };
+    });
+    callback(folders);
+  });
 };
+
+

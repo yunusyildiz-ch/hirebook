@@ -6,14 +6,11 @@ const colors = ["#9e9e9e", "#2196f3", "#4caf50", "#ffeb3b", "#f44336"];
 
 export default function FolderColorModal({ folder, onClose }) {
   const dispatch = useDispatch();
-  const [selectedColor, setSelectedColor] = useState(colors[0]);  // Varsayılan rengi ilk renk yap
+  const [selectedColor, setSelectedColor] = useState(colors[0]);
 
-  // Varsayılan rengi ayarla
   useEffect(() => {
-    if (folder?.color && colors.includes(folder.color)) {
+    if (folder?.color) {
       setSelectedColor(folder.color);
-    } else {
-      setSelectedColor(colors[0]);  // Renk geçerli değilse ilk rengi kullan
     }
   }, [folder]);
 
@@ -31,9 +28,7 @@ export default function FolderColorModal({ folder, onClose }) {
             <button
               key={color}
               onClick={() => setSelectedColor(color)}
-              className={`w-8 h-8 rounded-full ${
-                selectedColor === color ? "ring-2 ring-blue-500" : ""
-              }`}
+              className={`w-8 h-8 rounded-full ${selectedColor === color ? "ring-2 ring-blue-500" : ""}`}
               style={{ backgroundColor: color }}
             />
           ))}
@@ -46,3 +41,5 @@ export default function FolderColorModal({ folder, onClose }) {
     </div>
   );
 }
+
+

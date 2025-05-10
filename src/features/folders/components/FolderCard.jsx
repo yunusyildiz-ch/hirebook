@@ -1,33 +1,41 @@
 import { TbDotsVertical } from "react-icons/tb";
-import { useContext, useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedFolder } from "../foldersSlice";
 import { selectSelectedFolder, selectFolderViewMode } from "../foldersSelectors";
-import { FolderMenuContext } from "@/contexts/FolderMenuContext";
 import FolderIcon from "./FolderIcon";
-import FolderContextMenu from "./FolderContextMenu";
+import FolderOptionsMenu from "./FolderOptionsMenu";
 
 export default function FolderCard({ folder }) {
-  const { openMenu, closeMenu } = useContext(FolderMenuContext);
   const [showMenu, setShowMenu] = useState(false);
+  const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
   const dispatch = useDispatch();
   const selectedFolder = useSelector(selectSelectedFolder);
   const viewMode = useSelector(selectFolderViewMode);
 
-  const toggleMenu = (event) => {
-    setShowMenu((prev) => !prev);
-    if (showMenu) {
-      closeMenu();
-    } else {
-      openMenu(event, folder);
-    }
-  };
-
   const handleSelect = () => {
     dispatch(setSelectedFolder(folder));
   };
-  
-  const isSelected = selectedFolder?.id === folder.id; 
+
+  const toggleMenu = (event) => {
+    event.stopPropagation();
+    const rect = event.currentTarget.getBoundingClientRect();
+    setMenuPosition({ x: rect.left + window.scrollX, y: rect.bottom + window.scrollY });
+    setShowMenu((prev) => !prev);
+  };
+
+  const handleOutsideClick = (event) => {
+    if (!event.target.closest(".options-menu")) {
+      setShowMenu(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
 
   return (
     <div
@@ -35,37 +43,25 @@ export default function FolderCard({ folder }) {
       className={`group relative p-2 rounded-lg shadow hover:shadow-md transition-all duration-300 border border-gray-200 dark:border-gray-700 cursor-pointer ${
         viewMode === "list" ? "flex items-center justify-between gap-4" : "p-4"
       } ${
-        isSelected
+        selectedFolder?.id === folder.id
           ? "bg-blue-100 dark:bg-blue-800"
           : "bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
       }`}
     >
       <button
-        className={`absolute ${
-          viewMode === "list" ? "top-1/2 -translate-y-1/2 right-2" : "top-2 right-2"
-        } p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 z-10`}
-        onClick={(e) => toggleMenu(e)}
+        className="absolute top-2 right-2 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+        onClick={toggleMenu}
       >
         <TbDotsVertical size={18} />
       </button>
 
-      <div className={`flex items-center gap-2 ${viewMode === "list" ? "flex-1" : "flex-col items-center text-center"}`}>
+      <div className="flex items-center gap-2">
         <FolderIcon color={folder.color} />
-        <div className={`flex flex-col ${viewMode === "grid" ? "items-center" : ""}`}>
-          <span
-            className={`text-md text-gray-800 dark:text-white truncate ${
-              viewMode === "list" ? "max-w-[300px]" : "max-w-[100px] text-center"
-            }`}
-            title={folder.title}
-          >
-            {folder.title}
-          </span>
-          <span className="text-xs text-gray-500 dark:text-gray-400">
-            {new Date(folder.createdAt).toLocaleDateString()}
-          </span>
-        </div>
+        <span className="text-md truncate">{folder.title}</span>
       </div>
-      {showMenu && <FolderContextMenu />}
+
+      {showMenu && <FolderOptionsMenu folder={folder} position={menuPosition} closeMenu={() => setShowMenu(false)} />}
+
     </div>
   );
 }
