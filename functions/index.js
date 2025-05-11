@@ -95,3 +95,62 @@ export const sendWelcomeNotification = functions.auth.user().onCreate(async (use
     console.error("❌ Error sending welcome notification:", error);
   }
 });
+
+/**
+ * 📣 HTTP POST - User or Role-Based Notification Sender
+ * Endpoint: https://<your-domain>.cloudfunctions.net/sendTargetedNotification
+ */
+export const sendTargetedNotification = functions.https.onRequest((req, res) => {
+  corsHandler(req, res, async () => {
+    if (req.method !== "POST") {
+      res.status(405).send("Method Not Allowed");
+      return;
+    }
+
+    try {
+      const {
+        title,
+        message,
+        type = "info",
+        category = "system",
+        priority = "normal",
+        icon = "bell",
+        url = "",
+        actionText = "View",
+        userId = null,  // 👤 Özel kullanıcıya
+        role = null,    // 👥 Belirli bir role
+      } = req.body;
+
+      // 🛑 Zorunlu alan kontrolü
+      if (!title || !message) {
+        res.status(400).send("Missing title or message.");
+        return;
+      }
+
+      // 🔥 Bildirimi oluştur
+      await db.collection("notifications").add({
+        title,
+        message,
+        type,
+        category,
+        priority,
+        icon,
+        url,
+        actionText,
+        userId,      // Belirli kullanıcıya
+        role,        // Belirli role
+        to: "targeted",  // Hedefli bildirim
+        readBy: [],
+        dismissedBy: [],
+        createdAt: Timestamp.now(),
+      });
+
+      console.log(`📣 Targeted notification sent: ${title} to ${userId || role}`);
+      res.status(200).send("Notification sent.");
+    } catch (error) {
+      console.error("❌ Failed to send targeted notification", error);
+      res.status(500).send("Internal Server Error");
+    }
+  });
+});
+
