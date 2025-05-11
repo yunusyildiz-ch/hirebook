@@ -17,10 +17,17 @@ export const handleChangeColor = (dispatch, folder, closeMenu) => {
 };
 
 // ❌ Delete Folder
-export const handleDelete = async (dispatch, folder, closeMenu) => {
-  if (closeMenu) closeMenu();
+export const handleDelete = async (dispatch, folder) => {
+  if (!folder || !folder.id) {
+    console.warn("⚠️ [handleDelete] Invalid folder data:", folder);
+    return;
+  }
   try {
-    await dispatch(deleteFolderThunk(folder.id));
+    const result = await dispatch(deleteFolderThunk(folder.id));
+    if (result.error) {
+      showError("Failed to delete folder.");
+      return;
+    }
     showSuccess("Folder deleted.");
   } catch (error) {
     showError("Failed to delete folder.");

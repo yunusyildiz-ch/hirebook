@@ -6,7 +6,7 @@ import { selectSelectedFolder, selectFolderViewMode } from "../foldersSelectors"
 import FolderIcon from "./FolderIcon";
 import FolderOptionsMenu from "./FolderOptionsMenu";
 
-export default function FolderCard({ folder }) {
+export default function FolderCard({ folder, onDelete }) {
   const [showMenu, setShowMenu] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
   const dispatch = useDispatch();
@@ -60,8 +60,15 @@ export default function FolderCard({ folder }) {
         <span className="text-md truncate">{folder.title}</span>
       </div>
 
-      {showMenu && <FolderOptionsMenu folder={folder} position={menuPosition} closeMenu={() => setShowMenu(false)} />}
-
+      {showMenu && (
+        <FolderOptionsMenu
+          folder={folder}
+          position={menuPosition}
+          closeMenu={() => setShowMenu(false)}
+          onDelete={onDelete}
+        />
+      )}
     </div>
   );
 }
+

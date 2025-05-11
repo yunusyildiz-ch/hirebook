@@ -67,10 +67,9 @@ export const deleteFolderThunk = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       await deleteFolder(id);
-      showSuccess("Folder deleted");
       return id;
     } catch (error) {
-      return handleThunkError(error, rejectWithValue, "Failed to delete folder");
+      return rejectWithValue(error.message);
     }
   }
 );

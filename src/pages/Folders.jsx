@@ -10,10 +10,8 @@ export default function FoldersPage() {
 
   useEffect(() => {
     if (user && user.uid) {
-      console.log("Loading folders for user ID:", user.uid); // 🔥 Debugging line
       dispatch(loadFolders(user.uid));
     } else {
-      console.warn("No user ID available for loading folders");
     }
   }, [dispatch, user]);
 

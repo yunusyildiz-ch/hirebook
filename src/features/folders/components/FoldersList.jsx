@@ -1,11 +1,27 @@
-import { useSelector } from "react-redux";
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import FolderCard from "./FolderCard";
+import ConfirmModal from "@modals/ConfirmModal";
 import { selectAllFolders, selectFolderViewMode } from "../foldersSelectors";
-
+import { handleDelete } from "@utils/folderActions";
 
 export default function FoldersList() {
   const folders = useSelector(selectAllFolders);
   const viewMode = useSelector(selectFolderViewMode);
+  const dispatch = useDispatch();
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedFolder, setSelectedFolder] = useState(null);
+
+  const confirmDelete = async () => {
+    try {
+      await handleDelete(dispatch, selectedFolder);
+      setShowDeleteModal(false);
+      setSelectedFolder(null);
+    } catch (error) {
+      console.error("❌ [FoldersList] Delete failed:", error);
+    }
+  };
 
   if (folders.length === 0) {
     return (
@@ -24,8 +40,29 @@ export default function FoldersList() {
       }`}
     >
       {folders.map((folder) => (
-        <FolderCard key={folder.id} folder={folder} viewMode={viewMode} />
+        <div key={folder.id}>
+          <FolderCard
+            folder={folder}
+            viewMode={viewMode}
+            onDelete={() => {
+              setSelectedFolder(folder);
+              setShowDeleteModal(true);
+            }}
+          />
+        </div>
       ))}
+
+      {/* ✅ Silme Onay Modali */}
+      {showDeleteModal && selectedFolder && (
+        <ConfirmModal
+          isOpen={showDeleteModal}
+          title="Delete Folder"
+          message={`Are you sure you want to delete the folder: "${selectedFolder?.title}"?`}
+          onConfirm={confirmDelete}
+          onCancel={() => setShowDeleteModal(false)}
+        />
+      )}
     </div>
   );
 }
+

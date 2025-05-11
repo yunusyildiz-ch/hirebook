@@ -56,10 +56,10 @@ export const deleteFolder = async (id) => {
     const folderDoc = doc(db, "folders", id);
     await deleteDoc(folderDoc);
   } catch (error) {
-    console.error("Error deleting folder:", error);
     throw new Error("Failed to delete folder");
   }
 };
+
 
 // 🔄 Subscribe to Folders (Real-time updates)
 export const subscribeToFolders = (userId, callback) => {

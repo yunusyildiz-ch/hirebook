@@ -1,14 +1,9 @@
 import { TbEdit, TbTrash, TbPalette, TbFolder } from "react-icons/tb";
 import { useDispatch } from "react-redux";
 import { createPortal } from "react-dom";
-import {
-  handleRename,
-  handleChangeColor,
-  handleDelete,
-  handleOpen,
-} from "@utils/folderActions";
+import { handleRename, handleChangeColor, handleOpen } from "@utils/folderActions";
 
-export default function FolderOptionsMenu({ folder, position, closeMenu }) {
+export default function FolderOptionsMenu({ folder, position, closeMenu, onDelete }) {
   const dispatch = useDispatch();
 
   return createPortal(
@@ -30,7 +25,10 @@ export default function FolderOptionsMenu({ folder, position, closeMenu }) {
       </div>
       <div
         className="flex items-center gap-2 px-3 py-2 text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-all cursor-pointer"
-        onClick={() => handleDelete(dispatch, folder, closeMenu)}
+        onClick={() => {
+          onDelete();
+          closeMenu();
+        }}
       >
         <TbTrash size={16} /> Delete
       </div>
@@ -44,4 +42,15 @@ export default function FolderOptionsMenu({ folder, position, closeMenu }) {
     document.body
   );
 }
+
+
+
+
+
+
+
+
+
+
+
 

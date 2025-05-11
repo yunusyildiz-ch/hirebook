@@ -6,8 +6,7 @@ const initialState = {
   folders: [],
   selectedFolder: null,
   renameModalOpen: false,
-  colorModalOpen: false,  // ✅ Renk modalı açık mı?
-  deleteModalOpen: false, // ✅ Silme modalı açık mı?
+  colorModalOpen: false, 
 };
 
 const foldersSlice = createSlice({
@@ -26,9 +25,6 @@ const foldersSlice = createSlice({
     setColorModalOpen: (state, action) => {
       state.colorModalOpen = action.payload;
     },
-    setDeleteModalOpen: (state, action) => {
-      state.deleteModalOpen = action.payload;
-    },
   },
 });
 
@@ -37,7 +33,6 @@ export const {
   setSelectedFolder,
   setRenameModalOpen,
   setColorModalOpen,
-  setDeleteModalOpen,
 } = foldersSlice.actions;
 
 export default foldersSlice.reducer;
