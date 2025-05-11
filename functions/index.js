@@ -100,6 +100,10 @@ export const sendWelcomeNotification = functions.auth.user().onCreate(async (use
  * 📣 HTTP POST - User or Role-Based Notification Sender
  * Endpoint: https://<your-domain>.cloudfunctions.net/sendTargetedNotification
  */
+/**
+ * 📣 HTTP POST - User or Role-Based Notification Sender
+ * Endpoint: https://<your-domain>.cloudfunctions.net/sendTargetedNotification
+ */
 export const sendTargetedNotification = functions.https.onRequest((req, res) => {
   corsHandler(req, res, async () => {
     if (req.method !== "POST") {
@@ -110,24 +114,23 @@ export const sendTargetedNotification = functions.https.onRequest((req, res) => 
     try {
       const {
         title,
-        message,
+        message,           // 💡 HTML içerik destekli
         type = "info",
         category = "system",
         priority = "normal",
         icon = "bell",
         url = "",
         actionText = "View",
-        userId = null,  // 👤 Özel kullanıcıya
-        role = null,    // 👥 Belirli bir role
+        userId = null,
+        role = null,
+        isHtml = false,    // 💡 HTML olup olmadığını belirten bayrak
       } = req.body;
 
-      // 🛑 Zorunlu alan kontrolü
       if (!title || !message) {
         res.status(400).send("Missing title or message.");
         return;
       }
 
-      // 🔥 Bildirimi oluştur
       await db.collection("notifications").add({
         title,
         message,
@@ -137,9 +140,10 @@ export const sendTargetedNotification = functions.https.onRequest((req, res) => 
         icon,
         url,
         actionText,
-        userId,      // Belirli kullanıcıya
-        role,        // Belirli role
-        to: "targeted",  // Hedefli bildirim
+        userId,
+        role,
+        to: "targeted",
+        isHtml,            // 💡 HTML bayrağı kaydediyoruz
         readBy: [],
         dismissedBy: [],
         createdAt: Timestamp.now(),
@@ -153,4 +157,3 @@ export const sendTargetedNotification = functions.https.onRequest((req, res) => 
     }
   });
 });
-

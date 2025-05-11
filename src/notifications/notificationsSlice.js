@@ -29,7 +29,9 @@ export const startNotificationsListener = (userId, dispatch) => {
       })
       .filter(
         (notif) =>
-          (notif.to === "all" || notif.userId === userId) &&
+          (notif.to === "all" || 
+           notif.userId === userId || 
+           (notif.to === "targeted" && notif.role && notif.role === "admin")) && // 💡 Role-based kontrol
           !(notif.dismissedBy || []).includes(userId)
       );
 
@@ -38,6 +40,7 @@ export const startNotificationsListener = (userId, dispatch) => {
     dispatch(setUnreadCount(unread));
   });
 };
+
 
 export const stopNotificationsListener = () => {
   if (unsubscribeFn) {

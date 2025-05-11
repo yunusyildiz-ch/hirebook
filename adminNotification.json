@@ -1,0 +1,12 @@
+{
+  "title": "🚀 Exciting News for Admins!",
+  "message": "\n      <div style=\"font-family: Arial, sans-serif; line-height: 1.6;\">\n        <h2 style=\"color: #333;\">🚀 Welcome Admin!</h2>\n        <p>As a valuable part of our <b>Qatip HR Productivity Assistant Tool</b>, your insights help us shape the future of our platform.</p>\n        <hr style=\"margin: 10px 0;\"/>\n        <h3 style=\"color: #007BFF;\">🔧 Latest Admin Features:</h3>\n        <ul>\n          <li>💼 Advanced candidate tracking with custom filters.</li>\n          <li>📊 Interactive dashboards with data insights.</li>\n          <li>🔒 Flexible role management and permission settings.</li>\n        </ul>\n        <h3 style=\"color: #28a745;\">💡 User Panel Updates:</h3>\n        <ul>\n          <li>📝 Improved note management with tagging and archiving.</li>\n          <li>🤝 Real-time collaboration tools for team projects.</li>\n          <li>📅 Personalized dashboard views based on role.</li>\n        </ul>\n        <p>We are constantly working to make <b>Qatip</b> the best productivity tool for your HR needs. Your insights are what drive us forward! 🚀</p>\n        <p>If you have any suggestions, contact us at <a href=\"mailto:support@qatip.app\" style=\"color: #007BFF; text-decoration: underline;\">support@qatip.app</a></p>\n        <p>Follow us on:</p>\n        <p>\n          🌐 <a href=\"https://github.com/Qatip-App\" style=\"color: #007BFF; text-decoration: underline;\">GitHub</a><br>\n          💼 <a href=\"https://www.linkedin.com/in/qatip-app/\" style=\"color: #007BFF; text-decoration: underline;\">LinkedIn</a>\n        </p>\n        <p>Best regards,<br><b>Qatip App Developer Team</b></p>\n      </div>\n    ",
+  "type": "info",
+  "category": "admin-update",
+  "priority": "high",
+  "icon": "rocket",
+  "url": "/admin",
+  "actionText": "Explore",
+  "role": "admin",
+  "isHtml": true
+}

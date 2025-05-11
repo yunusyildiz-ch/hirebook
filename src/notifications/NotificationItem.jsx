@@ -24,6 +24,7 @@ export default function NotificationItem({ notification }) {
     priority = "normal",
     actionText = "View",
     url = "#",
+    isHtml = false,
   } = notification;
 
   const isRead = readBy.includes(user?.uid);
@@ -64,7 +65,7 @@ export default function NotificationItem({ notification }) {
   return (
     <div
       className={cn(
-        "p-4 rounded-xl border cursor-pointer relative transition-all group overflow-hidden hover:shadow-sm",
+        "p-4 rounded-xl border relative transition-all group overflow-hidden hover:shadow-sm",
         {
           // 🎨 Type-based background
           "border-green-300 bg-green-50 dark:bg-[#0f2f1a] text-green-800 dark:text-green-100": type === "success",
@@ -110,9 +111,16 @@ export default function NotificationItem({ notification }) {
       </h4>
 
       {expanded && (
-        <p className="text-sm mb-2 leading-relaxed text-gray-700 dark:text-gray-200">
-          {message}
-        </p>
+        isHtml ? (
+          <div
+            className="text-gray-700 dark:text-gray-200 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: message }}
+          />
+        ) : (
+          <p className="text-gray-700 dark:text-gray-200 leading-relaxed">
+            {message}
+          </p>
+        )
       )}
 
       <div className="flex items-center justify-between text-[11px] text-gray-500 dark:text-gray-400 mt-1">
@@ -131,3 +139,4 @@ export default function NotificationItem({ notification }) {
     </div>
   );
 }
+

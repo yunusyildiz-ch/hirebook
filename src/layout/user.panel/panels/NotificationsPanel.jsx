@@ -1,9 +1,7 @@
+// NotificationsPanel.jsx
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  startNotificationsListener,
-  stopNotificationsListener,
-} from "@notifications/notificationsSlice";
+import { startNotificationsListener, stopNotificationsListener } from "@notifications/notificationsSlice";
 import NotificationItem from "@notifications/NotificationItem";
 import { useAuth } from "@/contexts/AuthContext";
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
