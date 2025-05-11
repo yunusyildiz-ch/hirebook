@@ -1,4 +1,4 @@
-// functions/index.js
+// 📂 functions/index.js
 import functions from "firebase-functions";
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore, Timestamp } from "firebase-admin/firestore";
@@ -30,6 +30,7 @@ export const sendGeneralNotification = functions.https.onRequest((req, res) => {
         icon = "bell",
         url = "",
         actionText = "View",
+        isHtml = false,  // 💡 HTML içerik desteği
       } = req.body;
 
       if (!title || !message) {
@@ -47,15 +48,16 @@ export const sendGeneralNotification = functions.https.onRequest((req, res) => {
         url,
         actionText,
         to: "all",
+        isHtml,  // 💡 HTML bayrağı kaydediyoruz
         readBy: [],
         dismissedBy: [],
         createdAt: Timestamp.now(),
       });
 
-      console.log(`📣 Notification sent: ${title}`);
+      console.log(`📣 General notification sent: ${title}`);
       res.status(200).send("Notification sent.");
     } catch (error) {
-      console.error("❌ Failed to send notification", error);
+      console.error("❌ Failed to send general notification", error);
       res.status(500).send("Internal Server Error");
     }
   });
@@ -77,7 +79,17 @@ export const sendWelcomeNotification = functions.auth.user().onCreate(async (use
 
     await db.collection("notifications").add({
       title: "🎉 Welcome to Qatip!",
-      message: `Hi ${displayName}, glad to have you on board.`,
+      message: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+          <h2>Welcome, ${displayName}!</h2>
+          <p>We're thrilled to have you on board with <b>Qatip</b>! 🚀</p>
+          <p>Start exploring your dashboard and discover the features designed to boost your productivity.</p>
+          <p>If you need assistance, reach out at 
+            <a href="mailto:support@qatip.app" style="color: #007BFF; text-decoration: underline;">support@qatip.app</a>
+          </p>
+          <p>Best regards,<br><b>Qatip App Developer Team</b></p>
+        </div>
+      `,
       type: "info",
       category: "welcome",
       priority: "normal",
@@ -85,6 +97,7 @@ export const sendWelcomeNotification = functions.auth.user().onCreate(async (use
       url: "/dashboard",
       actionText: "Get Started",
       userId: uid,
+      isHtml: true,  // 💡 HTML bayrağı kaydediyoruz
       readBy: [],
       dismissedBy: [],
       createdAt: Timestamp.now(),
@@ -100,10 +113,6 @@ export const sendWelcomeNotification = functions.auth.user().onCreate(async (use
  * 📣 HTTP POST - User or Role-Based Notification Sender
  * Endpoint: https://<your-domain>.cloudfunctions.net/sendTargetedNotification
  */
-/**
- * 📣 HTTP POST - User or Role-Based Notification Sender
- * Endpoint: https://<your-domain>.cloudfunctions.net/sendTargetedNotification
- */
 export const sendTargetedNotification = functions.https.onRequest((req, res) => {
   corsHandler(req, res, async () => {
     if (req.method !== "POST") {
@@ -114,7 +123,7 @@ export const sendTargetedNotification = functions.https.onRequest((req, res) => 
     try {
       const {
         title,
-        message,           // 💡 HTML içerik destekli
+        message,
         type = "info",
         category = "system",
         priority = "normal",
@@ -123,7 +132,7 @@ export const sendTargetedNotification = functions.https.onRequest((req, res) => 
         actionText = "View",
         userId = null,
         role = null,
-        isHtml = false,    // 💡 HTML olup olmadığını belirten bayrak
+        isHtml = false,  // 💡 HTML içerik desteği
       } = req.body;
 
       if (!title || !message) {
@@ -143,7 +152,7 @@ export const sendTargetedNotification = functions.https.onRequest((req, res) => 
         userId,
         role,
         to: "targeted",
-        isHtml,            // 💡 HTML bayrağı kaydediyoruz
+        isHtml,  // 💡 HTML bayrağı kaydediyoruz
         readBy: [],
         dismissedBy: [],
         createdAt: Timestamp.now(),
