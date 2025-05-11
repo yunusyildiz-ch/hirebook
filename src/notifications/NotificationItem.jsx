@@ -68,19 +68,15 @@ export default function NotificationItem({ notification }) {
         "p-4 rounded-xl border relative transition-all group overflow-hidden hover:shadow-sm",
         {
           // 🎨 Type-based background
-          "border-green-300 bg-green-50 dark:bg-[#0f2f1a] text-green-800 dark:text-green-100": type === "success",
-          "border-red-300 bg-red-50 dark:bg-[#331010] text-red-800 dark:text-red-100": type === "error",
-          "border-blue-300 bg-blue-50 dark:bg-[#0f2539] text-blue-800 dark:text-blue-100": type === "info",
-
-          // 🔔 Priority highlight
-          "ring-2 ring-red-500": priority === "high",
-
-          // ✅ Unread styling
-          "ring-2 ring-yellow-400 font-semibold hover:bg-yellow-100 dark:hover:bg-[#3a3000]":
-            !isRead,
+          "border-green-400  dark:bg-[#0f2f1a] text-green-800 dark:text-green-100": type === "success",
+          "border-red-400  dark:bg-[#331010] text-red-800 dark:text-red-100": type === "error",
+          "border-blue-400  dark:bg-[#0f2539] text-blue-800 dark:text-blue-100": type === "info",
+          
+        // 🌟 Okunmamışsa sarı halka
+        "ring-1 border-none  ring-yellow-400": !isRead,
 
           // ✅ Read styling
-          "opacity-70 hover:opacity-100": isRead,
+          "opacity-75 hover:opacity-100": isRead,
         }
       )}
       onClick={handleToggleExpand}
@@ -104,7 +100,7 @@ export default function NotificationItem({ notification }) {
           </span>
         )}
         {!isRead && (
-          <span className="ml-2 px-2 py-0.5 text-[10px] font-bold bg-yellow-400 text-black rounded uppercase">
+          <span className="ml-2 px-2 py-0.5 text-[10px]  font-bold bg-yellow-400 text-black rounded uppercase">
             NEW
           </span>
         )}
