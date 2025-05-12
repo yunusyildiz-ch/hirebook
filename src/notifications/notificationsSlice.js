@@ -9,18 +9,17 @@ let unsubscribeFn = null;
 const isNotificationVisible = (notif, userId, userRole) => {
   const isGeneral = notif.to === "all";              // Genel bildirim
   const isForAdmin = notif.to === "role:admin";       // Sadece adminler için
-  const isForUser = notif.userId === userId;          // Kullanıcıya özel
-  const isMultiUser = Array.isArray(notif.to) && notif.to.includes(`user:${userId}`);  // Çoklu kullanıcı bildirimi
+  const isForUser = notif.userId === userId || notif.to.includes(`user:${userId}`); // Kullanıcıya özel
   const isDismissed = (notif.dismissedBy || []).includes(userId);  // Bildirimden çıkış yapmışsa
 
   // 🔥 Admin: Admin veya genel bildirimleri görür
   if (userRole === "admin") {
-    return !isDismissed && (isGeneral || isForAdmin || isForUser || isMultiUser);
+    return !isDismissed && (isGeneral || isForAdmin || isForUser );
   }
 
   // 👥 Viewer: Sadece genel veya kendi bildirimlerini görür
   if (userRole === "viewer") {
-    return !isDismissed && (isGeneral || isForUser || isMultiUser);
+    return !isDismissed && (isGeneral || isForUser);
   }
 
   return false;  // Hiçbir rol eşleşmezse görünmesin
