@@ -9,7 +9,10 @@ let unsubscribeFn = null;
 const isNotificationVisible = (notif, userId, userRole) => {
   const isGeneral = notif.to === "all";              // Genel bildirim
   const isForAdmin = notif.to === "role:admin";       // Sadece adminler için
-  const isForUser = notif.userId === userId || notif.to.includes(`user:${userId}`); // Kullanıcıya özel
+  const isForUser = Array.isArray(notif.to) 
+  ? notif.to.includes(`user:${userId}`) 
+  : notif.to === `user:${userId}`;  // Tek kullanıcı bildirimi
+
   const isDismissed = (notif.dismissedBy || []).includes(userId);  // Bildirimden çıkış yapmışsa
 
   // 🔥 Admin: Admin veya genel bildirimleri görür
