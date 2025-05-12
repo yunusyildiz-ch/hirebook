@@ -5,7 +5,28 @@ import { setUnreadCount } from "@notifications/notificationBadgeSlice";
 
 let unsubscribeFn = null;
 
-// 🚀 Start Notifications Listener
+// 🚀 Filtreleme Fonksiyonu
+const isNotificationVisible = (notif, userId, userRole) => {
+  const isGeneral = notif.to === "all";              // Genel bildirim
+  const isForAdmin = notif.to === "role:admin";       // Sadece adminler için
+  const isForUser = notif.userId === userId;          // Kullanıcıya özel
+  const isMultiUser = Array.isArray(notif.to) && notif.to.includes(`user:${userId}`);  // Çoklu kullanıcı bildirimi
+  const isDismissed = (notif.dismissedBy || []).includes(userId);  // Bildirimden çıkış yapmışsa
+
+  // 🔥 Admin: Admin veya genel bildirimleri görür
+  if (userRole === "admin") {
+    return !isDismissed && (isGeneral || isForAdmin || isForUser || isMultiUser);
+  }
+
+  // 👥 Viewer: Sadece genel veya kendi bildirimlerini görür
+  if (userRole === "viewer") {
+    return !isDismissed && (isGeneral || isForUser || isMultiUser);
+  }
+
+  return false;  // Hiçbir rol eşleşmezse görünmesin
+};
+
+// 📌 Bildirim Alma ve Filtreleme
 export const startNotificationsListener = (userId, userRole, dispatch) => {
   console.log("🚀 Start Notifications Listener");
   console.log("User ID:", userId);
@@ -18,6 +39,7 @@ export const startNotificationsListener = (userId, userRole, dispatch) => {
 
   unsubscribeFn = onSnapshot(q, (snapshot) => {
     console.log("📥 Snapshot received!");
+
     const notifs = snapshot.docs
       .map((doc) => {
         const data = doc.data();
@@ -28,22 +50,7 @@ export const startNotificationsListener = (userId, userRole, dispatch) => {
           createdAt: data.createdAt?.toMillis?.() || Date.now(),
         };
       })
-      .filter((notif) => {
-        // 📝 Bildirim görünürlük kontrolü
-        const isGeneral = notif.to === "all"; // Genel bildirim
-        const isForUser = notif.userId === userId; // Kullanıcıya özel bildirim
-
-        // 🔥 Admin rolü varsa tüm bildirimleri gör
-        if (userRole === "admin") {
-          console.log(`🔍 Visibility Check for ${notif.title}: true (Admin Role)`);
-          return true;
-        }
-
-        // 🛠️ Viewer ise sadece kendi veya genel bildirimleri gör
-        const isVisible = isGeneral || isForUser;
-        console.log(`🔍 Visibility Check for ${notif.title}: ${isVisible} (Viewer Role)`);
-        return isVisible && !(notif.dismissedBy || []).includes(userId);
-      });
+      .filter((notif) => isNotificationVisible(notif, userId, userRole));  // 🔥 Filtreleme
 
     console.log("🔔 Final Notifications:", notifs);
 
@@ -51,7 +58,7 @@ export const startNotificationsListener = (userId, userRole, dispatch) => {
     dispatch(setNotifications(notifs));
     console.log("✅ Notifications set in slice:", notifs);
 
-    // 🛎️ Okunmamış bildirimleri say
+    // 🛎️ Okunmamış bildirim sayısını hesapla
     const unreadCount = notifs.filter((n) => !n.readBy.includes(userId)).length;
     console.log("🔢 Unread Count:", unreadCount);
     dispatch(setUnreadCount(unreadCount));
@@ -92,3 +99,4 @@ const notificationsSlice = createSlice({
 
 export const { setNotifications, setLoading, setError } = notificationsSlice.actions;
 export default notificationsSlice.reducer;
+

@@ -34,7 +34,7 @@ export const generalNotificationData = {
   icon: "bell",
   url: "/",
   actionText: "Learn More",
-  to: "all",       // Genel bildirim
+  to: "all",
   isHtml: true,
 };
 
@@ -75,7 +75,7 @@ export const adminNotificationData = {
   icon: "rocket",
   url: "/admin",
   actionText: "Explore",
-  to: "role:admin", 
+  to: "role:admin",
   role: "admin",
   isHtml: true,
 };
@@ -99,7 +99,28 @@ export const createUserNotificationData = (userId) => ({
   icon: "smile",
   url: "/dashboard",
   actionText: "Go to Dashboard",
-  to: `user:${userId}`,  // Kullanıcıya özel
+  to: `user:${userId}`,
   isHtml: true,
 });
+
+// 📝 İki Kullanıcıya Bildirim Verisi
+export const createMultiUserNotificationData = (userIds) => ({
+  title: "📢 Special Update for Selected Users!",
+  message: `
+    <div style="font-family: Arial, sans-serif; line-height: 1.6; text-align: center;">
+      ${catLogoSvg}
+      <h2>Dear Selected Qatip Users!</h2>
+      <p>We have an important update just for you! 🚀</p>
+    </div>
+  `,
+  type: "info",
+  category: "special-update",
+  priority: "high",
+  icon: "megaphone",
+  url: "/special",
+  actionText: "Check Now",
+  to: userIds.length === 1 ? `user:${userIds[0]}` : userIds.map(id => `user:${id}`).join(","),
+  isHtml: true,
+});
+
 

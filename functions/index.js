@@ -91,7 +91,8 @@ export const sendWelcomeNotification = functions.auth.user().onCreate(async (use
                 <div style="text-align: center;">
                     <h2>Welcome, ${firstname}!</h2>
                     <p>We're thrilled to have you on board with <b>Qatip</b>! 🚀</p>
-                    <p>If you need assistance, reach out at <a href="mailto:support@qatip.app">support@qatip.app</a></p>
+                    <p>If you need assistance, reach out at 
+                    <a href="mailto:support@qatip.app">support@qatip.app</a></p>
                     <p>Best regards,<br><b>Qatip App Developer Team</b></p>
                 </div>
             `,
@@ -126,42 +127,47 @@ export const sendNotification = functions.https.onRequest((req, res) => {
         }
 
         try {
-            const { title, message, type = 'info', category = 'system', priority = 'normal', icon = 'bell', url = '', actionText = 'View', userId = null, role = null, isHtml = false } = req.body;
+            const { title, message, type = 'info', category = 'system', priority = 'normal', icon = 'bell', url = '', actionText = 'View', to = 'all', userIds = [], isHtml = false } = req.body;
 
             if (!title?.trim() || !message?.trim()) {
                 res.status(400).send('Missing title or message.');
                 return;
             }
 
-            let to;
-            if (userId) {
-                to = `user:${userId}`;
-            } else if (role) {
-                to = `role:${role}`;
+            // 🌟 Hedef Belirleme
+            let targets = [];
+            if (to === 'all') {
+                targets.push('all');
+            } else if (to === 'admin') {
+                targets.push('role:admin');
+            } else if (Array.isArray(userIds) && userIds.length > 0) {
+                targets = userIds.map(id => `user:${id}`);
             } else {
-                to = 'all';
+                res.status(400).send('Invalid target for notification.');
+                return;
             }
 
-            await db.collection('notifications').add({
-                title,
-                message,
-                type,
-                category,
-                priority,
-                icon,
-                url,
-                actionText,
-                to,
-                userId,
-                role,
-                isHtml,
-                readBy: [],
-                dismissedBy: [],
-                createdAt: Timestamp.now(),
-            });
+            // 🔄 Bildirim Gönderme
+            for (const target of targets) {
+                await db.collection('notifications').add({
+                    title,
+                    message,
+                    type,
+                    category,
+                    priority,
+                    icon,
+                    url,
+                    actionText,
+                    to: target,
+                    isHtml,
+                    readBy: [],
+                    dismissedBy: [],
+                    createdAt: Timestamp.now(),
+                });
+                console.log(`📣 Notification sent to: ${target}`);
+            }
 
-            console.log(`📣 Notification sent: ${title} to ${to}`);
-            res.status(200).send('Notification sent.');
+            res.status(200).send('Notifications sent successfully.');
         } catch (error) {
             console.error('❌ Failed to send notification', error);
             res.status(500).send('Internal Server Error');

@@ -2,21 +2,19 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { startNotificationsListener, stopNotificationsListener } from "@notifications/notificationsSlice";
 import NotificationItem from "@notifications/NotificationItem";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@contexts/AuthContext";
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db } from "@/services/firebase/config";
+
 export default function NotificationsPanel() {
   const dispatch = useDispatch();
   const { user } = useAuth();
-  const { list: notifications, loading, error } = useSelector(
-    (state) => state.notifications
-  );
+  const { list: notifications, loading, error } = useSelector((state) => state.notifications);
 
   useEffect(() => {
     if (user?.uid) {
-      const userRole = user.role || "viewer"; 
-      console.log("📝 Dispatch from NotificationsPanel:", dispatch); // ✅ Check dispatch here
-      startNotificationsListener(user.uid, userRole, dispatch); 
+      const userRole = user.role || "viewer";
+      startNotificationsListener(user.uid, userRole, dispatch);
     }
 
     return () => {
@@ -45,7 +43,6 @@ export default function NotificationsPanel() {
     <div className="space-y-4 text-sm text-gray-800 dark:text-gray-200">
       {loading && <p>Loading notifications...</p>}
       {error && <p className="text-red-500">Error: {error}</p>}
-
       {notifications.length > 0 && (
         <div className="flex justify-end mb-2">
           <button
@@ -56,17 +53,14 @@ export default function NotificationsPanel() {
           </button>
         </div>
       )}
-
-      {notifications.length === 0 && !loading && (
-        <p>No new notifications.</p>
-      )}
-
+      {notifications.length === 0 && !loading && <p>No new notifications.</p>}
       {notifications.map((notification) => (
         <NotificationItem key={notification.id} notification={notification} />
       ))}
     </div>
   );
 }
+
 
 
 
