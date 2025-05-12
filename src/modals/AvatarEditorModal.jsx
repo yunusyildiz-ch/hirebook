@@ -72,7 +72,7 @@ export default function AvatarEditorModal({ file, onClose, onSave, onDelete, cur
         ) : (
           <div className="text-center">
             <img
-              src={currentPhotoURL || "/avatar-placeholder.png"}
+              src={currentPhotoURL || "/cat_logo.png"}
               alt="Current Avatar"
               className="mx-auto w-24 h-24 rounded-full object-cover border"
             />
