@@ -2,4 +2,4 @@
 import { sendNotification } from "./sendNotification.js";
 import { adminNotificationData } from "./notificationData.js";
 
-sendNotification("adminNotification.json", adminNotificationData);
+sendNotification("adminNotifications.json", adminNotificationData);

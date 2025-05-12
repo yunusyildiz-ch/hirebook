@@ -120,57 +120,59 @@ export const sendWelcomeNotification = functions.auth.user().onCreate(async (use
  * 📣 HTTP POST - Unified Notification Sender (General and Targeted)
  */
 export const sendNotification = functions.https.onRequest((req, res) => {
-    corsHandler(req, res, async () => {
-        if (req.method !== 'POST') {
-            res.status(405).send('Method Not Allowed');
-            return;
-        }
+  corsHandler(req, res, async () => {
+      if (req.method !== 'POST') {
+          res.status(405).send('Method Not Allowed');
+          return;
+      }
 
-        try {
-            const { title, message, type = 'info', category = 'system', priority = 'normal', icon = 'bell', url = '', actionText = 'View', to = 'all', userIds = [], isHtml = false } = req.body;
+      try {
+          const { title, message, type = 'info', category = 'system', priority = 'normal', icon = 'bell', url = '', actionText = 'View', to, userIds = [], isHtml = false } = req.body;
 
-            if (!title?.trim() || !message?.trim()) {
-                res.status(400).send('Missing title or message.');
-                return;
-            }
+          if (!title?.trim() || !message?.trim()) {
+              res.status(400).send('Missing title or message.');
+              return;
+          }
 
-            // 🌟 Hedef Belirleme
-            let targets = [];
-            if (to === 'all') {
-                targets.push('all');
-            } else if (to === 'admin') {
-                targets.push('role:admin');
-            } else if (Array.isArray(userIds) && userIds.length > 0) {
-                targets = userIds.map(id => `user:${id}`);
-            } else {
-                res.status(400).send('Invalid target for notification.');
-                return;
-            }
+          // 🌟 Hedef Belirleme
+          let targets = [];
+          if (to === 'all') {
+              targets.push('all');
+          } else if (to === 'role:admin') {  // 🛠️ Düzeltme Yapıldı
+              targets.push('role:admin');
+          } else if (userIds.length > 0) {
+            // 🚀 Çoklu Kullanıcı ID'lerini ayrı ayrı hedef olarak ekle
+            const userTargets = userIds.map(id => `user:${id}`);
+            targets.push(...userTargets);  // Dizi elemanlarını ayrı ayrı ekle
+        } else {
+              res.status(400).send('Invalid target for notification.');
+              return;
+          }
 
-            // 🔄 Bildirim Gönderme
-            for (const target of targets) {
-                await db.collection('notifications').add({
-                    title,
-                    message,
-                    type,
-                    category,
-                    priority,
-                    icon,
-                    url,
-                    actionText,
-                    to: target,
-                    isHtml,
-                    readBy: [],
-                    dismissedBy: [],
-                    createdAt: Timestamp.now(),
-                });
-                console.log(`📣 Notification sent to: ${target}`);
-            }
+          // 🔄 Bildirim Gönderme
+          for (const target of targets) {
+              await db.collection('notifications').add({
+                  title,
+                  message,
+                  type,
+                  category,
+                  priority,
+                  icon,
+                  url,
+                  actionText,
+                  to: target,
+                  isHtml,
+                  readBy: [],
+                  dismissedBy: [],
+                  createdAt: Timestamp.now(),
+              });
+              console.log(`📣 Notification sent to: ${target}`);
+          }
 
-            res.status(200).send('Notifications sent successfully.');
-        } catch (error) {
-            console.error('❌ Failed to send notification', error);
-            res.status(500).send('Internal Server Error');
-        }
-    });
+          res.status(200).send('Notifications sent successfully.');
+      } catch (error) {
+          console.error('❌ Failed to send notification', error);
+          res.status(500).send('Internal Server Error');
+      }
+  });
 });

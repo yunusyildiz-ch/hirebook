@@ -80,8 +80,8 @@ export const adminNotificationData = {
   isHtml: true,
 };
 
-export const createUserNotificationData = (userId) => ({
-  title: "👋 Welcome Back!",
+export const createUsersNotificationData = (userIds) => ({
+  title: "👋 Welcome Back! Special Update for Selected Users! 📢",
   message: `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; text-align: center;">
     ${catLogoSvg}
@@ -94,32 +94,12 @@ export const createUserNotificationData = (userId) => ({
     </div>
   `,
   type: "info",
-  category: "user-update",
+  category: "special-update",
   priority: "normal",
   icon: "smile",
-  url: "/dashboard",
-  actionText: "Go to Dashboard",
-  to: `user:${userId}`,
-  isHtml: true,
-});
-
-// 📝 İki Kullanıcıya Bildirim Verisi
-export const createMultiUserNotificationData = (userIds) => ({
-  title: "📢 Special Update for Selected Users!",
-  message: `
-    <div style="font-family: Arial, sans-serif; line-height: 1.6; text-align: center;">
-      ${catLogoSvg}
-      <h2>Dear Selected Qatip Users!</h2>
-      <p>We have an important update just for you! 🚀</p>
-    </div>
-  `,
-  type: "info",
-  category: "special-update",
-  priority: "high",
-  icon: "megaphone",
   url: "/special",
   actionText: "Check Now",
-  to: userIds.length === 1 ? `user:${userIds[0]}` : userIds.map(id => `user:${id}`).join(","),
+  userIds:userIds,
   isHtml: true,
 });
 
