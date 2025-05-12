@@ -1,4 +1,3 @@
-// NotificationsPanel.jsx
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { startNotificationsListener, stopNotificationsListener } from "@notifications/notificationsSlice";
@@ -6,7 +5,6 @@ import NotificationItem from "@notifications/NotificationItem";
 import { useAuth } from "@/contexts/AuthContext";
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db } from "@/services/firebase/config";
-
 export default function NotificationsPanel() {
   const dispatch = useDispatch();
   const { user } = useAuth();
@@ -16,11 +14,13 @@ export default function NotificationsPanel() {
 
   useEffect(() => {
     if (user?.uid) {
-      startNotificationsListener(user.uid, dispatch);
+      const userRole = user.role || "viewer"; 
+      console.log("📝 Dispatch from NotificationsPanel:", dispatch); // ✅ Check dispatch here
+      startNotificationsListener(user.uid, userRole, dispatch); 
     }
 
     return () => {
-      stopNotificationsListener(); // 🔁 Unsubscribe on unmount
+      stopNotificationsListener();
     };
   }, [dispatch, user]);
 
@@ -67,3 +67,9 @@ export default function NotificationsPanel() {
     </div>
   );
 }
+
+
+
+
+
+

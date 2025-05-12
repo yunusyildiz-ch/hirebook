@@ -1,18 +1,7 @@
-// 📂 sendGeneralNotification.js
-import { exec } from "child_process";
-import fs from "fs";
-import path from "path";
+// 📂 notifications/logo.js
 
-const jsonFilePath = path.join(process.cwd(), "generalNotification.json");
-
-// ✅ Function to send general notification
-export const sendGeneralNotification = () => {
-  // 🌟 Create or overwrite the JSON file
-  const notificationData = {
-    title: "🌟 Stay Tuned for New Features!",
-    message: `
-      <div style="font-family: Arial, sans-serif; line-height: 1.6; text-align: center;">
-      <svg
+export const catLogoSvg = `
+<svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 300 300"
           width="100" 
@@ -74,60 +63,4 @@ export const sendGeneralNotification = () => {
         />
       </g>
         </svg>
-
-        <h2>Dear Qatip User,</h2>
-        <p>We are constantly working to enhance your experience and make <b>Qatip</b> the most efficient HR productivity assistant tool. 🚀</p>
-        <hr style="margin: 10px 0;"/>
-        <h3>🔍 What to expect:</h3>
-        <ul style="list-style: none; padding: 0;">
-          <li>✅ <b>New collaboration features</b> to boost teamwork.</li>
-          <li>📊 <b>Advanced analytics</b> for data-driven decision-making.</li>
-          <li>⚙️ <b>Customizable dashboards</b> to fit your workflow.</li>
-        </ul>
-        <p>Stay tuned for our upcoming updates, and thank you for being part of the <b>Qatip community</b>! 💙</p>
-        <p>For support or feedback, feel free to reach out at: 
-          <a href="mailto:support@qatip.app" style="color: #007BFF; text-decoration: underline;">support@qatip.app</a>
-        </p>
-        <p>Follow us for the latest updates:</p>
-        <p>
-          🌐 <a href="https://github.com/Qatip-App" target="_blank" style="color: #007BFF; text-decoration: underline;">GitHub</a><br>
-          💼 <a href="https://www.linkedin.com/in/qatip-app/" target="_blank" style="color: #007BFF; text-decoration: underline;">LinkedIn</a>
-        </p>
-        <p>Best regards,<br><b>Qatip App Developer Team</b></p>
-      </div>
-    `,
-    type: "info",
-    category: "update",
-    priority: "normal",
-    icon: "bell",
-    url: "/",
-    actionText: "Learn More",
-    to: "all",
-    isHtml: true,
-  };
-
-  fs.writeFileSync(jsonFilePath, JSON.stringify(notificationData, null, 2));
-
-  // 🌀 Construct the curl command
-  const curlCommand = `
-    curl -X POST https://us-central1-qatip-note-app.cloudfunctions.net/sendGeneralNotification \
-    -H "Content-Type: application/json" \
-    -d @${jsonFilePath}
-  `;
-
-  // 🚀 Execute the curl command
-  exec(curlCommand, (error, stdout, stderr) => {
-    if (error) {
-      console.error("❌ Error sending notification:", error.message);
-      return;
-    }
-    if (stderr) {
-      console.error("⚠️ Stderr:", stderr);
-      return;
-    }
-    console.log("✅ General notification sent successfully:", stdout);
-  });
-};
-
-// ✨ Execute the function
-sendGeneralNotification();
+`;

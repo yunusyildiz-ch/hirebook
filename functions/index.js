@@ -1,8 +1,8 @@
 // 📂 functions/index.js
-import functions from "firebase-functions";
-import { initializeApp } from "firebase-admin/app";
-import { getFirestore, Timestamp } from "firebase-admin/firestore";
-import cors from "cors";
+import functions from 'firebase-functions';
+import { initializeApp } from 'firebase-admin/app';
+import { getFirestore, Timestamp } from 'firebase-admin/firestore';
+import cors from 'cors';
 
 // Initialize Firebase Admin SDK
 initializeApp();
@@ -10,78 +10,22 @@ const db = getFirestore();
 const corsHandler = cors({ origin: true });
 
 /**
- * 📣 HTTP POST - General Notification Sender
- * Endpoint: https://<your-domain>.cloudfunctions.net/sendGeneralNotification
- */
-export const sendGeneralNotification = functions.https.onRequest((req, res) => {
-  corsHandler(req, res, async () => {
-    if (req.method !== "POST") {
-      res.status(405).send("Method Not Allowed");
-      return;
-    }
-
-    try {
-      const {
-        title,
-        message,
-        type = "info",
-        category = "system",
-        priority = "normal",
-        icon = "bell",
-        url = "",
-        actionText = "View",
-        isHtml = false,  // 💡 HTML içerik desteği
-      } = req.body;
-
-      if (!title || !message) {
-        res.status(400).send("Missing title or message.");
-        return;
-      }
-
-      await db.collection("notifications").add({
-        title,
-        message,
-        type,
-        category,
-        priority,
-        icon,
-        url,
-        actionText,
-        to: "all",
-        isHtml,  // 💡 HTML bayrağı kaydediyoruz
-        readBy: [],
-        dismissedBy: [],
-        createdAt: Timestamp.now(),
-      });
-
-      console.log(`📣 General notification sent: ${title}`);
-      res.status(200).send("Notification sent.");
-    } catch (error) {
-      console.error("❌ Failed to send general notification", error);
-      res.status(500).send("Internal Server Error");
-    }
-  });
-});
-
-/**
  * 🎉 Auth Trigger - Welcome Notification on User Signup
  */
 export const sendWelcomeNotification = functions.auth.user().onCreate(async (user) => {
-  try {
-    const { uid, email } = user;
+    try {
+        const { uid, email } = user;
 
-    // 👤 Firestore'dan firstname'i çek
-    const userDoc = await db.collection("users").doc(uid).get();
-    const userData = userDoc.exists ? userDoc.data() : null;
+        // 👤 Firestore'dan firstname'i çek
+        const userDoc = await db.collection('users').doc(uid).get();
+        const userData = userDoc.exists ? userDoc.data() : null;
+        const firstname = userData?.firstname || user.displayName || 'Qatip User';
 
-    const firstname = userData?.firstname || null;
-    const displayName = firstname || user.displayName || "Qatip User";
-
-    await db.collection("notifications").add({
-      title: "🎉 Welcome to Qatip!",
-      message: `
-      <div style="text-align: center;" >
-      <svg
+        await db.collection('notifications').add({
+            title: '🎉 Welcome to Qatip!',
+            message: `
+            <div style="text-align: center;" >
+     <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 300 300"
           width="100" 
@@ -144,89 +88,83 @@ export const sendWelcomeNotification = functions.auth.user().onCreate(async (use
       </g>
         </svg>
       </div>
-        <div style="font-family: Arial, sans-serif; line-height: 1.6;">
-          <h2>Welcome, ${displayName}!</h2>
-          <p>We're thrilled to have you on board with <b>Qatip</b>! 🚀</p>
-          <p>Start exploring your dashboard and discover the features designed to boost your productivity.</p>
-          <p>If you need assistance, reach out at 
-            <a href="mailto:support@qatip.app" style="color: #007BFF; text-decoration: underline;">support@qatip.app</a>
-          </p>
-          <p>Best regards,<br><b>Qatip App Developer Team</b></p>
-        </div>
-      `,
-      type: "info",
-      category: "welcome",
-      priority: "normal",
-      icon: "user-plus",
-      url: "/dashboard",
-      actionText: "Get Started",
-      userId: uid,
-      isHtml: true,  // 💡 HTML bayrağı kaydediyoruz
-      readBy: [],
-      dismissedBy: [],
-      createdAt: Timestamp.now(),
-    });
+                <div style="text-align: center;">
+                    <h2>Welcome, ${firstname}!</h2>
+                    <p>We're thrilled to have you on board with <b>Qatip</b>! 🚀</p>
+                    <p>If you need assistance, reach out at <a href="mailto:support@qatip.app">support@qatip.app</a></p>
+                    <p>Best regards,<br><b>Qatip App Developer Team</b></p>
+                </div>
+            `,
+            type: 'info',
+            category: 'welcome',
+            priority: 'normal',
+            icon: 'user-plus',
+            url: '/dashboard',
+            actionText: 'Get Started',
+            to: `user:${uid}`,
+            userId: uid,
+            isHtml: true,
+            readBy: [],
+            dismissedBy: [],
+            createdAt: Timestamp.now(),
+        });
 
-    console.log(`✅ Welcome notification sent to: ${email || uid}`);
-  } catch (error) {
-    console.error("❌ Error sending welcome notification:", error);
-  }
+        console.log(`✅ Welcome notification sent to: ${email || uid}`);
+    } catch (error) {
+        console.error('❌ Error sending welcome notification:', error);
+    }
 });
 
 /**
- * 📣 HTTP POST - User or Role-Based Notification Sender
- * Endpoint: https://<your-domain>.cloudfunctions.net/sendTargetedNotification
+ * 📣 HTTP POST - Unified Notification Sender (General and Targeted)
  */
-export const sendTargetedNotification = functions.https.onRequest((req, res) => {
-  corsHandler(req, res, async () => {
-    if (req.method !== "POST") {
-      res.status(405).send("Method Not Allowed");
-      return;
-    }
+export const sendNotification = functions.https.onRequest((req, res) => {
+    corsHandler(req, res, async () => {
+        if (req.method !== 'POST') {
+            res.status(405).send('Method Not Allowed');
+            return;
+        }
 
-    try {
-      const {
-        title,
-        message,
-        type = "info",
-        category = "system",
-        priority = "normal",
-        icon = "bell",
-        url = "",
-        actionText = "View",
-        userId = null,
-        role = null,
-        isHtml = false,  // 💡 HTML içerik desteği
-      } = req.body;
+        try {
+            const { title, message, type = 'info', category = 'system', priority = 'normal', icon = 'bell', url = '', actionText = 'View', userId = null, role = null, isHtml = false } = req.body;
 
-      if (!title || !message) {
-        res.status(400).send("Missing title or message.");
-        return;
-      }
+            if (!title?.trim() || !message?.trim()) {
+                res.status(400).send('Missing title or message.');
+                return;
+            }
 
-      await db.collection("notifications").add({
-        title,
-        message,
-        type,
-        category,
-        priority,
-        icon,
-        url,
-        actionText,
-        userId,
-        role,
-        to: "targeted",
-        isHtml,  // 💡 HTML bayrağı kaydediyoruz
-        readBy: [],
-        dismissedBy: [],
-        createdAt: Timestamp.now(),
-      });
+            let to;
+            if (userId) {
+                to = `user:${userId}`;
+            } else if (role) {
+                to = `role:${role}`;
+            } else {
+                to = 'all';
+            }
 
-      console.log(`📣 Targeted notification sent: ${title} to ${userId || role}`);
-      res.status(200).send("Notification sent.");
-    } catch (error) {
-      console.error("❌ Failed to send targeted notification", error);
-      res.status(500).send("Internal Server Error");
-    }
-  });
+            await db.collection('notifications').add({
+                title,
+                message,
+                type,
+                category,
+                priority,
+                icon,
+                url,
+                actionText,
+                to,
+                userId,
+                role,
+                isHtml,
+                readBy: [],
+                dismissedBy: [],
+                createdAt: Timestamp.now(),
+            });
+
+            console.log(`📣 Notification sent: ${title} to ${to}`);
+            res.status(200).send('Notification sent.');
+        } catch (error) {
+            console.error('❌ Failed to send notification', error);
+            res.status(500).send('Internal Server Error');
+        }
+    });
 });
