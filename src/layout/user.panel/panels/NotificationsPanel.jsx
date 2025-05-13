@@ -1,29 +1,17 @@
-import {useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import NotificationItem from "@notifications/NotificationItem";
 import { useAuth } from "@contexts/AuthContext";
-import { doc, updateDoc, arrayUnion } from "firebase/firestore";
-import { db } from "@/services/firebase/config";
+import { dismissNotifications } from "@notifications/notificationUtils";
 
 export default function NotificationsPanel() {
   const { user } = useAuth();
   const { list: notifications, loading, error } = useSelector((state) => state.notifications);
 
-
+  // 🧹 Tüm Bildirimleri Temizleme
   const handleClearAll = async () => {
     if (!user?.uid) return;
-
-    try {
-      await Promise.all(
-        notifications.map((notification) => {
-          const notifRef = doc(db, "notifications", notification.id);
-          return updateDoc(notifRef, {
-            dismissedBy: arrayUnion(user.uid),
-          });
-        })
-      );
-    } catch (err) {
-      console.error("Clear all failed:", err);
-    }
+    const notificationIds = notifications.map((notification) => notification.id);
+    await dismissNotifications(notificationIds, user.uid);
   };
 
   return (
@@ -47,6 +35,7 @@ export default function NotificationsPanel() {
     </div>
   );
 }
+
 
 
 

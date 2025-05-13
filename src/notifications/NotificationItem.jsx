@@ -2,10 +2,9 @@ import { formatDistanceToNow } from "date-fns";
 import { useState } from "react";
 import { X, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/contexts/AuthContext";
-import { doc, updateDoc, arrayUnion } from "firebase/firestore";
-import { db } from "@/services/firebase/config";
+import { useAuth } from "@contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { dismissNotifications, markNotificationAsRead } from "@notifications/notificationUtils";
 
 export default function NotificationItem({ notification }) {
   const { user } = useAuth();
@@ -30,31 +29,19 @@ export default function NotificationItem({ notification }) {
   const isRead = readBy.includes(user?.uid);
   const isClickable = !!url && url !== "#";
 
+  // 📝 Bildirimi Okundu Olarak İşaretleme
   const handleToggleExpand = async () => {
     if (!isRead && user?.uid) {
-      try {
-        const notifRef = doc(db, "notifications", id);
-        await updateDoc(notifRef, {
-          readBy: arrayUnion(user.uid),
-        });
-      } catch (err) {
-        console.error("Mark as read failed:", err);
-      }
+      await markNotificationAsRead(id, user.uid);
     }
     setExpanded((prev) => !prev);
   };
 
+  // ❌ Bildirimi Kapatma
   const handleDismiss = async () => {
     if (!notification.dismissedBy?.includes(user.uid)) {
-      try {
-        const notifRef = doc(db, "notifications", id);
-        await updateDoc(notifRef, {
-          dismissedBy: arrayUnion(user.uid),
-        });
-        setDismissed(true);
-      } catch (err) {
-        console.error("Dismiss failed:", err);
-      }
+      await dismissNotifications([id], user.uid);
+      setDismissed(true);
     } else {
       setDismissed(true);
     }
@@ -67,15 +54,10 @@ export default function NotificationItem({ notification }) {
       className={cn(
         "p-4 rounded-xl border relative transition-all group overflow-hidden hover:shadow-sm",
         {
-          // 🎨 Type-based background
           "border-green-400  dark:bg-[#0f2f1a] text-green-800 dark:text-green-100": type === "success",
           "border-red-400  dark:bg-[#331010] text-red-800 dark:text-red-100": type === "error",
           "border-blue-400  dark:bg-[#0f2539] text-blue-800 dark:text-blue-100": type === "info",
-          
-        // 🌟 Okunmamışsa sarı halka
-        "ring-1 border-none  ring-yellow-400": !isRead,
-
-          // ✅ Read styling
+          "ring-1 border-none  ring-yellow-400": !isRead,
           "opacity-75 hover:opacity-100": isRead,
         }
       )}
@@ -100,7 +82,7 @@ export default function NotificationItem({ notification }) {
           </span>
         )}
         {!isRead && (
-          <span className="ml-2 px-2 py-0.5 text-[10px]  font-bold bg-yellow-400 text-black rounded uppercase">
+          <span className="ml-2 px-2 py-0.5 text-[10px] font-bold bg-yellow-400 text-black rounded uppercase">
             NEW
           </span>
         )}
@@ -113,9 +95,7 @@ export default function NotificationItem({ notification }) {
             dangerouslySetInnerHTML={{ __html: message }}
           />
         ) : (
-          <p className="text-gray-700 dark:text-gray-200 leading-relaxed">
-            {message}
-          </p>
+          <p className="text-gray-700 dark:text-gray-200 leading-relaxed">{message}</p>
         )
       )}
 
@@ -126,8 +106,11 @@ export default function NotificationItem({ notification }) {
             : "Just now"}
         </span>
 
-        {url && url !== "#" && (
-          <span className="text-blue-600 text-xs font-medium flex items-center gap-1 group-hover:underline">
+        {isClickable && (
+          <span
+            onClick={() => navigate(url)}
+            className="text-blue-600 text-xs font-medium flex items-center gap-1 group-hover:underline cursor-pointer"
+          >
             {actionText} <ArrowRight size={12} />
           </span>
         )}
@@ -135,4 +118,5 @@ export default function NotificationItem({ notification }) {
     </div>
   );
 }
+
 
