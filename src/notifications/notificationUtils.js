@@ -13,7 +13,6 @@ export const dismissNotifications = async (notificationIds, userUid) => {
         });
       })
     );
-    console.log("✅ Notifications dismissed:", notificationIds);
   } catch (err) {
     console.error("❌ Dismiss failed:", err);
   }
@@ -26,7 +25,6 @@ export const markNotificationAsRead = async (id, userUid) => {
     await updateDoc(notifRef, {
       readBy: arrayUnion(userUid),
     });
-    console.log(`✅ Notification marked as read: ${id}`);
   } catch (err) {
     console.error("❌ Mark as read failed:", err);
   }
