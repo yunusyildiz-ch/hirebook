@@ -1,10 +1,9 @@
-// src/hooks/useGlobalListeners.js
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useAuth } from "@/contexts/AuthContext";
 import {
-  startNotificationsListener,
-  stopNotificationsListener,
+  startGlobalNotificationsListener,
+  stopGlobalNotificationsListener,
 } from "@notifications/notificationsSlice";
 
 export default function useGlobalListeners() {
@@ -13,11 +12,12 @@ export default function useGlobalListeners() {
 
   useEffect(() => {
     if (user?.uid) {
-      startNotificationsListener(user.uid, dispatch);
+      const userRole = user.role || "viewer";
+      startGlobalNotificationsListener(user.uid, userRole, dispatch);
     }
 
     return () => {
-      stopNotificationsListener(); // ✅ logout veya user null olursa dinleyici durur
+      stopGlobalNotificationsListener();
     };
   }, [dispatch, user]);
 }

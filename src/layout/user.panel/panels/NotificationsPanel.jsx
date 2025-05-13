@@ -1,26 +1,13 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { startNotificationsListener, stopNotificationsListener } from "@notifications/notificationsSlice";
+import {useSelector } from "react-redux";
 import NotificationItem from "@notifications/NotificationItem";
 import { useAuth } from "@contexts/AuthContext";
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db } from "@/services/firebase/config";
 
 export default function NotificationsPanel() {
-  const dispatch = useDispatch();
   const { user } = useAuth();
   const { list: notifications, loading, error } = useSelector((state) => state.notifications);
 
-  useEffect(() => {
-    if (user?.uid) {
-      const userRole = user.role || "viewer";
-      startNotificationsListener(user.uid, userRole, dispatch);
-    }
-
-    return () => {
-      stopNotificationsListener();
-    };
-  }, [dispatch, user]);
 
   const handleClearAll = async () => {
     if (!user?.uid) return;
