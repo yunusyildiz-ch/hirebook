@@ -27,7 +27,6 @@ const isNotificationVisible = (notif, userId, userRole) => {
 
 // 📌 Global Bildirim Dinleyici
 export const startGlobalNotificationsListener = (userId, userRole, dispatch) => {
-  console.log("🚀 Start Global Notifications Listener");
 
   const q = query(
     collection(db, "notifications"),
@@ -35,7 +34,6 @@ export const startGlobalNotificationsListener = (userId, userRole, dispatch) => 
   );
 
   unsubscribeFn = onSnapshot(q, (snapshot) => {
-    console.log("📥 Snapshot received!");
 
     const notifs = snapshot.docs
       .map((doc) => {
@@ -59,7 +57,6 @@ export const stopGlobalNotificationsListener = () => {
   if (unsubscribeFn) {
     unsubscribeFn();
     unsubscribeFn = null;
-    console.log("🛑 Global Notifications listener stopped.");
   }
 };
 
