@@ -12,6 +12,7 @@ import ReauthenticateModal from "@modals/ReauthenticateModal";
 import UpdatePasswordModal from "@modals/UpdatePasswordModal";
 import InfoModal from "@modals/InfoModal"; 
 import { deleteAccountCompletely } from "@services/accountService";
+import LoadingOverlay from "@components/LoadingOverlay";
 import { useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 
@@ -19,6 +20,7 @@ export default function ProfileEditForm({ currentName, currentEmail }) {
   const [name, setName] = useState(currentName || "");
   const [email, setEmail] = useState(currentEmail || "");
   const [loading, setLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false); 
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showReauthModal, setShowReauthModal] = useState(false);
@@ -74,21 +76,47 @@ export default function ProfileEditForm({ currentName, currentEmail }) {
 
   const handleDeleteAccount = async () => {
     try {
-      setLoading(true);
-      await deleteAccountCompletely();
-      toast.success("Account deleted successfully");
-      await logout();
-      navigate("/");
+      setIsDeleting(true);
+      const user = auth.currentUser;
+  
+      // Check for recent login and reauthenticate if needed
+      try {
+        await deleteAccountCompletely();
+        toast.success("Account deleted successfully");
+        await logout();
+        navigate("/");
+      } catch (error) {
+        if (error.message.includes("Reauthentication required")) {
+          try {
+            await reauthenticateUser(user);
+            // Retry deletion after successful reauthentication
+            await deleteAccountCompletely();
+            toast.success("Account deleted successfully");
+            await logout();
+            navigate("/");
+          } catch (reauthError) {
+            console.error("Reauthentication failed:", reauthError);
+            toast.error("Failed to reauthenticate. Please try again.");
+          }
+        } else {
+          console.error("Delete account error:", error);
+          toast.error("Account deletion failed. Try again.");
+        }
+      }
     } catch (error) {
       console.error("Delete account error:", error);
       toast.error("Account deletion failed. Try again.");
     } finally {
-      setLoading(false);
+      setIsDeleting(false);
     }
   };
+  
 
   return (
     <>
+     {/* 🌀 Show Loading Overlay when deleting account */}
+     {isDeleting && <LoadingOverlay message="Deleting your account..." />}
+
       <form onSubmit={handleSubmit} className="space-y-6 mt-6 text-sm">
   {/* Name input */}
   <div>
