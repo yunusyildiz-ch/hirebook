@@ -4,6 +4,7 @@ import { ChatContext } from "@contexts/ChatContext";
 import { getDialogflowResponse } from "@/services/dialogflowService";
 import { CgBot } from "react-icons/cg";
 import { IoSend } from "react-icons/io5";
+import  QatipCatLogo from "@/assets/QatipCatLogo.jsx"
 
 export default function Chatbot() {
   const [userMessage, setUserMessage] = useState("");
@@ -72,7 +73,7 @@ export default function Chatbot() {
 
           {/* Tooltip */}
           {showTooltip && (
-            <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs py-1 px-2 rounded shadow-lg">
+            <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs py-1 px-2 rounded shadow-lg">
               Drag & Click to open!
             </div>
           )}
@@ -104,11 +105,11 @@ export default function Chatbot() {
                   >
                     {msg.role === "user" ? (
                       <span className="absolute right-0 top-0 -mr-2 -mt-2 bg-blue-500 text-white  rounded-full px-2 py-0.5 text-xs">
-                        You
+                        <QatipCatLogo className="h-5" />
                       </span>
                     ) : (
                       <span className="absolute left-0 top-0 -ml-2 -mt-2 bg-gray-300 text-gray-800 rounded-full px-2 py-0.5 text-xs">
-                        CatBot
+                        <CgBot size={17} />
                       </span>
                     )}
                     <p className="break-words">{msg.content}</p>

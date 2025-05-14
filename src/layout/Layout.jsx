@@ -48,7 +48,6 @@ export default function Layout() {
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto p-6">
           <Outlet />
-          <Chatbot />
           <CookieBanner />
         </div>
       </div>
@@ -60,6 +59,7 @@ export default function Layout() {
         isOpen={isComingSoonOpen}
         onClose={() => setIsComingSoonOpen(false)}
       />
+      <Chatbot />
     </div>
   );
 }
