@@ -123,7 +123,7 @@ export default function ProfileEditForm({ currentName, currentEmail }) {
     <label className="block font-medium mb-1 text-gray-700 dark:text-gray-200">Full Name</label>
     <input
       type="text"
-      className="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition"
+      className="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-transparent transition"
       value={name}
       onChange={(e) => setName(e.target.value)}
     />
@@ -133,8 +133,9 @@ export default function ProfileEditForm({ currentName, currentEmail }) {
   <div>
     <label className="block font-medium mb-1 text-gray-700 dark:text-gray-200">Email</label>
     <input
+    disabled
       type="email"
-      className="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition"
+      className="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-transparent transition"
       value={email}
       onChange={(e) => setEmail(e.target.value)}
     />

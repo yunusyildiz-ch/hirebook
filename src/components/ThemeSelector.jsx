@@ -13,7 +13,7 @@ export default function ThemeSelector() {
     <select
       value={theme}
       onChange={handleChange}
-      className="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary transition"
+      className="w-full p-2 rounded border dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-1 focus:ring-skyBorder transition"
     >
       <option value="system">System Default</option>
       <option value="light">Light Mode</option>

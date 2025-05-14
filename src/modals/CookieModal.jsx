@@ -108,13 +108,13 @@ export default function CookieModal({ onClose }) {
         <div className="flex flex-col sm:flex-row gap-2 sm:justify-end pt-6 w-full">
           <button
             onClick={onClose}
-            className="text-sm px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+            className="text-sm px-2 py-1 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            className="text-sm px-4 py-2 rounded-lg bg-skyBorder text-white hover:bg-skyBlue transition"
+            className="text-sm px-2 py-1 rounded-lg bg-skyBorder text-white hover:bg-skyBlue transition"
           >
             Save Preferences
           </button>
