@@ -6,6 +6,7 @@ import UserPanel from "./user.panel/UserPanel";
 import CookieBanner from "@components/CookieBanner";
 import useGlobalListeners from "@hooks/useGlobalListeners";
 import ComingSoonModal from "@modals/ComingSoonModal";
+import Chatbot from "@components/chatbot/Chatbot";
 
 let setComingSoonOpen;
 
@@ -47,6 +48,7 @@ export default function Layout() {
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto p-6">
           <Outlet />
+          <Chatbot />
           <CookieBanner />
         </div>
       </div>

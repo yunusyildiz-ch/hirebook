@@ -3,6 +3,8 @@ import functions from 'firebase-functions';
 import { initializeApp } from 'firebase-admin/app';
 import { getFirestore, Timestamp } from 'firebase-admin/firestore';
 import cors from 'cors';
+import { dialogflowAPI } from "./dialogflow.js";
+
 
 // Initialize Firebase Admin SDK
 initializeApp();
@@ -176,3 +178,6 @@ export const sendNotification = functions.https.onRequest((req, res) => {
       }
   });
 });
+
+export { dialogflowAPI };
+

@@ -10,10 +10,12 @@ import { ConfirmProvider} from "./contexts/ConfirmContext";
 import GlobalModals from "@/components/GlobalModals";
 import { Toaster } from "react-hot-toast";
 import "./styles/globals.css";
+import { ChatProvider } from "./contexts/ChatContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
+    <ChatProvider>
       <AuthProvider>
         <ThemeProvider>
             <ConfirmProvider> 
@@ -23,6 +25,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             </ConfirmProvider>
         </ThemeProvider>
       </AuthProvider>
+      </ChatProvider>
     </Provider>
   </React.StrictMode>
 );

@@ -51,3 +51,4 @@ package-lock.json
 .bash
 *.bash
 .firebase/
+functions/config/dialogflow-key.json

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { TbBrandGithub, TbBrandLinkedin, TbBrandBluesky } from "react-icons/tb";
+import { TbBrandGithub, TbBrandLinkedin, TbBrandBluesky,TbRobot  } from "react-icons/tb";
 import { FcGoogle } from "react-icons/fc";
 import { RiAppleFill } from "react-icons/ri";
 import LoginModal from "@modals/LoginModal";
@@ -16,6 +16,7 @@ import MobilAppStoreBadges from "@assets/MobilAppStoreBadges";
 import CookieBanner from "@components/CookieBanner";
 import { useGoogleLogin } from "@hooks/useGoogleLogin";
 import ResetPasswordNoticeModal from "@modals/ResetPasswordNoticeModal";
+import Chatbot from "@components/chatbot/Chatbot";
 
 export default function HomePage() {
   const [showLogin, setShowLogin] = useState(false);
@@ -25,6 +26,8 @@ export default function HomePage() {
   const [showComingSoon, setShowComingSoon] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+  const toggleChatbot = () => setIsChatbotOpen((prev) => !prev);
 
   const location = useLocation();
   const { handleGoogleLogin } = useGoogleLogin();
@@ -150,6 +153,8 @@ export default function HomePage() {
       {showResetModal && <ResetPasswordNoticeModal isOpen={showResetModal} email={resetEmail} onClose={() => setShowResetModal(false)} />}
 
       <CookieBanner />
+
+      <Chatbot />
     </motion.div>
   );
 }
