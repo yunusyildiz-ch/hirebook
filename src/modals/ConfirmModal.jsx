@@ -9,13 +9,13 @@ export default function ConfirmModal({ isOpen, title, message, onConfirm, onCanc
           <div className="flex justify-end gap-2">
             <button
               onClick={onCancel}
-              className="px-4 py-1 rounded  border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+              className="px-3 py-1 rounded  border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
             >
               Cancel
             </button>
             <button
               onClick={onConfirm}
-              className="px-4 py-1 rounded border border-red-700  bg-redPrimary hover:bg-red-700 text-white transition"
+              className="px-3 py-1 rounded border border-red-700  bg-redPrimary hover:bg-red-700 text-white transition"
             >
               Delete
             </button>

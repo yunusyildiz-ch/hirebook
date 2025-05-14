@@ -9,7 +9,7 @@ export default function FolderOptionsMenu({ folder, position, closeMenu, onDelet
 
   return createPortal(
     <div
-      className="options-menu fixed bg-white dark:bg-gray-800 rounded-md shadow-md p-1 z-50 text-sm"
+      className="border  dark:border-gray-700 options-menu fixed bg-white dark:bg-gray-800 rounded-md shadow-md p-1 z-50 text-sm"
       style={{ top: `${position.y}px`, left: `${position.x}px` }}
     >
       <div
@@ -19,7 +19,7 @@ export default function FolderOptionsMenu({ folder, position, closeMenu, onDelet
         <TbEdit size={16} /> Rename
       </div>
       <div
-        className="flex items-center gap-2 px-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-all cursor-pointer"
+        className="flex items-center gap-2 px-3 py-2  text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-all cursor-pointer"
         onClick={() => handleChangeColor(dispatch, folder, closeMenu)}
       >
         <TbPalette size={16} /> Change Color

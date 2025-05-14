@@ -1,6 +1,8 @@
+// src/components/FolderColorModal.jsx
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { saveFolderColor } from "@utils/folderActions";
+import { Check } from "lucide-react";
 
 const colors = ["#9e9e9e", "#2196f3", "#4caf50", "#ffeb3b", "#f44336"];
 
@@ -28,18 +30,35 @@ export default function FolderColorModal({ folder, onClose }) {
             <button
               key={color}
               onClick={() => setSelectedColor(color)}
-              className={`w-8 h-8 rounded-full ${selectedColor === color ? "ring-2 ring-blue-500" : ""}`}
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-150 ${
+                selectedColor === color ? "shadow-md" : "shadow-sm"
+              }`}
               style={{ backgroundColor: color }}
-            />
+            >
+              {selectedColor === color && (
+                <Check size={18} className="text-white" />
+              )}
+            </button>
           ))}
         </div>
         <div className="flex justify-end gap-2">
-          <button onClick={onClose} className="px-4 py-2 rounded-md bg-gray-300">Cancel</button>
-          <button onClick={handleSave} className="px-4 py-2 rounded-md bg-blue-600 text-white">Save</button>
+          <button 
+            onClick={onClose} 
+            className="text-sm px-3 py-1 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+          >
+            Cancel
+          </button>
+          <button 
+            onClick={handleSave} 
+            className="text-sm px-4 py-1 rounded-lg bg-skyBorder text-white hover:bg-skyBlue transition"
+          >
+            Save
+          </button>
         </div>
       </div>
     </div>
   );
 }
+
 
 

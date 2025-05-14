@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setActiveFolderTab } from "../foldersUI.slice";
 import { selectActiveFolderTab } from "../foldersSelectors";
 import { TbFolderPlus } from "react-icons/tb";
-import NewFolderModal from "./NewFolderModal";
+import NewFolderModal from "@modals/folder-modals/NewFolderModal";
 import FolderViewToggle from "./FolderViewToggle";
 
 const tabs = ["All"];

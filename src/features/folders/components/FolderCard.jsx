@@ -40,24 +40,24 @@ export default function FolderCard({ folder, onDelete }) {
   return (
     <div
       onClick={handleSelect}
-      className={`group relative p-2 rounded-lg shadow hover:shadow-md transition-all duration-300 border border-gray-200 dark:border-gray-700 cursor-pointer ${
+      className={`group relative p-2 rounded-lg shadow hover:shadow-md transition-colors duration-150 border border-gray-200 dark:border-gray-700 cursor-pointer ${
         viewMode === "list" ? "flex items-center justify-between gap-4" : "p-4"
       } ${
         selectedFolder?.id === folder.id
-          ? "bg-blue-100 dark:bg-blue-800"
+          ? "bg-gray-100 dark:bg-gray-800"
           : "bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
       }`}
     >
       <button
-        className="absolute top-2 right-2 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+        className="absolute top-2 right-2 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-150"
         onClick={toggleMenu}
       >
-        <TbDotsVertical size={18} />
+        <TbDotsVertical className="truncate  dark:text-white" size={18} />
       </button>
 
       <div className="flex items-center gap-2">
         <FolderIcon color={folder.color} />
-        <span className="text-md truncate">{folder.title}</span>
+        <span className="text-md truncate text-gray-900 dark:text-white">{folder.title}</span>
       </div>
 
       {showMenu && (
