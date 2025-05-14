@@ -7,6 +7,7 @@ import { addNoteThunk, updateNoteThunk } from "../notesThunks";
 import { clearSelectedNote } from "../notesSlice";
 import { setViewMode, setActiveTab } from "../notesUI.slice";
 import Toolbar from "./Toolbar";
+import { Plus, Save, X } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toastUtils";
 
 export default function NoteEditor() {
@@ -106,14 +107,17 @@ export default function NoteEditor() {
       <div className="flex justify-end gap-2">
         <button
           onClick={handleCancel}
-          className="px-4 py-2 text-sm border border-gray-300 dark:border-gray-500  hover:bg-gray-200 dark:hover:bg-gray-700"
+          className="px-4 py-2 text-sm rounded border border-gray-300 dark:border-gray-500  hover:bg-gray-200 dark:hover:bg-gray-700"
         >
+
+<X size={16} className="inline mr-1"  />
           Cancel
         </button>
         <button
           onClick={handleSave}
-          className="px-4 py-2 text-sm  text-white bg-skyBlue border border-skyBorder hover:bg-skyBorder hover:border-skyBlue"
+          className="px-4 py-2 text-sm rounded  text-white bg-skyBlue border border-skyBorder hover:bg-skyBorder hover:border-skyBlue"
         >
+           <Save size={16} className="inline mr-1" />
           Save
         </button>
       </div>

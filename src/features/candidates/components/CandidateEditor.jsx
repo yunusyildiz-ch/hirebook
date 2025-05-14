@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearSelectedCandidate, setViewMode } from "../candidatesUI.slice";
+import { clearSelectedCandidate, setViewMode,setActiveTab, } from "../candidatesUI.slice";
 import { selectPreviousViewMode } from "../candidatesSelectors";
 import { Plus, Save, X } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toastUtils";
@@ -43,7 +43,7 @@ export default function CandidateEditor({ candidate = null, onSave }) {
     setTagList(tagList.filter((t) => t !== tagToRemove));
   };
 
-  const handleSave = () => {
+  const handleSubmit = () => {
     const trimmedName = name.trim();
   
     if (!trimmedName) {
@@ -69,6 +69,7 @@ export default function CandidateEditor({ candidate = null, onSave }) {
     } else {
       dispatch(clearSelectedCandidate());
       dispatch(setViewMode("list"));
+      dispatch(setActiveTab("All"));
     }
   };
 
@@ -152,13 +153,14 @@ export default function CandidateEditor({ candidate = null, onSave }) {
       <div className="flex justify-end gap-2 mt-4">
         <button
           onClick={handleCancel}
-          className="px-4 py-2 text-sm border border-gray-300 dark:border-gray-500  hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+          className="px-4 py-2 rounded text-sm border border-gray-300 dark:border-gray-500  hover:bg-gray-200 dark:hover:bg-gray-700 transition"
         >
+          <X size={16} className="inline mr-1"  />
           Cancel
         </button>
         <button
-          onClick={handleSave}
-          className="px-4 py-2 text-sm bg-skyBlue border border-skyBorder hover:bg-skyBorder hover:border-skyBlue text-white  transition"
+          onClick={handleSubmit}
+          className="px-4 py-2 rounded text-sm bg-skyBlue border border-skyBorder hover:bg-skyBorder hover:border-skyBlue text-white  transition"
         >
           <Save size={16} className="inline mr-1" />
           Save
