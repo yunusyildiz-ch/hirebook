@@ -5,11 +5,19 @@ import Header from "./common/Header";
 import UserPanel from "./user.panel/UserPanel";
 import CookieBanner from "@components/CookieBanner";
 import useGlobalListeners from "@hooks/useGlobalListeners";
+import ComingSoonModal from "@modals/ComingSoonModal";
+
+let setComingSoonOpen;
 
 export default function Layout() {
   useGlobalListeners();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [isComingSoonOpen, setIsComingSoonOpen] = useState(false);
+
+  useEffect(() => {
+    setComingSoonOpen = setIsComingSoonOpen;
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -45,7 +53,15 @@ export default function Layout() {
 
       {/* Right User Panel */}
       <UserPanel />
+        {/* 📢 Coming Soon Modal */}
+        <ComingSoonModal
+        isOpen={isComingSoonOpen}
+        onClose={() => setIsComingSoonOpen(false)}
+      />
     </div>
   );
 }
 
+export const openComingSoonModal = () => {
+  if (setComingSoonOpen) setComingSoonOpen(true);
+};
