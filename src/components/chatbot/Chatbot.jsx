@@ -14,6 +14,7 @@ export default function Chatbot() {
   const [showTooltip, setShowTooltip] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true); // 🌟 Welcome Baloncuğu
 
   // Cihazın mobil olup olmadığını kontrol et
   useEffect(() => {
@@ -48,6 +49,7 @@ export default function Chatbot() {
   const handleClick = () => {
     if (!isDragging) {
       setIsOpen((prev) => !prev);
+      setShowWelcome(false); // Baloncuk tıklanınca kaybolsun
     }
   };
 
@@ -56,8 +58,18 @@ export default function Chatbot() {
     e.preventDefault();
     if (!isDragging) {
       setIsOpen((prev) => !prev);
+      setShowWelcome(false); // Baloncuk tıklanınca kaybolsun
     }
   };
+
+  // Baloncuk gösterimi için useEffect
+  useEffect(() => {
+    // Baloncuk otomatik olarak 4 saniye sonra kaybolsun
+    const timer = setTimeout(() => {
+      setShowWelcome(false);
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <Rnd
@@ -84,8 +96,8 @@ export default function Chatbot() {
           onMouseLeave={() => setShowTooltip(false)}
         >
           <button
-            onClick={!isMobile ? handleClick : undefined} // Desktop için onClick
-            onPointerDown={isMobile ? handlePointerDown : undefined} // Mobil için onPointerDown
+            onClick={!isMobile ? handleClick : undefined}
+            onPointerDown={isMobile ? handlePointerDown : undefined}
             className="p-2 border border-black dark:border-white text-dark rounded-full shadow-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition chatbot-drag"
           >
             <CgBot size={40} />
@@ -95,6 +107,16 @@ export default function Chatbot() {
           {showTooltip && (
             <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs py-1 px-2 rounded shadow-lg">
               Drag & Click to open!
+            </div>
+          )}
+
+          {/* 🗨️ Welcome Message Bubble */}
+          {showWelcome && (
+            <div
+              onClick={() => setShowWelcome(false)}
+              className="absolute -top-14  left-1/5 transform -translate-x-1/2 bg-light text-dark text-sm py-1 px-3 rounded-full shadow-lg animate-bounce"
+            >
+              👋 Hello! I am Qatip Cat!
             </div>
           )}
         </div>
@@ -123,15 +145,6 @@ export default function Chatbot() {
                         : "bg-gray-300 text-gray-800 rounded-bl-none"
                     }`}
                   >
-                    {msg.role === "user" ? (
-                      <span className="absolute right-0 top-0 -mr-2 -mt-2 bg-blue-500 rounded-full px-1 py-0.5 text-xs">
-                        <QatipCatLogo className="h-4" />
-                      </span>
-                    ) : (
-                      <span className="absolute left-0 top-0 -ml-2 -mt-2 bg-gray-300 text-gray-800 rounded-full px-1 py-0.5 text-xs">
-                        <CgBot size={17} />
-                      </span>
-                    )}
                     <p className="break-words">{msg.content}</p>
                   </div>
                 </div>
@@ -160,6 +173,7 @@ export default function Chatbot() {
     </Rnd>
   );
 }
+
 
 
 
