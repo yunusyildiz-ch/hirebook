@@ -52,6 +52,13 @@ export default function Chatbot() {
     }
   }, [isOpen]);
 
+  // Input alanına odaklanma fonksiyonu
+  const focusInput = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
   // Tıklama ve Sürükleme Ayırma
   const handleClick = () => {
     if (!isDragging) {
@@ -169,6 +176,9 @@ export default function Chatbot() {
                 placeholder="Type your message..."
                 className="text-sm flex-1 p-1 ring-1 ring-gray-300 rounded bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-1 focus:ring-skyBlue focus:outline-none"
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                onClick={focusInput}           // 🪄 Masaüstü için tıklama odak
+                onPointerDown={focusInput}     // 🪄 Mobil için pointer down odak
+                onTouchStart={focusInput}      // 🪄 Mobil için dokunma odak
               />
               <button
                 onClick={handleSend}
@@ -184,6 +194,7 @@ export default function Chatbot() {
     </Rnd>
   );
 }
+
 
 
 
