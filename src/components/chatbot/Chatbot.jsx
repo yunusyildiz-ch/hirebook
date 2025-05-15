@@ -4,7 +4,7 @@ import { ChatContext } from "@contexts/ChatContext";
 import { getDialogflowResponse } from "@/services/dialogflowService";
 import { CgBot } from "react-icons/cg";
 import { IoSend } from "react-icons/io5";
-import  QatipCatLogo from "@/assets/QatipCatLogo.jsx"
+import QatipCatLogo from "@/assets/QatipCatLogo.jsx";
 
 export default function Chatbot() {
   const [userMessage, setUserMessage] = useState("");
@@ -13,6 +13,15 @@ export default function Chatbot() {
   const inputRef = useRef(null);
   const [showTooltip, setShowTooltip] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Cihazın mobil olup olmadığını kontrol et
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Gönderim fonksiyonu
   const handleSend = async () => {
@@ -42,11 +51,20 @@ export default function Chatbot() {
     }
   };
 
+  // Dokunmatik olayları destekle
+  const handleTouchStart = () => {
+    setIsDragging(true);
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
   return (
     <Rnd
       default={{
-        x: 20,
-        y: 20,
+        x: isMobile ? 20 : window.innerWidth - 350,
+        y: isMobile ? window.innerHeight - 150 : 220,
         width: 300,
         height: "auto",
       }}
@@ -54,9 +72,11 @@ export default function Chatbot() {
       minWidth={250}
       minHeight={100}
       enableResizing={false}
-      className="fixed z-50 cursor-pointer"
+      dragHandleClassName="chatbot-drag"
+      className="fixed z-[1000] cursor-move"
       onDragStart={() => setIsDragging(true)}
       onDragStop={() => setIsDragging(false)}
+      dragAxis="both"
     >
       <div className="relative">
         {/* Toggle Button */}
@@ -66,7 +86,8 @@ export default function Chatbot() {
         >
           <button
             onClick={handleClick}
-            className="p-2 border border-black dark:border-white text-dark rounded-full shadow-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+            onTouchStart={handleClick} // Mobilde de tıklamayı destekle
+            className="p-2 border border-black dark:border-white text-dark rounded-full shadow-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition chatbot-drag"
           >
             <CgBot size={40} />
           </button>
@@ -82,7 +103,7 @@ export default function Chatbot() {
         {/* Chatbot Panel */}
         {isOpen && (
           <div
-            className="mt-2 border bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg w-80"
+            className="mt-2 border bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg w-80 chatbot-drag"
             style={{ zIndex: 1000 }}
           >
             <h2 className="text-lg font-semibold mb-2 select-none">
@@ -104,7 +125,7 @@ export default function Chatbot() {
                     }`}
                   >
                     {msg.role === "user" ? (
-                      <span className="absolute right-0 top-0 -mr-2 -mt-2 bg-blue-500 text-white  rounded-full px-2 py-0.5 text-xs">
+                      <span className="absolute right-0 top-0 -mr-2 -mt-2 bg-blue-500 text-white rounded-full px-2 py-0.5 text-xs">
                         <QatipCatLogo className="h-5" />
                       </span>
                     ) : (
@@ -124,7 +145,7 @@ export default function Chatbot() {
                 value={userMessage}
                 onChange={(e) => setUserMessage(e.target.value)}
                 placeholder="Type your message..."
-                className=" text-sm flex-1 p-1 ring-1 ring-gray-300 rounded bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-1 focus:ring-skyBlue focus:outline-none"
+                className="text-sm flex-1 p-1 ring-1 ring-gray-300 rounded bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-1 focus:ring-skyBlue focus:outline-none"
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
               />
               <button
@@ -140,6 +161,9 @@ export default function Chatbot() {
     </Rnd>
   );
 }
+
+
+
 
 
 
