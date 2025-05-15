@@ -135,7 +135,7 @@ export default function Chatbot() {
                 <div
                   key={index}
                   className={`flex ${
-                    msg.role === "user" ? "justify-end" : "justify-start"
+                    msg.role === "user" ? "justify-start" : "justify-end"
                   }`}
                 >
                   <div
@@ -145,6 +145,15 @@ export default function Chatbot() {
                         : "bg-gray-300 text-gray-800 rounded-bl-none"
                     }`}
                   >
+                    {msg.role === "user" ? (
+                      <span className="absolute left-0 top-0 -mr-2 -mt-2 bg-blue-500 rounded-full px-1 py-0.5 text-xs">
+                        <QatipCatLogo className="h-4" />
+                      </span>
+                    ) : (
+                      <span className="absolute right-0 top-0 -ml-2 -mt-2 bg-gray-300 text-gray-800 rounded-full px-1 py-0.5 text-xs">
+                        <CgBot size={17} />
+                      </span>
+                    )}
                     <p className="break-words">{msg.content}</p>
                   </div>
                 </div>
@@ -162,6 +171,7 @@ export default function Chatbot() {
               />
               <button
                 onClick={handleSend}
+                onTouchStart={handleSend} // 🪄 Mobil için touch desteği
                 className="bg-skyBlue text-white px-3 py-1 rounded hover:bg-skyBorder transition flex items-center justify-center"
               >
                 <IoSend size={20} />
@@ -173,6 +183,7 @@ export default function Chatbot() {
     </Rnd>
   );
 }
+
 
 
 
