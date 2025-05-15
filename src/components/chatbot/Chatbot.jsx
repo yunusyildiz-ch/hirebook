@@ -51,13 +51,12 @@ export default function Chatbot() {
     }
   };
 
-  // Dokunmatik olayları destekle
-  const handleTouchStart = () => {
-    setIsDragging(true);
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
+  // Profesyonel tıklama ve dokunma desteği
+  const handlePointerDown = (e) => {
+    e.preventDefault();
+    if (!isDragging) {
+      setIsOpen((prev) => !prev);
+    }
   };
 
   return (
@@ -73,7 +72,7 @@ export default function Chatbot() {
       minHeight={100}
       enableResizing={false}
       dragHandleClassName="chatbot-drag"
-      className="fixed z-[1000] cursor-move"
+      className="fixed z-[1000] cursor-pointer"
       onDragStart={() => setIsDragging(true)}
       onDragStop={() => setIsDragging(false)}
       dragAxis="both"
@@ -85,8 +84,8 @@ export default function Chatbot() {
           onMouseLeave={() => setShowTooltip(false)}
         >
           <button
-            onClick={handleClick}
-            onTouchStart={handleClick} // Mobilde de tıklamayı destekle
+            onClick={!isMobile ? handleClick : undefined} // Desktop için onClick
+            onPointerDown={isMobile ? handlePointerDown : undefined} // Mobil için onPointerDown
             className="p-2 border border-black dark:border-white text-dark rounded-full shadow-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition chatbot-drag"
           >
             <CgBot size={40} />
@@ -120,16 +119,16 @@ export default function Chatbot() {
                   <div
                     className={`relative max-w-xs p-2 rounded-lg shadow-md ${
                       msg.role === "user"
-                        ? "bg-blue-500 text-white rounded-br-none"
+                        ? "bg-skyBlue text-white rounded-br-none"
                         : "bg-gray-300 text-gray-800 rounded-bl-none"
                     }`}
                   >
                     {msg.role === "user" ? (
-                      <span className="absolute right-0 top-0 -mr-2 -mt-2 bg-blue-500 text-white rounded-full px-2 py-0.5 text-xs">
-                        <QatipCatLogo className="h-5" />
+                      <span className="absolute right-0 top-0 -mr-2 -mt-2 bg-blue-500 rounded-full px-1 py-0.5 text-xs">
+                        <QatipCatLogo className="h-4" />
                       </span>
                     ) : (
-                      <span className="absolute left-0 top-0 -ml-2 -mt-2 bg-gray-300 text-gray-800 rounded-full px-2 py-0.5 text-xs">
+                      <span className="absolute left-0 top-0 -ml-2 -mt-2 bg-gray-300 text-gray-800 rounded-full px-1 py-0.5 text-xs">
                         <CgBot size={17} />
                       </span>
                     )}
@@ -161,6 +160,8 @@ export default function Chatbot() {
     </Rnd>
   );
 }
+
+
 
 
 
