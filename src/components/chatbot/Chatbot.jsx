@@ -14,7 +14,9 @@ export default function Chatbot() {
   const [showTooltip, setShowTooltip] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [showWelcome, setShowWelcome] = useState(true); // 🌟 Welcome Baloncuğu
+  const [showWelcome, setShowWelcome] = useState(true);
+  const touchStartRef = useRef(0);
+  const touchMovedRef = useRef(false);
 
   // Cihazın mobil olup olmadığını kontrol et
   useEffect(() => {
@@ -49,29 +51,31 @@ export default function Chatbot() {
   const handleClick = () => {
     if (!isDragging) {
       setIsOpen((prev) => !prev);
-      setShowWelcome(false); // Baloncuk tıklanınca kaybolsun
+      setShowWelcome(false);
     }
   };
 
-  // Profesyonel tıklama ve dokunma desteği
-  const handlePointerDown = (e) => {
-    e.preventDefault();
-    if (!isDragging) {
-      setIsOpen((prev) => !prev);
-      setShowWelcome(false); // Baloncuk tıklanınca kaybolsun
-    }
+  // Mobilde dokunma başlangıcı
+  const handleTouchStart = () => {
+    touchStartRef.current = Date.now();
+    touchMovedRef.current = false;
   };
 
-  // Input alanına dokunma işlemi
-  const handleInputFocus = () => {
-    if (inputRef.current) {
-      inputRef.current.focus();
+  // Mobilde dokunma hareketi
+  const handleTouchMove = () => {
+    touchMovedRef.current = true;
+  };
+
+  // Mobilde dokunma sonu
+  const handleTouchEnd = () => {
+    const touchDuration = Date.now() - touchStartRef.current;
+    if (!touchMovedRef.current && touchDuration < 150) {
+      handleClick(); // Kısa dokunma: tıklama olarak işle
     }
   };
 
   // Baloncuk gösterimi için useEffect
   useEffect(() => {
-    // Baloncuk otomatik olarak 4 saniye sonra kaybolsun
     const timer = setTimeout(() => {
       setShowWelcome(false);
     }, 4000);
@@ -104,7 +108,9 @@ export default function Chatbot() {
         >
           <button
             onClick={!isMobile ? handleClick : undefined}
-            onPointerDown={isMobile ? handlePointerDown : undefined}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
             className="p-2 border border-black dark:border-white text-dark rounded-full shadow-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition chatbot-drag"
           >
             <CgBot size={40} />
@@ -121,7 +127,7 @@ export default function Chatbot() {
           {showWelcome && (
             <div
               onClick={() => setShowWelcome(false)}
-              className="absolute -top-14  left-1/5 transform -translate-x-1/2 bg-light text-dark text-sm py-1 px-3 rounded-full shadow-lg animate-bounce"
+              className="absolute -top-14 left-1/5 transform -translate-x-1/2 bg-light text-dark text-sm py-1 px-3 rounded-full shadow-lg animate-bounce"
             >
               👋 Hello! I am Qatip Cat!
             </div>
@@ -175,12 +181,9 @@ export default function Chatbot() {
                 placeholder="Type your message..."
                 className="text-sm flex-1 p-1 ring-1 ring-gray-300 rounded bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-1 focus:ring-skyBlue focus:outline-none"
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                onClick={handleInputFocus} // 🪄 Mobilde tıklama sonrası odak
-                onTouchStart={handleInputFocus} // 🪄 Mobilde touch sonrası odak
               />
               <button
                 onClick={handleSend}
-                onTouchStart={handleSend} // 🪄 Mobil için touch desteği
                 className="bg-skyBlue text-white px-3 py-1 rounded hover:bg-skyBorder transition flex items-center justify-center"
               >
                 <IoSend size={20} />
@@ -192,6 +195,8 @@ export default function Chatbot() {
     </Rnd>
   );
 }
+
+
 
 
 
