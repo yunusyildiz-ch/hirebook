@@ -38,6 +38,11 @@ export default function Chatbot() {
     } catch (error) {
       addMessage("bot", "Connection error. Please try again.");
     }
+
+    // Mesaj gönderildikten sonra input alanına odaklan
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
 
   // Chatbot açıldığında input alanına odaklan
@@ -115,23 +120,6 @@ export default function Chatbot() {
           >
             <CgBot size={40} />
           </button>
-
-          {/* Tooltip */}
-          {showTooltip && (
-            <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs py-1 px-2 rounded shadow-lg">
-              Drag & Click to open!
-            </div>
-          )}
-
-          {/* 🗨️ Welcome Message Bubble */}
-          {showWelcome && (
-            <div
-              onClick={() => setShowWelcome(false)}
-              className="absolute -top-14 left-1/5 transform -translate-x-1/2 bg-light text-dark text-sm py-1 px-3 rounded-full shadow-lg animate-bounce"
-            >
-              👋 Hello! I am Qatip Cat!
-            </div>
-          )}
         </div>
 
         {/* Chatbot Panel */}
@@ -151,7 +139,7 @@ export default function Chatbot() {
                     msg.role === "user" ? "justify-start" : "justify-end"
                   }`}
                 >
-                  <div
+                 <div
                     className={`relative max-w-xs p-2 rounded-lg shadow-md ${
                       msg.role === "user"
                         ? "bg-skyBlue text-white rounded-br-none"
@@ -184,6 +172,7 @@ export default function Chatbot() {
               />
               <button
                 onClick={handleSend}
+                onPointerDown={handleSend} // 🪄 Mobilde butonun çalışması için
                 className="bg-skyBlue text-white px-3 py-1 rounded hover:bg-skyBorder transition flex items-center justify-center"
               >
                 <IoSend size={20} />
@@ -195,6 +184,7 @@ export default function Chatbot() {
     </Rnd>
   );
 }
+
 
 
 
