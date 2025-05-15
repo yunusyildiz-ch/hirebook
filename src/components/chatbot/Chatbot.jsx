@@ -62,6 +62,13 @@ export default function Chatbot() {
     }
   };
 
+  // Input alanına dokunma işlemi
+  const handleInputFocus = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
   // Baloncuk gösterimi için useEffect
   useEffect(() => {
     // Baloncuk otomatik olarak 4 saniye sonra kaybolsun
@@ -168,6 +175,8 @@ export default function Chatbot() {
                 placeholder="Type your message..."
                 className="text-sm flex-1 p-1 ring-1 ring-gray-300 rounded bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-1 focus:ring-skyBlue focus:outline-none"
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                onClick={handleInputFocus} // 🪄 Mobilde tıklama sonrası odak
+                onTouchStart={handleInputFocus} // 🪄 Mobilde touch sonrası odak
               />
               <button
                 onClick={handleSend}
